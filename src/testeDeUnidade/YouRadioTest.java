@@ -76,8 +76,7 @@ public class YouRadioTest {
 		} catch (UsuarioException e) {
 			fail("Exceção errada");
 		} catch (CadastroException e) {
-			assertEquals("" +
-					"]Já existe um usuário com este email", e.getMessage());
+			assertEquals("Já existe um usuário com este email", e.getMessage());
 		}
 	}
 	
@@ -307,8 +306,6 @@ public class YouRadioTest {
 	@Test
 	public void testDataDeCriacaoSomSomInexistente() throws CadastroException, UsuarioException, SomException, SessaoException, LoginException, sistemaEncerradoException{
 		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
-		int sessao = sistema.abrirSessao("mark", "MaRk");
-		int som = sistema.postarSom(sessao, "musica1", "22/02/2013");
 		try {
 			sistema.dataDeCriacaoSom(-51615321);
 		} catch (SomException e) {
