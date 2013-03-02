@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title><ui:insert name="title">Cadastro</ui:insert></title>
+
+</h:head>
+
+<h:body>
+
+	<h:form>
+		<p:panel header="Cadastro de usuário">
+			<h:panelGrid id="cadastro" columns="2" cellpadding="2">
+				<h:outputText value="Nome:" />
+				<p:inputText id="nome" required="true" size = "35"  value="#{youRadioBean.nome}" />
+
+				<h:outputText value="Login:" />
+				<p:inputText id="login"  required="true" size = "35" value="#{youRadioBean.login}" />
+
+				<h:outputText value="E-mail:" />
+				<p:inputText id="email" required="true" size = "35"  value="#{youRadioBean.email}" />
+
+				<h:outputLabel for="pwd2" value="Senha:"/>
+				<p:password id="pwd1" value="#{youRadioBean.senha}" size = "35" match="pwd2"
+					label="Password 1" required="true"  feedback="true" promptLabel="Digite sua senha" weakLabel="fraca"  
+                        goodLabel="boa" strongLabel="forte" />
+
+				<h:outputLabel for="pwd2" value="Repita a senha:"  />
+				<p:password id="pwd2" value="#{youRadioBean.senha}"
+					label="Password 2" required="true" size = "35" />
+
+				<p:commandButton id="saveButton" update="cadastro" value="Cadastrar" />
+
+				<p:button outcome="faces/index.xhtml" value="Cancelar">
+
+				</p:button>   
+
+
+			</h:panelGrid>
+		</p:panel>
+
+	</h:form>
+
+
+</h:body>
+</html>
