@@ -22,8 +22,8 @@
 					value="#{youRadioBean.login}" />
 				<p:password id="pwd2" required="true" value="#{youRadioBean.senha}" />
 
-				<p:commandButton id="loginbutton" update="LoginPage" value="Login" />
-				<p:button outcome="faces/cadastro.xhtml" value="Cadastrar"></p:button>
+				<p:button value="Login" outcome="faces/usuariologado.xhtml" />
+				<p:button outcome="faces/cadastro.xhtml" value="Cadastrar"/>
 			</h:panelGrid>
 		</p:panel>
 
