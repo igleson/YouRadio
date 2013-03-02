@@ -7,29 +7,26 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-	<title><ui:insert name="title">Exemplo Configuração JSF</ui:insert></title>
+	<title><ui:insert name="title">Pagina de Login</ui:insert></title>
 
 </h:head>
 
 <h:body>
 
 	<h:form>
+		<p:panel header="Faça login ou Cadastre-se"> 
+			<h:panelGrid id="LoginPage" columns="2" cellpadding="4">
+				<h:outputText value="Login: " />
+				<h:outputText value="Senha: " />
+				<p:inputText id="login" required="true"
+					value="#{youRadioBean.login}" />
+				<p:password id="pwd2" required="true" value="#{youRadioBean.senha}" />
 
-		<h:panelGrid columns="4" cellpadding="5">
-			<h:outputLabel for="name" value="Nome:" style="font-weight:bold" />
+				<p:commandButton id="loginbutton" update="LoginPage" value="Login" />
+				<p:button outcome="faces/cadastro.xhtml" value="Cadastrar"></p:button>
+			</h:panelGrid>
+		</p:panel>
 
-			<p:inputText id="name" value="#{testeBean.nome}" />
-
-			<p:commandButton value="Enviar" update="display" />
-			
-			<br/>
-
-			<p:outputPanel id="display" style="display:block;margin-top:10px;">
-				<h:outputText id="bemVindo" value="Bem vindo: #{testeBean.nome}"
-					rendered="#{not empty testeBean.nome}" />
-			</p:outputPanel>
-
-		</h:panelGrid>
 
 	</h:form>
 
