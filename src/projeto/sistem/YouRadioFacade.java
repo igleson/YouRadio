@@ -34,12 +34,12 @@ public class YouRadioFacade {
 		List<Integer> listSonsIds = sistema.getPerfilMusical(sessaoId);
 		if (listSonsIds.size() == 0)
 			return "{}";
-		String retorno = "{";
+		String retorno ="" ;
 		for (Integer integer : listSonsIds) {
-			retorno += integer + ",";
+			retorno = integer + "," + retorno ;
 
 		}
-		return retorno.subSequence(0, retorno.length() - 1) + "}";
+		return "{" +retorno.substring(0, retorno.length() - 1) + "}";
 
 	}
 
@@ -60,9 +60,10 @@ public class YouRadioFacade {
 	public String getAtributoSom(String idSom, String atributo) throws SomException, AtributoException, NumberFormatException, sistemaEncerradoException {
 		if(idSom == null || idSom.equals("")) throw new SomException("Som inválido");
 		else if (atributo == null || atributo.equals("")) throw new AtributoException("Atributo inválido");
+		else if(!atributo.equals("link") && !atributo.endsWith("dataCriacao")) throw new AtributoException("Atributo inexistente");
+		else if(idSom == null || idSom.equals("")) throw new SomException("Som inválido");
 		else if (atributo.equals("link")) return sistema.linkDoSom(Integer.parseInt(idSom));
-		else if (atributo.equals("dataCriacao")) return sistema.dataDeCriacaoSom(Integer.parseInt(idSom));
-		else throw new AtributoException("Atributo inexistente");
+		else return sistema.dataDeCriacaoSom(Integer.parseInt(idSom));
 
 	}
 

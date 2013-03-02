@@ -7,7 +7,7 @@
 # mesma música ou mesmo sons com a mesma url,
 # a data de criação faz delas postagens distintas.
 #    Os sons são armazenados no perfil musical na
-# ordem cronológica de criação.
+# ordem cronológica de criação, como em uma pilha.
 
 # limpar os dados do sistema
 zerarSistema
@@ -46,8 +46,8 @@ expect "25/12/2013" getAtributoSom idSom=${som3ID} atributo="dataCriacao"
 expect "23/06/2014" getAtributoSom idSom=${som4ID} atributo="dataCriacao"
 expect "10/04/2015" getAtributoSom idSom=${som5ID} atributo="dataCriacao"
 
-expect {${som1ID},${som2ID}} getPerfilMusical idSessao=${sessaoMark} 
-expect {${som3ID},${som4ID},${som5ID}} getPerfilMusical idSessao=${sessaoSteve}
+expect {${som2ID},${som1ID}} getPerfilMusical idSessao=${sessaoMark} 
+expect {${som5ID},${som4ID},${som3ID}} getPerfilMusical idSessao=${sessaoSteve}
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -77,7 +77,7 @@ expectError "Data de Criação inválida" postarSom idSessao=${sessaoSteve} link="h
 expectError "Data de Criação inválida" postarSom idSessao=${sessaoSteve} link="http://www.youtube.com/watch?v=3KsPIJK17uk" dataCriacao="30/04/15"
 
 # perfil musical de Steve continua intacto
-expect {${som3ID},${som4ID},${som5ID}} getPerfilMusical idSessao=${sessaoSteve} 
+expect {${som5ID},${som4ID},${som3ID}} getPerfilMusical idSessao=${sessaoSteve}
 
 expectError "Login inválido" getAtributoUsuario login= atributo="nome"
 expectError "Login inválido" getAtributoUsuario login="" atributo="nome"
