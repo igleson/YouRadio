@@ -10,19 +10,19 @@ import javax.faces.bean.ViewScoped;
 
 @ManagedBean
 @ViewScoped
-public class TesteBean implements Serializable {
+public class UsuarioLogadoBean implements Serializable {
 
 	private static final long serialVersionUID = 5600369132889054255L;
 	
 	private String nome;
-	  
+
     private List<String> selectedMovies;  
   
     private List<String> selectedOptions;  
   
     private Map<String,String> movies;  
 
-    public TesteBean(){
+    public UsuarioLogadoBean(){
     	 movies = new HashMap<String, String>();  
          movies.put("Scarface", "Scarface");  
          movies.put("Goodfellas", "Goodfellas");  

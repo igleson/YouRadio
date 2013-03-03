@@ -1,5 +1,6 @@
 package projeto.sistem;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
@@ -17,7 +18,10 @@ import excessoes.sistemaEncerradoException;
 import projeto.perfil.Som;
 import projeto.user.Usuario;
 
-public class YouRadio {
+public class YouRadio implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+	
 	private Map<String, Usuario> todosOsUsuarios;
 	private Map<Integer, String> todasAsSessoes;
 	private Map<Integer, Som> todosOsSons;
