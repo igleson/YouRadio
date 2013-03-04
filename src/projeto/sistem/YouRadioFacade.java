@@ -1,5 +1,6 @@
 package projeto.sistem;
 
+import java.util.Collection;
 import java.util.List;
 import excessoes.AtributoException;
 import excessoes.CadastroException;
@@ -21,14 +22,13 @@ public class YouRadioFacade {
 		sistema.zerarSistema();
 	}
 
-	public void criarUsuario(String login, String senha, String nome,
-			String email) throws UsuarioException, CadastroException, sistemaEncerradoException {
+	public void criarUsuario(String login, String senha, String nome, String email) throws UsuarioException, CadastroException, sistemaEncerradoException {
 		sistema.criarUsuario(login, senha, nome, email);
 	}
 	
 	
 	//Novo metodo
-	public String getIDUsuario(int sessaoId){
+	public String getIDUsuario(int sessaoId) throws SessaoException{
 		return sistema.getIdUsuario(sessaoId);
 	}
 	
@@ -50,8 +50,7 @@ public class YouRadioFacade {
 
 	}
 
-	public int postarSom(int sessaoId, String link, String dataCriacao)
-			throws SomException, SessaoException, sistemaEncerradoException {
+	public int postarSom(int sessaoId, String link, String dataCriacao)	throws SomException, SessaoException, sistemaEncerradoException {
 
 		return sistema.postarSom(sessaoId, link, dataCriacao);
 
@@ -74,12 +73,14 @@ public class YouRadioFacade {
 
 	}
 
-	public int getNumeroDeSeguidores(int idSessao){
-		return -1;
+	public int getNumeroDeSeguidores(String idSessao) throws SessaoException{
+		if(idSessao == null || idSessao.equals("")) throw new SessaoException("Sessão inválida");
+		return sistema.getNumeroDeSeguidores(Integer.parseInt(idSessao));
 	}
 	
-	public String getFontesDeSons(int sessaoId){
-		List<Integer> listSonsIds = sistema.getFontesDeSons(sessaoId);
+	public String getFontesDeSons(String sessaoId) throws SessaoException{
+		if(sessaoId == null || sessaoId.equals("")) throw new SessaoException("Sessão inválida");
+		List<Integer> listSonsIds = sistema.getFontesDeSons(Integer.parseInt(sessaoId));
 		if (listSonsIds.size() == 0)
 			return "{}";
 		String retorno ="" ;
@@ -90,23 +91,25 @@ public class YouRadioFacade {
 		return "{" +retorno.substring(0, retorno.length() - 1) + "}";
 	}
 	
-	public String getListaDeSeguidores(int sessaoId){
-		List<Integer> listSonsIds = sistema.getListaDeSeguidores(sessaoId);
+	public String getListaDeSeguidores(String sessaoId) throws SessaoException{
+		if(sessaoId == null || sessaoId.equals("")) throw new SessaoException("Sessão inválida");
+		Collection<Integer> listSonsIds = sistema.getListaDeSeguidores(Integer.parseInt(sessaoId));
 		if (listSonsIds.size() == 0)
 			return "{}";
 		String retorno ="" ;
 		for (Integer integer : listSonsIds) {
 			retorno = integer + "," + retorno ;
-
 		}
 		return "{" +retorno.substring(0, retorno.length() - 1) + "}";
 	}
 	
-	public void seguirUsuario(int idSessao, String login){
-		sistema.seguirUsuario(idSessao, login);
+	public void seguirUsuario(String idSessao, String login) throws SessaoException, LoginException{
+		if(idSessao == null || idSessao.equals("")) throw new SessaoException("Sessão inválida");
+		sistema.seguirUsuario(Integer.parseInt(idSessao), login);
 	}
 	
-	public void encerrarSessao(String login) {
+	public void encerrarSessao(String login) throws LoginException {
+		if(login == null || login.equals("")) throw new LoginException("Login inválido");
 		sistema.encerrarSessao(login);
 	}
 

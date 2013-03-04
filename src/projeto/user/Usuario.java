@@ -3,6 +3,8 @@ package projeto.user;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import excessoes.UsuarioException;
@@ -15,7 +17,7 @@ public class Usuario implements Serializable{
 	private String nome;
 	private String email;
 	private List<Integer> perfilMusical;
-	private List<Integer> seguindo;
+	private Collection<Integer> seguindo;
 	
 
 	/**
@@ -31,7 +33,7 @@ public class Usuario implements Serializable{
 		this.senha = senha;
 		this.nome = nome;
 		this.email = email;
-		this.seguindo = new ArrayList<Integer>();
+		this.seguindo = new HashSet<Integer>();
 	}
 
 	
@@ -141,7 +143,7 @@ public class Usuario implements Serializable{
 	}
 
 
-	public List<Integer> getListaDeSeguidores() {
+	public Collection<Integer> getListaDeSeguidores() {
 		return this.seguindo;
 	}
 
@@ -149,6 +151,11 @@ public class Usuario implements Serializable{
 	public void seguirUsuario(String login) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	public int getNumeroDeSeguidores() {
+		return this.seguindo.size();
 	}
 
 

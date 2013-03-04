@@ -37,6 +37,10 @@ public class DadosDoSistema {
 		return false;
 	}
 	
+	public boolean contemLogin(String login){
+		return this.todosOsUsuarios.get(login) != null;
+	}
+	
 	public boolean senhaValida(String login, String senha){
 		return this.todosOsUsuarios.get(login).testaSenha(senha);
 	}

@@ -3,6 +3,7 @@ package projeto.sistem;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.List;
 import excessoes.CadastroException;
@@ -211,23 +212,34 @@ public class YouRadio implements Serializable{
 	}
 
 
-	public String getIdUsuario(int sessaoId) {
+	public String getIdUsuario(int sessaoId) throws SessaoException {
+		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
 		return Integer.toString(dados.usuario(sessaoId).hashCode());
 	}
 
 
-	public List<Integer> getFontesDeSons(int sessaoId) {
+	public List<Integer> getFontesDeSons(int sessaoId) throws SessaoException {
+		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(sessaoId).getFontesDeSons();
 	}
 
 
-	public List<Integer> getListaDeSeguidores(int sessaoId) {
+	public Collection<Integer> getListaDeSeguidores(int sessaoId) throws SessaoException {
+		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(sessaoId).getListaDeSeguidores();
 	}
 
 
-	public void seguirUsuario(int idSessao, String login) {
+	public void seguirUsuario(int idSessao, String login) throws SessaoException, LoginException {
+		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		if(!this.dados.contemLogin(login)) throw new LoginException("Login inexistente");
 		this.dados.usuario(idSessao).seguirUsuario(login);
+	}
+
+
+	public int getNumeroDeSeguidores(int idSessao) throws SessaoException {
+		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		return this.dados.usuario(idSessao).getNumeroDeSeguidores();
 	}
 
 
