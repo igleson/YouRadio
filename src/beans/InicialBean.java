@@ -1,4 +1,4 @@
-package teste;
+package beans;
 
 public class InicialBean {
 

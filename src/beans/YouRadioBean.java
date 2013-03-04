@@ -1,4 +1,4 @@
-package teste;
+package beans;
 
 import excessoes.CadastroException;
 import excessoes.UsuarioException;

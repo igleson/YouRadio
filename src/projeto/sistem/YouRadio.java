@@ -4,16 +4,14 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import excessoes.CadastroException;
 import excessoes.LoginException;
 import excessoes.SessaoException;
 import excessoes.SomException;
 import excessoes.UsuarioException;
 import excessoes.sistemaEncerradoException;
+import gerenciadorDeDados.DadosDoSistema;
 
 import projeto.perfil.Som;
 import projeto.user.Usuario;
@@ -22,10 +20,8 @@ public class YouRadio implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private Map<String, Usuario> todosOsUsuarios;
-	private Map<Integer, String> todasAsSessoes;
-	private Map<Integer, Som> todosOsSons;
-	
+	private DadosDoSistema dados;
+		
 	private boolean sistemaEstaAberto = false;
 	
 	
@@ -34,7 +30,6 @@ public class YouRadio implements Serializable{
 	 **/
 	public YouRadio(){
 		this.zerarSistema();
-		sistemaEstaAberto = true;
 	}
 	
 	
@@ -42,9 +37,8 @@ public class YouRadio implements Serializable{
 	 * @return void
 	 **/
 	public void zerarSistema() {
-		this.todosOsUsuarios = new HashMap<String, Usuario>();
-		this.todasAsSessoes = new HashMap<Integer, String>();
-		this.todosOsSons = new HashMap<Integer, Som>();
+		dados = new DadosDoSistema();
+		sistemaEstaAberto = true;
 	}
 	
 	
@@ -54,7 +48,7 @@ public class YouRadio implements Serializable{
 	 **/
 	public int qtdeUsuarios() throws sistemaEncerradoException{
 		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
-		return todosOsUsuarios.size();
+		return this.dados.qtdeDeUsuarios();
 	}
 	
 	/**
@@ -66,16 +60,11 @@ public class YouRadio implements Serializable{
 	public void criarUsuario(String login, String senha, String nome,
 			String email) throws CadastroException, UsuarioException, sistemaEncerradoException {
 		//if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
-		if (this.todosOsUsuarios.containsKey(login))
+		if (this.dados.contemUsuario(login))
 			throw new CadastroException("Já existe um usuário com este login");
-		for (Usuario usuario : todosOsUsuarios.values()) {
-			if (usuario.getEmail().equals(email))
-				throw new CadastroException(
-						"Já existe um usuário com este email");
-		}
-		this.todosOsUsuarios.put(login, new Usuario(login, senha, nome, email));
+		if(this.dados.contemEmail(email)) throw new CadastroException("Já existe um usuário com este email");
+		this.dados.adicionaUsuario(login, senha, nome, email);
 	}
-	
 	
 
 	/**
@@ -85,15 +74,15 @@ public class YouRadio implements Serializable{
 	 * 
 	 **/
 	public int abrirSessao(String login, String senha) throws LoginException, sistemaEncerradoException {
-		//if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
+		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
 		if (login == null || login.equals(""))
 			throw new LoginException("Login inválido");
 		if (senha == null || senha.equals(""))
 			throw new LoginException("Senha inválida");
-		if (!todosOsUsuarios.containsKey(login))
+		if (!this.dados.contemUsuario(login))
 			throw new LoginException("Usuário inexistente");
-		if (this.todosOsUsuarios.get(login).testaSenha(senha))
-			this.todasAsSessoes.put(login.hashCode(), login);
+		if (this.dados.senhaValida(login, senha))
+			this.dados.adicionaSessao(login);
 		else
 			throw new LoginException("Login inválido");
 		return login.hashCode();
@@ -108,9 +97,9 @@ public class YouRadio implements Serializable{
 	 **/
 	public List<Integer> getPerfilMusical(int sessaoId) throws SessaoException, sistemaEncerradoException {
 		//if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
-		if(!todasAsSessoes.containsKey(sessaoId)) throw new SessaoException("Sessao inexistente");
-		String loginTemp = getLogin(sessaoId);
-		return this.todosOsUsuarios.get(loginTemp).getPerfilMusical();
+		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessao inexistente");
+		String loginTemp = this.dados.login(sessaoId);
+		return this.dados.usuario(loginTemp).getPerfilMusical();
 	}
 	
 	/**
@@ -122,12 +111,11 @@ public class YouRadio implements Serializable{
 	public int postarSom(int sessaoId, String link, String dataCriacao)
 			throws SomException, SessaoException, sistemaEncerradoException {
 		//if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
-		if(!todasAsSessoes.containsKey(sessaoId)) throw new SessaoException("Sessao inexistente");
+		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessao inexistente");
 
 		Som temp = new Som(link, dataCriacao);
-		todosOsSons.put(temp.hashCode(), temp);
-		todosOsUsuarios.get(todasAsSessoes.get(sessaoId)).postarSom(
-				temp.hashCode());
+		this.dados.adicionaSom(temp);
+		this.dados.usuario(sessaoId).postarSom(temp.hashCode());
 		return temp.hashCode();
 	}
 	
@@ -150,8 +138,8 @@ public class YouRadio implements Serializable{
 	public String nomeDoUsuario(String login) throws UsuarioException, sistemaEncerradoException{
 		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
 		if(login == null || login.equals("")) throw new UsuarioException("Login inválido");
-		if (!this.todosOsUsuarios.containsKey(login)) throw new UsuarioException("Usuário inexistente");
-		Usuario temp = this.todosOsUsuarios.get(login);
+		if (!this.dados.contemUsuario(login)) throw new UsuarioException("Usuário inexistente");
+		Usuario temp = this.dados.usuario(login);
 		return temp.getNome();
 	}
 	
@@ -164,8 +152,8 @@ public class YouRadio implements Serializable{
 	public String emailDoUsuario(String login) throws UsuarioException, sistemaEncerradoException {
 		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
 		if(login == null || login.equals("")) throw new UsuarioException("Login inválido");
-		if (!this.todosOsUsuarios.containsKey(login)) throw new UsuarioException("Usuário inexistente");
-		Usuario temp = this.todosOsUsuarios.get(login);
+		if (!this.dados.contemUsuario(login)) throw new UsuarioException("Usuário inexistente");
+		Usuario temp = this.dados.usuario(login);
 		return temp.getEmail();
 	}
 	
@@ -177,8 +165,7 @@ public class YouRadio implements Serializable{
 	 **/
 	public String linkDoSom(int idSom) throws SomException, sistemaEncerradoException{
 		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
-		if (!this.todosOsSons.containsKey(idSom)) throw new SomException("Som inexistente");
-		Som temp = this.todosOsSons.get(idSom);
+		Som temp = this.dados.Som(idSom);
 		return temp.getLink();
 	}
 	
@@ -190,8 +177,7 @@ public class YouRadio implements Serializable{
 	 **/
 	public String dataDeCriacaoSom(int idSom) throws SomException, sistemaEncerradoException{
 		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
-		if (!this.todosOsSons.containsKey(idSom)) throw new SomException("Som inexistente");
-		Som temp = this.todosOsSons.get(idSom);
+		Som temp = this.dados.Som(idSom);
 		return temp.getDataCriacao();
 	}
 	
@@ -201,7 +187,7 @@ public class YouRadio implements Serializable{
 	 * @return void
 	 **/
 	public void encerrarSessao(String login) {
-		this.todasAsSessoes.remove(login.hashCode());
+		this.dados.removeSessao(login);
 	}
 	
 	
@@ -212,36 +198,21 @@ public class YouRadio implements Serializable{
 	 **/
 	public boolean sessaoAberta(int idSessao) throws sistemaEncerradoException{
 		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
-		return todasAsSessoes.containsKey(idSessao);
+		return this.dados.sessaoExiste(idSessao);
 	}
 	
-	
-	/**
-	 * @param idSessão identificador da sessão
-	 * @return String - sessão
-	 **/
-	private String getLogin(int sessaoId) {
-		return todasAsSessoes.get(sessaoId);
-	}
-	
-	//NOVO TESTE
-	public  String getIdUsuario(int sessaoId){
-		if (todosOsUsuarios.containsKey(getLogin(sessaoId))){
-			return this.getLogin(sessaoId);
-		}
-		return null;
-		
-	}
 	
 	/**
 	 * @return void
 	 **/
 	public void encerrarSistema() {
-		this.todosOsUsuarios = null;
-		this.todasAsSessoes = null;
-		//linha nova
-		this.todosOsSons = null;
 		sistemaEstaAberto = false;
+		this.dados = null;
+	}
+
+
+	public String getIdUsuario(int sessaoId) {
+		return Integer.toString(dados.usuario(sessaoId).hashCode());
 	}
 
 
