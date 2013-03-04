@@ -15,8 +15,8 @@ public class UsaEasyAccept {
 
 		List<String> files = new ArrayList<String>();
 
-		files.add("C:\\Users\\Igleson\\YouRadio\\src\\testeEasyAccept\\US01.txt");
-//		files.add("C:\\Users\\Snake\\workspace\\Qualquer\\src\\testeEasyAccept\\US02.txt");
+		files.add("C:\\Users\\RAIFF\\workspace3\\NovoProjeto\\src\\testeEasyAccept\\US01.txt");
+		files.add("C:\\Users\\RAIFF\\workspace3\\NovoProjeto\\src\\testeEasyAccept\\US02.txt");
 		YouRadioFacade facadeSistema = new YouRadioFacade();
 		EasyAcceptFacade eaFacade = new EasyAcceptFacade(facadeSistema,
 				files);

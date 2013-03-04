@@ -65,7 +65,7 @@ public class YouRadio implements Serializable{
 	 **/
 	public void criarUsuario(String login, String senha, String nome,
 			String email) throws CadastroException, UsuarioException, sistemaEncerradoException {
-		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
+		//if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
 		if (this.todosOsUsuarios.containsKey(login))
 			throw new CadastroException("Já existe um usuário com este login");
 		for (Usuario usuario : todosOsUsuarios.values()) {
@@ -85,7 +85,7 @@ public class YouRadio implements Serializable{
 	 * 
 	 **/
 	public int abrirSessao(String login, String senha) throws LoginException, sistemaEncerradoException {
-		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
+		//if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
 		if (login == null || login.equals(""))
 			throw new LoginException("Login inválido");
 		if (senha == null || senha.equals(""))
@@ -107,7 +107,7 @@ public class YouRadio implements Serializable{
 	 * 
 	 **/
 	public List<Integer> getPerfilMusical(int sessaoId) throws SessaoException, sistemaEncerradoException {
-		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
+		//if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
 		if(!todasAsSessoes.containsKey(sessaoId)) throw new SessaoException("Sessao inexistente");
 		String loginTemp = getLogin(sessaoId);
 		return this.todosOsUsuarios.get(loginTemp).getPerfilMusical();
@@ -121,7 +121,7 @@ public class YouRadio implements Serializable{
 	 **/
 	public int postarSom(int sessaoId, String link, String dataCriacao)
 			throws SomException, SessaoException, sistemaEncerradoException {
-		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
+		//if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
 		if(!todasAsSessoes.containsKey(sessaoId)) throw new SessaoException("Sessao inexistente");
 
 		Som temp = new Som(link, dataCriacao);
@@ -224,6 +224,14 @@ public class YouRadio implements Serializable{
 		return todasAsSessoes.get(sessaoId);
 	}
 	
+	//NOVO TESTE
+	public  String getIdUsuario(int sessaoId){
+		if (todosOsUsuarios.containsKey(getLogin(sessaoId))){
+			return this.getLogin(sessaoId);
+		}
+		return null;
+		
+	}
 	
 	/**
 	 * @return void
@@ -231,6 +239,8 @@ public class YouRadio implements Serializable{
 	public void encerrarSistema() {
 		this.todosOsUsuarios = null;
 		this.todasAsSessoes = null;
+		//linha nova
+		this.todosOsSons = null;
 		sistemaEstaAberto = false;
 	}
 

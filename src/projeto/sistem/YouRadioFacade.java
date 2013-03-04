@@ -25,7 +25,14 @@ public class YouRadioFacade {
 			String email) throws UsuarioException, CadastroException, sistemaEncerradoException {
 		sistema.criarUsuario(login, senha, nome, email);
 	}
-
+	
+	
+	//Novo metodo
+	public String getIDUsuario(int sessaoId){
+		return sistema.getIdUsuario(sessaoId);
+	}
+	
+	
 	public int abrirSessao(String login, String senha) throws LoginException, sistemaEncerradoException {
 		return sistema.abrirSessao(login, senha);
 	}
