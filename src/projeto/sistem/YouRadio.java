@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.List;
+
+
 import excessoes.CadastroException;
 import excessoes.LoginException;
 import excessoes.SessaoException;
@@ -232,8 +234,9 @@ public class YouRadio implements Serializable{
 
 	public void seguirUsuario(int idSessao, String login) throws SessaoException, LoginException {
 		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
-		if(!this.dados.contemLogin(login)) throw new LoginException("Login inexistente");
-		this.dados.usuario(idSessao).seguirUsuario(login);
+		else if(this.dados.usuario(idSessao).getLogin().equals(login)) throw new LoginException("Login inválido");
+		else if(!this.dados.contemLogin(login)) throw new LoginException("Login inexistente");
+		this.dados.usuario(idSessao).seguirUsuario(this.dados.usuario(login));
 	}
 
 

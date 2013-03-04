@@ -75,6 +75,11 @@ public class YouRadioFacade {
 
 	public int getNumeroDeSeguidores(String idSessao) throws SessaoException{
 		if(idSessao == null || idSessao.equals("")) throw new SessaoException("Sessão inválida");
+		try {
+			Integer.parseInt(idSessao);
+		} catch (Exception e) {
+			throw new SessaoException("Sessão inexistente");
+		}
 		return sistema.getNumeroDeSeguidores(Integer.parseInt(idSessao));
 	}
 	
@@ -85,7 +90,7 @@ public class YouRadioFacade {
 			return "{}";
 		String retorno ="" ;
 		for (Integer integer : listSonsIds) {
-			retorno = integer + "," + retorno ;
+			retorno = retorno + integer  + ",";
 
 		}
 		return "{" +retorno.substring(0, retorno.length() - 1) + "}";
@@ -93,17 +98,23 @@ public class YouRadioFacade {
 	
 	public String getListaDeSeguidores(String sessaoId) throws SessaoException{
 		if(sessaoId == null || sessaoId.equals("")) throw new SessaoException("Sessão inválida");
+		try {
+			Integer.parseInt(sessaoId);
+		} catch (Exception e) {
+			throw new SessaoException("Sessão inexistente");
+		}
 		Collection<Integer> listSonsIds = sistema.getListaDeSeguidores(Integer.parseInt(sessaoId));
 		if (listSonsIds.size() == 0)
 			return "{}";
 		String retorno ="" ;
 		for (Integer integer : listSonsIds) {
-			retorno = integer + "," + retorno ;
+			retorno = integer + "," + retorno;
 		}
 		return "{" +retorno.substring(0, retorno.length() - 1) + "}";
 	}
 	
 	public void seguirUsuario(String idSessao, String login) throws SessaoException, LoginException{
+		if(login == null || login.equals("")) throw new LoginException("Login inválido");
 		if(idSessao == null || idSessao.equals("")) throw new SessaoException("Sessão inválida");
 		sistema.seguirUsuario(Integer.parseInt(idSessao), login);
 	}

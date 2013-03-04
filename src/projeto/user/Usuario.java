@@ -4,20 +4,28 @@ package projeto.user;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+
+
 
 import excessoes.UsuarioException;
 
 
+
 public class Usuario implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String login;
 	private String senha;
 	private String nome;
 	private String email;
 	private List<Integer> perfilMusical;
 	private Collection<Integer> seguindo;
+	private Collection<Integer> seguidores;
 	
 
 	/**
@@ -33,7 +41,8 @@ public class Usuario implements Serializable{
 		this.senha = senha;
 		this.nome = nome;
 		this.email = email;
-		this.seguindo = new HashSet<Integer>();
+		this.seguindo = new LinkedList<Integer>();
+		this.seguidores = new LinkedList<Integer>();
 	}
 
 	
@@ -138,24 +147,28 @@ public class Usuario implements Serializable{
 
 
 	public List<Integer> getFontesDeSons() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Integer> aux = new LinkedList<Integer>();
+		for (Integer usuario : this.seguindo) {
+			aux.add(usuario);
+		}
+		return aux;
 	}
 
 
 	public Collection<Integer> getListaDeSeguidores() {
-		return this.seguindo;
+		return this.seguidores;
 	}
 
 
-	public void seguirUsuario(String login) {
-		// TODO Auto-generated method stub
+	public void seguirUsuario(Usuario usuario) {
+		this.seguindo.add(usuario.hashCode());
+		usuario.seguidores.add(this.hashCode());	
 		
 	}
 
 
 	public int getNumeroDeSeguidores() {
-		return this.seguindo.size();
+		return this.seguidores.size();
 	}
 
 
