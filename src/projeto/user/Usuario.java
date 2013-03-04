@@ -15,6 +15,8 @@ public class Usuario implements Serializable{
 	private String nome;
 	private String email;
 	private List<Integer> perfilMusical;
+	private List<Integer> seguindo;
+	
 
 	/**
 	 * @param login, senha , nome e email
@@ -29,6 +31,7 @@ public class Usuario implements Serializable{
 		this.senha = senha;
 		this.nome = nome;
 		this.email = email;
+		this.seguindo = new ArrayList<Integer>();
 	}
 
 	
@@ -127,11 +130,25 @@ public class Usuario implements Serializable{
 	 * @return List<Integer>
 	 **/
 	public List<Integer> getPerfilMusical() {
-		
 		if (perfilMusical == null) return new ArrayList<Integer>();
-
-		
 		return perfilMusical;
+	}
+
+
+	public List<Integer> getFontesDeSons() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public List<Integer> getListaDeSeguidores() {
+		return this.seguindo;
+	}
+
+
+	public void seguirUsuario(String login) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

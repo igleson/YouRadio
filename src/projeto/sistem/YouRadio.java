@@ -216,4 +216,19 @@ public class YouRadio implements Serializable{
 	}
 
 
+	public List<Integer> getFontesDeSons(int sessaoId) {
+		return this.dados.usuario(sessaoId).getFontesDeSons();
+	}
+
+
+	public List<Integer> getListaDeSeguidores(int sessaoId) {
+		return this.dados.usuario(sessaoId).getListaDeSeguidores();
+	}
+
+
+	public void seguirUsuario(int idSessao, String login) {
+		this.dados.usuario(idSessao).seguirUsuario(login);
+	}
+
+
 }

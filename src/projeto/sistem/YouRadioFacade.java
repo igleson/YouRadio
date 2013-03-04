@@ -74,6 +74,38 @@ public class YouRadioFacade {
 
 	}
 
+	public int getNumeroDeSeguidores(int idSessao){
+		return -1;
+	}
+	
+	public String getFontesDeSons(int sessaoId){
+		List<Integer> listSonsIds = sistema.getFontesDeSons(sessaoId);
+		if (listSonsIds.size() == 0)
+			return "{}";
+		String retorno ="" ;
+		for (Integer integer : listSonsIds) {
+			retorno = integer + "," + retorno ;
+
+		}
+		return "{" +retorno.substring(0, retorno.length() - 1) + "}";
+	}
+	
+	public String getListaDeSeguidores(int sessaoId){
+		List<Integer> listSonsIds = sistema.getListaDeSeguidores(sessaoId);
+		if (listSonsIds.size() == 0)
+			return "{}";
+		String retorno ="" ;
+		for (Integer integer : listSonsIds) {
+			retorno = integer + "," + retorno ;
+
+		}
+		return "{" +retorno.substring(0, retorno.length() - 1) + "}";
+	}
+	
+	public void seguirUsuario(int idSessao, String login){
+		sistema.seguirUsuario(idSessao, login);
+	}
+	
 	public void encerrarSessao(String login) {
 		sistema.encerrarSessao(login);
 	}
