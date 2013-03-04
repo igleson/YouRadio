@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title><ui:insert name="title">Pagina de Login</ui:insert></title>
+
+</h:head>
+
+<h:body>
+
+	<h:form>
+		<p:panel header="Faça login ou Cadastre-se"> 
+			<h:panelGrid id="LoginPage" columns="2" cellpadding="4">
+				<h:outputText value="Login: " /> 
+				<h:outputText value="Senha: " />
+				<p:inputText id="login" required="true"
+					value="#{youRadioBean.login}" />
+				<p:password id="pwd2" required="true" value="#{youRadioBean.senha}" />
+
+				<p:button value="Login" outcome="faces/usuariologado.xhtml" />
+				<p:button outcome="faces/cadastro.xhtml" value="Cadastrar"/>
+			</h:panelGrid>
+		</p:panel>
+
+
+	</h:form>
+
+
+</h:body>
+</html>
