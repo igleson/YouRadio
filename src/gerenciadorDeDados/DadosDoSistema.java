@@ -1,6 +1,7 @@
 package gerenciadorDeDados;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import excessoes.SomException;
@@ -89,6 +90,8 @@ public class DadosDoSistema {
 	public String login(int sessaoId) {
 		return todasAsSessoes.get(sessaoId);
 	}
+
+
 	
 
 }

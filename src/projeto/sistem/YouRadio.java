@@ -213,19 +213,19 @@ public class YouRadio implements Serializable{
 		this.dados = null;
 	}
 
-
+	//TESTE FEITO
 	public String getIdUsuario(int sessaoId) throws SessaoException {
 		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
 		return Integer.toString(dados.usuario(sessaoId).hashCode());
 	}
 
-
+	//Teste Feito, algumas duvidass
 	public List<Integer> getFontesDeSons(int sessaoId) throws SessaoException {
 		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(sessaoId).getFontesDeSons();
 	}
 
-
+	//Teste Feito, algumas duvidas
 	public Collection<Integer> getListaDeSeguidores(int sessaoId) throws SessaoException {
 		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(sessaoId).getListaDeSeguidores();
@@ -239,11 +239,21 @@ public class YouRadio implements Serializable{
 		this.dados.usuario(idSessao).seguirUsuario(this.dados.usuario(login));
 	}
 
-
+	//Teste Feito
 	public int getNumeroDeSeguidores(int idSessao) throws SessaoException {
 		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(idSessao).getNumeroDeSeguidores();
 	}
 
 
+
+	//NOVO METODO
+	public Usuario getUsuario(int idSessao) {
+		return dados.usuario(idSessao);
+	}
+
+	//NOVO METODO
+	public Usuario getUsuario(String login) {
+		return dados.usuario(login);
+	}
 }

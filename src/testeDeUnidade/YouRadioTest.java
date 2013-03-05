@@ -334,4 +334,89 @@ public class YouRadioTest {
 		}
 	}
 	
+	
+	
+	@Test
+	public void testGetIdUsuarioSessaoInexistente() throws SessaoException{
+		try{
+			sistema.getIdUsuario(123456);
+		}catch(SessaoException e){
+			assertEquals("Sessão inexistente", e.getMessage());
+		}	
+	}
+	
+	@Test
+	public void testGetIdUsuario() throws SessaoException, LoginException, sistemaEncerradoException, CadastroException, UsuarioException{
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		assertEquals(Integer.toString(sistema.getUsuario("mark").hashCode()), sistema.getIdUsuario(sistema.abrirSessao("mark", "MaRk")));
+	}
+	
+	@Test
+	public void testGetFonteDeSonsSessaoInexistente(){
+		try{
+			sistema.getFontesDeSons(123456);
+		}catch(SessaoException e){
+			assertEquals("Sessão inexistente", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testGetFontesDeSons() throws CadastroException, UsuarioException, sistemaEncerradoException, SessaoException, LoginException{
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		sistema.criarUsuario("steve", "StEvE", "Steve", "steve@apple.com");
+		
+		int idSessao = sistema.abrirSessao("mark", "MaRk");
+		assertEquals(0,sistema.getFontesDeSons(idSessao).size());
+		sistema.seguirUsuario(idSessao, "steve");
+		
+		assertEquals(1,sistema.getFontesDeSons(idSessao).size());
+	}
+	
+	@Test
+	public void testGetListaDeSeguidoresSessaoInexistente(){
+		try{
+			sistema.getListaDeSeguidores(123456);
+		}catch(SessaoException e){
+			assertEquals("Sessão inexistente", e.getMessage());
+		}
+	}
+	
+	
+	@Test
+	public void testGetListaDeSeguidores() throws CadastroException, UsuarioException, sistemaEncerradoException, LoginException, SessaoException{
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		sistema.criarUsuario("steve", "StEvE", "Steve", "steve@apple.com");
+		
+		int idSessao = sistema.abrirSessao("mark", "MaRk");
+		assertEquals(0,sistema.getListaDeSeguidores(idSessao).size());
+		sistema.seguirUsuario(idSessao, "steve");
+		
+		assertEquals(1,sistema.getUsuario("steve").getListaDeSeguidores().size());
+	}
+	
+	
+	@Test
+	public void testGetNumeroDeSeguidoresSessaoInexistente(){
+		try{
+			sistema.getNumeroDeSeguidores(123456);
+		}catch(SessaoException e){
+			assertEquals("Sessão inexistente", e.getMessage());
+		}
+	}
+	
+	
+	@Test
+	public void testGetNumeroDeSeguidores() throws CadastroException, UsuarioException, sistemaEncerradoException, LoginException, SessaoException{
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		sistema.criarUsuario("steve", "StEvE", "Steve", "steve@apple.com");
+		
+		int idSessao = sistema.abrirSessao("mark", "MaRk");
+		assertEquals(0,sistema.getNumeroDeSeguidores(idSessao));
+		sistema.seguirUsuario(idSessao, "steve");
+		
+		assertEquals(1,sistema.getUsuario("steve").getNumeroDeSeguidores());
+	}
+	
+	
+	
 }
