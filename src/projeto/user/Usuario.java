@@ -27,6 +27,7 @@ public class Usuario implements Serializable{
 	private List<Integer> seguidores;
 	private List<Integer> amigos;
 	private List<Integer> solicitacoes;
+	private List<Integer> sonsFavoritos;
 	
 
 	/**
@@ -46,6 +47,7 @@ public class Usuario implements Serializable{
 		this.seguidores = new ArrayList<Integer>();
 		this.amigos = new ArrayList<Integer>();
 		this.solicitacoes = new ArrayList<Integer>();
+		this.sonsFavoritos = new ArrayList<Integer>();
 	}
 
 	
@@ -217,7 +219,16 @@ public class Usuario implements Serializable{
 		return this.seguidores.size();
 	}
 
-
-
+	public void favoritarSom(int idSom){
+		sonsFavoritos.add(idSom);
+	}
+	
+	
+	
+	
+	
+	public List<Integer> getSonsFavoritos(){
+		return sonsFavoritos;
+	}
 
 }

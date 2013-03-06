@@ -289,4 +289,14 @@ public class YouRadio implements Serializable{
 		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(idSessao).getVisaoDosSons();
 	}
+	
+	public void favoritarSom(int sessaoId, int idSom) throws SessaoException{
+		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
+		this.dados.usuario(sessaoId).favoritarSom(idSom);
+		
+	}
+	public List<Integer> getSonsFavoritos(int sessaoId) throws SessaoException, sistemaEncerradoException {
+		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
+		return this.dados.usuario(sessaoId).getSonsFavoritos();
+	}
 }
