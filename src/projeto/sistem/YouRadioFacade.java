@@ -51,7 +51,6 @@ public class YouRadioFacade {
 	}
 
 	public int postarSom(int sessaoId, String link, String dataCriacao)	throws SomException, SessaoException, sistemaEncerradoException {
-
 		return sistema.postarSom(sessaoId, link, dataCriacao);
 
 	}
@@ -122,6 +121,24 @@ public class YouRadioFacade {
 	public void encerrarSessao(String login) throws LoginException {
 		if(login == null || login.equals("")) throw new LoginException("Login inválido");
 		sistema.encerrarSessao(login);
+	}
+	
+	public String getVisaoDosSons(String sessaoId) throws SessaoException{
+		if(sessaoId == null || sessaoId.equals("")) throw new SessaoException("Sessão inválida");
+		try {
+			Integer.parseInt(sessaoId);
+		} catch (Exception e) {
+			throw new SessaoException("Sessão inexistente");
+		}
+		List<Integer> listSonsIds = sistema.getVisaoDosSons(Integer.parseInt(sessaoId));
+		if (listSonsIds.size() == 0)
+			return "{}";
+		String retorno ="" ;
+		for (Integer integer : listSonsIds) {
+			retorno = retorno + integer  + ",";
+
+		}
+		return "{" +retorno.substring(0, retorno.length() - 1) + "}";
 	}
 
 	public void encerrarSistema() {

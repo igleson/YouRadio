@@ -9,7 +9,7 @@ import excessoes.SomException;
 import util.Date;
 
 
-public class Som {
+public class Som implements Comparable<Som>{
 
 	private String link;
 	private GregorianCalendar dataCriacao;
@@ -64,9 +64,8 @@ public class Som {
 	/**
 	 * @return String - data de criação da musica
 	 **/
-	public String getDataCriacao() {
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		return dateFormat.format(dataCriacao.getTime());
+	public GregorianCalendar getDataCriacao() {
+		return dataCriacao;
 	}
 	
 	/**
@@ -79,6 +78,12 @@ public class Som {
 		int ano = Integer.parseInt(dataCriacao.substring(6, 10));
 		
 		this.dataCriacao = new GregorianCalendar(ano, mes, dia);
+	}
+
+
+	@Override
+	public int compareTo(Som som) {
+		return -1*this.dataCriacao.compareTo(som.getDataCriacao());
 	}
 	
 }

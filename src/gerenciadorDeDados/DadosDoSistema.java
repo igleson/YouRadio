@@ -1,7 +1,6 @@
 package gerenciadorDeDados;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import excessoes.SomException;
@@ -12,14 +11,28 @@ import projeto.user.Usuario;
 
 public class DadosDoSistema {
 	
+	private static DadosDoSistema dados;
+	
 	private Map<String, Usuario> todosOsUsuarios;
 	private Map<Integer, String> todasAsSessoes;
 	private Map<Integer, Som> todosOsSons;
 	
-	public DadosDoSistema(){
+	private DadosDoSistema(){
+		this.zeraSistema();
+	}
+	
+	public void zeraSistema(){
 		todosOsUsuarios = new HashMap<String, Usuario>();
 		todasAsSessoes = new HashMap<Integer, String>();
-		todosOsSons = new HashMap<Integer, Som>();
+		todosOsSons = new HashMap<Integer, Som>();		
+	}
+	
+	public static DadosDoSistema getInstance(){
+		if(dados == null){
+			dados = new DadosDoSistema();
+		}
+		return dados;			
+
 	}
 		
 	public int qtdeDeUsuarios(){
@@ -56,6 +69,14 @@ public class DadosDoSistema {
 	
 	public Usuario usuario(int idSessao){
 		return todosOsUsuarios.get(todasAsSessoes.get(idSessao));
+	}
+	
+	public Usuario usuarioPorId(int idUsuario){
+		for (Usuario usuario : todosOsUsuarios.values()) {
+			if (usuario.hashCode() == idUsuario)
+				return usuario;
+		}
+		return null;
 	}
 	
 	//gerenciando sons

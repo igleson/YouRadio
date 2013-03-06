@@ -348,7 +348,7 @@ public class YouRadioTest {
 	@Test
 	public void testGetIdUsuario() throws SessaoException, LoginException, sistemaEncerradoException, CadastroException, UsuarioException{
 		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
-		assertEquals(Integer.toString(sistema.getUsuario("mark").hashCode()), sistema.getIdUsuario(sistema.abrirSessao("mark", "MaRk")));
+		assertEquals(Integer.toString(sistema.usuario("mark").hashCode()), sistema.getIdUsuario(sistema.abrirSessao("mark", "MaRk")));
 	}
 	
 	@Test
@@ -391,7 +391,7 @@ public class YouRadioTest {
 		assertEquals(0,sistema.getListaDeSeguidores(idSessao).size());
 		sistema.seguirUsuario(idSessao, "steve");
 		
-		assertEquals(1,sistema.getUsuario("steve").getListaDeSeguidores().size());
+		assertEquals(1,sistema.usuario("steve").getListaDeSeguidores().size());
 	}
 	
 	
@@ -414,9 +414,25 @@ public class YouRadioTest {
 		assertEquals(0,sistema.getNumeroDeSeguidores(idSessao));
 		sistema.seguirUsuario(idSessao, "steve");
 		
-		assertEquals(1,sistema.getUsuario("steve").getNumeroDeSeguidores());
+		assertEquals(1,sistema.usuario("steve").getNumeroDeSeguidores());
 	}
 	
+	@Test
+	public void testUsuarioIdSessao() throws CadastroException, UsuarioException, sistemaEncerradoException, LoginException{
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		sistema.criarUsuario("steve", "StEvE", "Steve", "steve@apple.com");
+		int idSessao = sistema.abrirSessao("mark", "MaRk");
+		assertEquals("mark@face.com", sistema.usuario(idSessao).getEmail());
+		int idSessao2 = sistema.abrirSessao("steve", "StEvE");
+		assertEquals("steve@apple.com", sistema.usuario(idSessao2).getEmail());
+	}
 	
+	@Test
+	public void testUsuarioLogin() throws CadastroException, UsuarioException, sistemaEncerradoException, LoginException, SessaoException{
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		sistema.criarUsuario("steve", "StEvE", "Steve", "steve@apple.com");
+		assertEquals("mark@face.com", sistema.usuario("mark").getEmail());
+		assertEquals("steve@apple.com", sistema.usuario("steve").getEmail());
+	}
 	
 }

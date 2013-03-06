@@ -40,7 +40,8 @@ public class YouRadio implements Serializable{
 	 * @return void
 	 **/
 	public void zerarSistema() {
-		dados = new DadosDoSistema();
+		dados = DadosDoSistema.getInstance();
+		dados.zeraSistema();
 		sistemaEstaAberto = true;
 	}
 	
@@ -181,7 +182,8 @@ public class YouRadio implements Serializable{
 	public String dataDeCriacaoSom(int idSom) throws SomException, sistemaEncerradoException{
 		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
 		Som temp = this.dados.Som(idSom);
-		return temp.getDataCriacao();
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		return dateFormat.format(temp.getDataCriacao().getTime());
 	}
 	
 	
@@ -248,12 +250,43 @@ public class YouRadio implements Serializable{
 
 
 	//NOVO METODO
-	public Usuario getUsuario(int idSessao) {
+	public Usuario usuario(int idSessao) {
 		return dados.usuario(idSessao);
 	}
 
 	//NOVO METODO
-	public Usuario getUsuario(String login) {
+	public Usuario usuario(String login) throws SessaoException {
+		if(login == null || login.equals("")) throw new SessaoException("Sessão inválida");
 		return dados.usuario(login);
+	}
+	
+	public void aceitaSolicitacaoAmizada(int idSessao, String login) throws LoginException{
+		if(login == null || login.equals(login)) throw new LoginException("Login inválido");
+		dados.usuario(idSessao).aceitaSolicitacaoAmizada(dados.usuario(login));
+	}
+	
+	public void rejeitaSolicitacao(int idSessao, String login) throws LoginException{
+		if(login == null || login.equals(login)) throw new LoginException("Login inválido");
+		dados.usuario(idSessao).rejeitaSolicitacao(dados.usuario(login));
+	}
+	
+	public void solicitacaoAceita(int idSessao, String login) throws LoginException{
+		if(login == null || login.equals(login)) throw new LoginException("Login inválido");
+		dados.usuario(idSessao).rejeitaSolicitacao(dados.usuario(login));
+	}
+	
+	public void solicitaAmizade(int idSessao, String login) throws LoginException{
+		if(login == null || login.equals(login)) throw new LoginException("Login inválido");
+		dados.usuario(idSessao).solicitaAmizade(dados.usuario(login));
+	}
+	
+	public void recebeSolicitacaoAmizade(int idSessao, String login) throws LoginException{
+		if(login == null || login.equals(login)) throw new LoginException("Login inválido");
+		dados.usuario(idSessao).recebeSolicitacaoAmizade(dados.usuario(login));
+	}
+	
+	public List<Integer> getVisaoDosSons(int idSessao) throws SessaoException{
+		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		return this.dados.usuario(idSessao).getVisaoDosSons();
 	}
 }
