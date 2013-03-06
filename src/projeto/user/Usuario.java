@@ -195,15 +195,15 @@ public class Usuario implements Serializable{
 	public List<Integer> getVisaoDosSons(){
 		List<Integer> retorno = new ArrayList<Integer>();
 		DadosDoSistema dados = DadosDoSistema.getInstance();
-		for (int i = 0; i < seguidores.size(); i++) {
-			Usuario u = dados.usuarioPorId(seguidores.get(i));
+		for (int i = 0; i < seguindo.size(); i++) {
+			Usuario u = dados.usuarioPorId(seguindo.get(i));
 			add(retorno, u.getPerfilMusical());
 		}
 		for (int i = 0; i < amigos.size(); i++) {
 			Usuario u = dados.usuarioPorId(amigos.get(i));
 			add(retorno, u.getPerfilMusical());
 		}
-		Collections.sort(retorno);
+		Collections.reverse(retorno);
 		return retorno;
 	}
 	
