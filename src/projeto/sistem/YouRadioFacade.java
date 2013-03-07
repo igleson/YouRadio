@@ -2,6 +2,8 @@ package projeto.sistem;
 
 import java.util.Collection;
 import java.util.List;
+
+
 import excessoes.AtributoException;
 import excessoes.CadastroException;
 import excessoes.LoginException;
@@ -13,6 +15,11 @@ import excessoes.sistemaEncerradoException;
 public class YouRadioFacade {
 
 	private YouRadio sistema;
+	
+	private String REGRA_1 = "PRIMEIRO OS SONS POSTADOS MAIS RECENTEMENTE PELAS FONTES DE SONS";
+	private String REGRA_2 = "PRIMEIRO OS SONS COM MAIS FAVORITOS";
+	private String REGRA_3 = "PRIMEIRO SONS DE FONTES DAS QUAIS FAVORITEI SONS NO PASSADO";
+
 	
 	public YouRadioFacade(){
 		sistema = new YouRadio();
@@ -198,6 +205,51 @@ public class YouRadioFacade {
 		return "{" +retorno.substring(0, retorno.length() - 1) + "}";
 	}
 	
+	public String getMainFeed(String sessaoId) throws SessaoException{
+		if(sessaoId == null || sessaoId.equals("")) throw new SessaoException("Sessão inválida");
+		try {
+			Integer.parseInt(sessaoId);
+		} catch (Exception e) {
+			throw new SessaoException("Sessão inexistente");
+		}
+		List<Integer> listSonsIds = sistema.getMainFeed(Integer.parseInt(sessaoId));
+		
+		if (listSonsIds.size() == 0)
+			return "{}";
+		String retorno ="" ;
+		for (Integer integer : listSonsIds) {
+			retorno = integer + "," + retorno;
+
+		}
+		return "{" +retorno.substring(0, retorno.length() - 1) + "}";
+	}
+	
+	public void setMainFeedRule(String sessaoId, String rule) throws Exception{
+		if(sessaoId == null || sessaoId.equals("")) throw new SessaoException("Sessão inválida");
+		try {
+			Integer.parseInt(sessaoId);
+		} catch (Exception e) {
+			throw new SessaoException("Sessão inexistente");
+		}
+
+		if(rule == null || rule.equals("")) throw new Exception("Regra de composição inválida");			
+		else if(!rule.equals(REGRA_1) &&
+			!rule.equals(REGRA_2) &&
+			!rule.equals(REGRA_3)) throw new Exception("Regra de composição inexistente");
+		//TODO
+	}
+	
+	public String getFirstCompositionRule(){
+		return REGRA_1;
+	}
+	
+	public String getSecondCompositionRule(){
+		return REGRA_2;
+	}
+	
+	public String getThirdCompositionRule(){
+		return REGRA_3;
+	}
 	
 	public void encerrarSistema() {
 		sistema.encerrarSistema();

@@ -243,4 +243,10 @@ public class Usuario implements Serializable{
 		return this.feedExtra;
 	}
 
+
+	public List<Integer> getMainFeed() {
+		// TODO Auto-generated method stub
+		return new ArrayList<Integer>();
+	}
+
 }
