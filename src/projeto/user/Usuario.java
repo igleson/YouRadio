@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import projeto.perfil.Som;
+
 
 import excessoes.UsuarioException;
 import gerenciadorDeDados.DadosDoSistema;
@@ -28,6 +30,7 @@ public class Usuario implements Serializable{
 	private List<Integer> amigos;
 	private List<Integer> solicitacoes;
 	private List<Integer> sonsFavoritos;
+	private List<Integer> feedExtra;
 	
 
 	/**
@@ -48,6 +51,7 @@ public class Usuario implements Serializable{
 		this.amigos = new ArrayList<Integer>();
 		this.solicitacoes = new ArrayList<Integer>();
 		this.sonsFavoritos = new ArrayList<Integer>();
+		this.feedExtra = new ArrayList<Integer>();
 	}
 
 	
@@ -218,17 +222,25 @@ public class Usuario implements Serializable{
 	public int getNumeroDeSeguidores() {
 		return this.seguidores.size();
 	}
-
+	
 	public void favoritarSom(int idSom){
 		sonsFavoritos.add(idSom);
+		DadosDoSistema dados = DadosDoSistema.getInstance();
+		for (int usuario : this.seguidores) {
+			dados.usuarioPorId(usuario).adicionaAoFeedExtra(idSom);
+		}
 	}
-	
-	
-	
-	
 	
 	public List<Integer> getSonsFavoritos(){
 		return sonsFavoritos;
+	}
+
+	public void adicionaAoFeedExtra(int somId){
+		this.feedExtra.add(somId);
+	}
+	
+	public List<Integer> getFeedExtra() {
+		return this.feedExtra;
 	}
 
 }

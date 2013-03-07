@@ -143,9 +143,20 @@ public class YouRadioFacade {
 
 	
 	
-	public void favoritarSom(String sessaoId, int idSom) throws SessaoException{
+	public void favoritarSom(String sessaoId, String idSom) throws SessaoException, SomException{
 		if(sessaoId == null || sessaoId.equals("")) throw new SessaoException("Sessão inválida");
-		sistema.favoritarSom(Integer.parseInt(sessaoId), idSom);
+		if(idSom == null || idSom.equals("")) throw new SomException("Som inválido");
+		try{
+			Integer.parseInt(sessaoId);
+		}catch(Exception e){
+			throw new SessaoException("Sessão inválida");
+		}
+		try{
+			Integer.parseInt(idSom);
+		}catch(Exception e){
+			throw new SomException("Som inválido");
+		}
+		sistema.favoritarSom(Integer.parseInt(sessaoId), Integer.parseInt(idSom));
 		
 	}
 	
@@ -157,6 +168,25 @@ public class YouRadioFacade {
 			throw new SessaoException("Sessão inexistente");
 		}
 		List<Integer> listSonsIds = sistema.getSonsFavoritos(Integer.parseInt(sessaoId));
+		
+		if (listSonsIds.size() == 0)
+			return "{}";
+		String retorno ="" ;
+		for (Integer integer : listSonsIds) {
+			retorno = integer + "," + retorno;
+
+		}
+		return "{" +retorno.substring(0, retorno.length() - 1) + "}";
+	}
+	
+	public String getFeedExtra(String sessaoId) throws SessaoException, sistemaEncerradoException{
+		if(sessaoId == null || sessaoId.equals("")) throw new SessaoException("Sessão inválida");
+		try {
+			Integer.parseInt(sessaoId);
+		} catch (Exception e) {
+			throw new SessaoException("Sessão inexistente");
+		}
+		List<Integer> listSonsIds = sistema.getFeedExtra(Integer.parseInt(sessaoId));
 		
 		if (listSonsIds.size() == 0)
 			return "{}";
