@@ -260,32 +260,7 @@ public class YouRadio implements Serializable{
 		return dados.usuario(login);
 	}
 	
-	public void aceitaSolicitacaoAmizada(int idSessao, String login) throws LoginException{
-		if(login == null || login.equals(login)) throw new LoginException("Login inválido");
-		dados.usuario(idSessao).aceitaSolicitacaoAmizada(dados.usuario(login));
-	}
-	
-	public void rejeitaSolicitacao(int idSessao, String login) throws LoginException{
-		if(login == null || login.equals(login)) throw new LoginException("Login inválido");
-		dados.usuario(idSessao).rejeitaSolicitacao(dados.usuario(login));
-	}
-	
-	public void solicitacaoAceita(int idSessao, String login) throws LoginException{
-		if(login == null || login.equals(login)) throw new LoginException("Login inválido");
-		dados.usuario(idSessao).rejeitaSolicitacao(dados.usuario(login));
-	}
-	
-	public void solicitaAmizade(int idSessao, String login) throws LoginException{
-		if(login == null || login.equals(login)) throw new LoginException("Login inválido");
-		dados.usuario(idSessao).solicitaAmizade(dados.usuario(login));
-	}
-	
-	public void recebeSolicitacaoAmizade(int idSessao, String login) throws LoginException{
-		if(login == null || login.equals(login)) throw new LoginException("Login inválido");
-		dados.usuario(idSessao).recebeSolicitacaoAmizade(dados.usuario(login));
-	}
-	
-	public List<Integer> getVisaoDosSons(int idSessao) throws SessaoException{
+	public List<Som> getVisaoDosSons(int idSessao) throws SessaoException, SomException{
 		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(idSessao).getVisaoDosSons();
 	}

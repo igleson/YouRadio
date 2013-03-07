@@ -1,7 +1,10 @@
 package projeto.sistem;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import projeto.perfil.Som;
 
 
 import excessoes.AtributoException;
@@ -130,14 +133,17 @@ public class YouRadioFacade {
 		sistema.encerrarSessao(login);
 	}
 	
-	public String getVisaoDosSons(String sessaoId) throws SessaoException{
+	public String getVisaoDosSons(String sessaoId) throws SessaoException, NumberFormatException, SomException{
 		if(sessaoId == null || sessaoId.equals("")) throw new SessaoException("Sessão inválida");
 		try {
 			Integer.parseInt(sessaoId);
 		} catch (Exception e) {
 			throw new SessaoException("Sessão inexistente");
 		}
-		List<Integer> listSonsIds = sistema.getVisaoDosSons(Integer.parseInt(sessaoId));
+		List<Integer> listSonsIds = new ArrayList<Integer>();
+		for (Som sons : sistema.getVisaoDosSons(Integer.parseInt(sessaoId))) {
+			listSonsIds.add(sons.hashCode());
+		}
 		if (listSonsIds.size() == 0)
 			return "{}";
 		String retorno ="" ;

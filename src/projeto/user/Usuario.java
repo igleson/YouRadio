@@ -9,6 +9,7 @@ import java.util.List;
 import projeto.perfil.Som;
 
 
+import excessoes.SomException;
 import excessoes.UsuarioException;
 import gerenciadorDeDados.DadosDoSistema;
 
@@ -27,8 +28,6 @@ public class Usuario implements Serializable{
 	private List<Integer> perfilMusical;
 	private List<Integer> seguindo;
 	private List<Integer> seguidores;
-	private List<Integer> amigos;
-	private List<Integer> solicitacoes;
 	private List<Integer> sonsFavoritos;
 	private List<Integer> feedExtra;
 	
@@ -48,8 +47,6 @@ public class Usuario implements Serializable{
 		this.email = email;
 		this.seguindo = new ArrayList<Integer>();
 		this.seguidores = new ArrayList<Integer>();
-		this.amigos = new ArrayList<Integer>();
-		this.solicitacoes = new ArrayList<Integer>();
 		this.sonsFavoritos = new ArrayList<Integer>();
 		this.feedExtra = new ArrayList<Integer>();
 	}
@@ -157,39 +154,12 @@ public class Usuario implements Serializable{
 	public List<Integer> getFontesDeSons() {
 		List<Integer> retorno = new ArrayList<Integer>();
 		retorno.addAll(seguindo);
-		retorno.addAll(amigos);
 		return retorno;
 
 	}
 	
 	public List<Integer> getListaDeSeguidores() {
 		return seguidores;
-	}
-
-	public void aceitaSolicitacaoAmizada(Usuario usuario){
-		if(this.solicitacoes.contains(usuario.hashCode())){
-			this.amigos.add(usuario.hashCode());
-			usuario.solicitacaoAceita(this);
-			this.solicitacoes.remove(solicitacoes.indexOf(usuario.hashCode()));
-		}
-	}
-	
-	public void rejeitaSolicitacao(Usuario usuario){
-		if(this.solicitacoes.contains(usuario.hashCode())){
-			this.solicitacoes.remove(solicitacoes.indexOf(usuario.hashCode()));
-		}
-	}
-	
-	public void solicitacaoAceita(Usuario usuario){
-		this.amigos.add(usuario.hashCode());
-	}
-	
-	public void solicitaAmizade(Usuario usuario){
-		usuario.recebeSolicitacaoAmizade(this);
-	}
-	
-	public void recebeSolicitacaoAmizade(Usuario usuario){
-		this.solicitacoes.add(usuario.hashCode());
 	}
 	
 	public void seguirUsuario(Usuario usuario) {
@@ -198,25 +168,19 @@ public class Usuario implements Serializable{
 		
 	}
 
-	public List<Integer> getVisaoDosSons(){
-		List<Integer> retorno = new ArrayList<Integer>();
+	public List<Som> getVisaoDosSons() throws SomException{
+		List<Som> retorno = new ArrayList<Som>();
 		DadosDoSistema dados = DadosDoSistema.getInstance();
-		for (int i = 0; i < seguindo.size(); i++) {
+		for (int i = seguindo.size()-1; i >= 0; i--) {
 			Usuario u = dados.usuarioPorId(seguindo.get(i));
-			add(retorno, u.getPerfilMusical());
+			List<Som> temp = new ArrayList<Som>();
+			for (Integer id : u.getPerfilMusical()) {
+				temp.add(dados.Som(id));
+			}
+			Collections.sort(temp);
+			retorno.addAll(temp);
 		}
-		for (int i = 0; i < amigos.size(); i++) {
-			Usuario u = dados.usuarioPorId(amigos.get(i));
-			add(retorno, u.getPerfilMusical());
-		}
-		Collections.reverse(retorno);
 		return retorno;
-	}
-	
-	private void add(List<Integer> destino, List<Integer> origem){
-		for (int i = 0; i < origem.size(); i++) {
-			destino.add(origem.get(i));
-		}
 	}
 
 	public int getNumeroDeSeguidores() {
