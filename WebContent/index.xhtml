@@ -14,15 +14,17 @@
 <h:body>
 
 	<h:form>
+	<p:growl id="mensagemDeErro" showDetail="true" sticky="true"/> 
+	
 		<p:panel header="Faça login ou Cadastre-se"> 
 			<h:panelGrid id="LoginPage" columns="2" cellpadding="4">
 				<h:outputText value="Login: " /> 
 				<h:outputText value="Senha: " />
-				<p:inputText id="login" required="true"
+				<p:inputText id="login" required="false"
 					value="#{youRadioBean.login}" />
-				<p:password id="pwd2" required="true" value="#{youRadioBean.senha}" />
+				<p:password id="pwd2" required="false" value="#{youRadioBean.senha}" />
 
-				<p:button value="Login" outcome="faces/usuariologado.xhtml" />
+				<p:commandButton action="#{youRadioBean.logar}" value="Login" ajax="false" update="mensagemDeErro"/>
 				<p:button outcome="faces/cadastro.xhtml" value="Cadastrar"/>
 			</h:panelGrid>
 		</p:panel>

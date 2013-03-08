@@ -15,8 +15,8 @@
 <h:body>
 	<h:form>
 	
-<p:dataGrid var ="userLogado" value = "#{tableBean.user}">
-		<p:panel header="You Radio - #{userLogado.nome}"
+<p:dataGrid var ="usuarioLogado" value = "#{youRadioBean.usuarioLogado}">
+		<p:panel header="You Radio - #{usuarioLogado.nome}"
 			footer="Fagner Gomes, Igleson Freire, Leonardo Avelino e Raiff Ramalho">
 			<h:panelGrid>
 
@@ -32,10 +32,9 @@
 
 								<p:inputText id="searchinput" required="false" />
 								<!--         -->
-								<p:button value="sair" outcome="faces/index.xhtml"></p:button>
-
+								<p:commandButton value="sair" action = "#{youRadioBean.deslogar}"></p:commandButton>
 							</p:row>
-							<h:outputText value="#{userLogado.nome}" />
+							<h:outputText value="#{usuarioLogado.nome}" />
 						</h:panelGrid>
 
 					</p:layoutUnit>
@@ -49,21 +48,21 @@
 				</p:panel>
 
 				<p:panel>
-		<p:dataList var="user" value="#{tableBean.carsSmall}" itemType="square">
+		<p:dataList var="feed" value="#{usuarioLogado.feed}" itemType="square">
 			
-				<h:outputText value="#{user.nome} #{user.post}" />
+				<h:outputText value=" #{feed}" />
 			
 			
 			
 
 		</p:dataList>
 				</p:panel>
-				<p:panel header="Lista de Amigos">
+				<p:panel header="Quem estou seguindo">
 					<p:scrollPanel style="width:672px;height:200px">
-						<p:dataGrid var="car" value="#{tableBean.carsSmall}" columns="3">
-							<p:panel header = "#{car.nome}" style="text-align:center">
+						<p:dataGrid var="seguindo" value="#{usuarioLogado.seguindo}" columns="5">
+							<p:panel header = "#{seguindo.nome}" style="text-align:center">
 								<h:panelGrid columns="2" style="width:100%">
-									<h:outputText value="amigo" />
+									<h:outputText value="#{seguindo.desde}" />
 								</h:panelGrid>
 							</p:panel>
 						</p:dataGrid>

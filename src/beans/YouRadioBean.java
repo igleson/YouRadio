@@ -1,41 +1,25 @@
 package beans;
 
-import excessoes.CadastroException;
-import excessoes.UsuarioException;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
+import excessoes.LoginException;
+import excessoes.SessaoException;
 import excessoes.sistemaEncerradoException;
+
 import projeto.sistem.YouRadio;
 
+@ManagedBean
+@SessionScoped
 public class YouRadioBean {
-	private String nome;
-	private String email;
 	private String login;
 	private String senha;
-	private YouRadio sistema;
+	private YouRadio sistema = new YouRadio();
+	private int idSessao;
+	private UsuarioLogadoBean usuarioLogado;
 	
-	
-	
-	public YouRadioBean() {
-		sistema = new YouRadio();
-	}
-	
-	
-	public void cadastrar() throws CadastroException, UsuarioException, sistemaEncerradoException{
-		sistema.criarUsuario(login, senha, nome, email);
-	}
-	
-	
-	public String getNome() {
-		return nome;
-	}
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
 	public String getLogin() {
 		return login;
 	}
@@ -49,7 +33,37 @@ public class YouRadioBean {
 		this.senha = senha;
 	}
 	
+	public String logar(){
+		try {
+			idSessao = sistema.abrirSessao(login, senha);
+			usuarioLogado = new UsuarioLogadoBean(login, idSessao);
+			return "faces/usuariologado.xhtml";
+			
+		} catch (LoginException e) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage("Falhou", e.getLocalizedMessage()));
+		} catch (sistemaEncerradoException e) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage("Falhou", e.getLocalizedMessage()));
+		} catch (SessaoException e) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage("Falhou", e.getLocalizedMessage()));
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
+	public String deslogar(){
+		sistema.encerrarSessao(login);
+		System.out.println("deslogou");
+		return "faces/index.xhtml";
+	}
+	public UsuarioLogadoBean getUsuarioLogado() {
+		return usuarioLogado;
+	}
+	public void setUsuarioLogado(UsuarioLogadoBean usuarioLogado) {
+		this.usuarioLogado = usuarioLogado;
+	}
 	
 
 }

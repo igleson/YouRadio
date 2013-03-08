@@ -93,6 +93,7 @@ public class DadosDoSistema {
 	//gerenciando sessoes
 	
 	public void adicionaSessao(String login){
+		System.out.println(login.hashCode());
 		this.todasAsSessoes.put(login.hashCode(), login);
 	}
 	

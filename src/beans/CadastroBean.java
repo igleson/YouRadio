@@ -81,15 +81,12 @@ public class CadastroBean implements Serializable {
 		} catch (CadastroException e) {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null, new FacesMessage("Falhou", e.getLocalizedMessage()));
-			System.out.println(e.getMessage());
 		} catch (UsuarioException e) {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null, new FacesMessage("Falhou", e.getLocalizedMessage()));
-			System.out.println(e.getMessage());
 		} catch (sistemaEncerradoException e) {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null, new FacesMessage("Falhou", e.getLocalizedMessage()));
-			System.out.println(e.getMessage());
 		}
 		return null;
 	}
