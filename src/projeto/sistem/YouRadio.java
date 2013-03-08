@@ -281,8 +281,11 @@ public class YouRadio implements Serializable{
 		return this.dados.usuario(idSessao).getFeedExtra();
 	}
 
-
-	public List<Integer> getMainFeed(int sessaoId) throws SessaoException {
+	public void setMainFeedRules(int sessaoId, String Regra) throws SessaoException{
+		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
+		this.dados.usuario(sessaoId).setMainFeedRule(Regra);
+	}
+	public List<Som> getMainFeed(int sessaoId) throws SessaoException, SomException {
 		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(sessaoId).getMainFeed();
 	}

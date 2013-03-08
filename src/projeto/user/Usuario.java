@@ -31,6 +31,8 @@ public class Usuario implements Serializable{
 	private List<Integer> sonsFavoritos;
 	private List<Integer> feedExtra;
 	
+	private String regra = "PRIMEIRO OS SONS POSTADOS MAIS RECENTEMENTE PELAS FONTES DE SONS";
+	
 
 	/**
 	 * @param login, senha , nome e email
@@ -207,10 +209,44 @@ public class Usuario implements Serializable{
 		return this.feedExtra;
 	}
 
-
-	public List<Integer> getMainFeed() {
-		// TODO Auto-generated method stub
-		return new ArrayList<Integer>();
+	
+	public void setMainFeedRule(String regra){
+		this.regra = regra;
+	}
+	
+//Construção
+	public List<Som> getMainFeed() throws SomException {
+		
+		
+		if(regra.equals("PRIMEIRO OS SONS POSTADOS MAIS RECENTEMENTE PELAS FONTES DE SONS")){
+		
+			List<Som> retorno = new ArrayList<Som>();
+			DadosDoSistema dados = DadosDoSistema.getInstance();
+			for (int i = seguindo.size()-1; i >= 0; i--) {
+				Usuario u = dados.usuarioPorId(seguindo.get(i));
+				for (Integer id : u.getPerfilMusical()) {
+					retorno.add(dados.Som(id));
+				}
+			}
+			return retorno;
+		}
+		
+		else if(regra.equals("PRIMEIRO OS SONS COM MAIS FAVORITOS")){
+			List<Som> retorno = new ArrayList<Som>();
+			DadosDoSistema dados = DadosDoSistema.getInstance();
+			for (int i = seguindo.size()-1; i >= 0; i--) {
+				Usuario u = dados.usuarioPorId(seguindo.get(i));
+				for (Integer id : u.getSonsFavoritos()) {
+					retorno.add(dados.Som(id));
+				}
+			}
+			return retorno;
+			
+		}else{
+			
+			return null;
+		}
+		
 	}
 
 }

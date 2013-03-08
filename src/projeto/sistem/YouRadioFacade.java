@@ -19,9 +19,9 @@ public class YouRadioFacade {
 
 	private YouRadio sistema;
 	
-	private String REGRA_1 = "PRIMEIRO OS SONS POSTADOS MAIS RECENTEMENTE PELAS FONTES DE SONS";
-	private String REGRA_2 = "PRIMEIRO OS SONS COM MAIS FAVORITOS";
-	private String REGRA_3 = "PRIMEIRO SONS DE FONTES DAS QUAIS FAVORITEI SONS NO PASSADO";
+	private String rule1 = "PRIMEIRO OS SONS POSTADOS MAIS RECENTEMENTE PELAS FONTES DE SONS";
+	private String rule2 = "PRIMEIRO OS SONS COM MAIS FAVORITOS";
+	private String rule3 = "PRIMEIRO SONS DE FONTES DAS QUAIS FAVORITEI SONS NO PASSADO";
 
 	
 	public YouRadioFacade(){
@@ -211,26 +211,31 @@ public class YouRadioFacade {
 		return "{" +retorno.substring(0, retorno.length() - 1) + "}";
 	}
 	
-	public String getMainFeed(String sessaoId) throws SessaoException{
+	public String getMainFeed(String sessaoId) throws SessaoException, NumberFormatException, SomException{
 		if(sessaoId == null || sessaoId.equals("")) throw new SessaoException("Sessão inválida");
 		try {
 			Integer.parseInt(sessaoId);
 		} catch (Exception e) {
 			throw new SessaoException("Sessão inexistente");
 		}
-		List<Integer> listSonsIds = sistema.getMainFeed(Integer.parseInt(sessaoId));
+		
+		List<Integer> listSonsIds = new ArrayList<Integer>();
+		
+		for (Som sons : sistema.getMainFeed(Integer.parseInt(sessaoId))) {
+			listSonsIds.add(sons.hashCode());
+		}
 		
 		if (listSonsIds.size() == 0)
 			return "{}";
 		String retorno ="" ;
 		for (Integer integer : listSonsIds) {
 			retorno = integer + "," + retorno;
-
 		}
 		return "{" +retorno.substring(0, retorno.length() - 1) + "}";
 	}
 	
 	public void setMainFeedRule(String sessaoId, String rule) throws Exception{
+		System.out.println(rule);
 		if(sessaoId == null || sessaoId.equals("")) throw new SessaoException("Sessão inválida");
 		try {
 			Integer.parseInt(sessaoId);
@@ -239,22 +244,24 @@ public class YouRadioFacade {
 		}
 
 		if(rule == null || rule.equals("")) throw new Exception("Regra de composição inválida");			
-		else if(!rule.equals(REGRA_1) &&
-			!rule.equals(REGRA_2) &&
-			!rule.equals(REGRA_3)) throw new Exception("Regra de composição inexistente");
-		//TODO
+		if(rule.equals(rule1) ||
+			rule.equals(rule2) ||
+			rule.equals(rule3)) sistema.setMainFeedRules(Integer.parseInt(sessaoId), rule);
+		else {
+			throw new Exception("Regra de composição inexistente");
+		}
 	}
 	
 	public String getFirstCompositionRule(){
-		return REGRA_1;
+		return rule1;
 	}
 	
 	public String getSecondCompositionRule(){
-		return REGRA_2;
+		return rule2;
 	}
 	
 	public String getThirdCompositionRule(){
-		return REGRA_3;
+		return rule3;
 	}
 	
 	public void encerrarSistema() {
