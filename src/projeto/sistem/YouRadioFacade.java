@@ -235,14 +235,13 @@ public class YouRadioFacade {
 	}
 	
 	public void setMainFeedRule(String sessaoId, String rule) throws Exception{
-		System.out.println(rule);
 		if(sessaoId == null || sessaoId.equals("")) throw new SessaoException("Sessão inválida");
 		try {
 			Integer.parseInt(sessaoId);
 		} catch (Exception e) {
 			throw new SessaoException("Sessão inexistente");
 		}
-
+		if (!sistema.contemSessao(sessaoId))throw new SessaoException("Sessão inexistente");
 		if(rule == null || rule.equals("")) throw new Exception("Regra de composição inválida");			
 		if(rule.equals(rule1) ||
 			rule.equals(rule2) ||

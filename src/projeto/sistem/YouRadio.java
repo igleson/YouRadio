@@ -289,4 +289,9 @@ public class YouRadio implements Serializable{
 		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(sessaoId).getMainFeed();
 	}
+
+
+	public boolean contemSessao(String sessaoId) {
+		return this.dados.contemSessao(Integer.parseInt(sessaoId));
+	}
 }

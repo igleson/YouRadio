@@ -141,6 +141,9 @@ public class Usuario implements Serializable{
 	public void postarSom(int somId) {
 		if (perfilMusical == null) perfilMusical = new ArrayList<Integer>();
 		perfilMusical.add(somId);
+		DadosDoSistema dados = DadosDoSistema.getInstance();
+		dados.adicionaQtdeDeFavoritos(somId,0);
+		
 	}
 
 	
@@ -164,9 +167,16 @@ public class Usuario implements Serializable{
 		return seguidores;
 	}
 	
+	
+	public void addSeguidores(Usuario usuario){
+		
+		this.seguidores.add(usuario.hashCode());
+	}
+	
+	
 	public void seguirUsuario(Usuario usuario) {
 		this.seguindo.add(usuario.hashCode());
-		usuario.seguidores.add(this.hashCode());	
+		usuario.addSeguidores(this);	
 		
 	}
 
@@ -192,6 +202,7 @@ public class Usuario implements Serializable{
 	public void favoritarSom(int idSom){
 		sonsFavoritos.add(idSom);
 		DadosDoSistema dados = DadosDoSistema.getInstance();
+		dados.adicionaQtdeDeFavoritos(idSom,1);
 		for (int usuario : this.seguidores) {
 			dados.usuarioPorId(usuario).adicionaAoFeedExtra(idSom);
 		}
@@ -231,15 +242,47 @@ public class Usuario implements Serializable{
 			return retorno;
 		}
 		
+		
+		//Complexidade n^3, vish
 		else if(regra.equals("PRIMEIRO OS SONS COM MAIS FAVORITOS")){
 			List<Som> retorno = new ArrayList<Som>();
 			DadosDoSistema dados = DadosDoSistema.getInstance();
-			for (int i = seguindo.size()-1; i >= 0; i--) {
+			for (int i = 0 ; i <seguindo.size(); i++) {
 				Usuario u = dados.usuarioPorId(seguindo.get(i));
 				for (Integer id : u.getSonsFavoritos()) {
-					retorno.add(dados.Som(id));
+					
+					if(retorno.contains(dados.Som(id))){
+						 retorno.add(0,dados.Som(id));
+					}else retorno.add(dados.Som(id));
+					
+					
+					//Compara a quantidade de likes do som passado e os que ja tem na lista de retorno
+					/*if(!retorno.isEmpty()){
+						for (int j = 0; j < retorno.size(); j++) {
+							if(dados.getQtdeFavoritos(id)>dados.getQtdeFavoritos(retorno.get(j).hashCode())){
+								retorno.add(0,dados.Som(id));
+								
+							}else{
+								retorno.add(dados.Som(id));
+							}
+						}
+					}else retorno.add(dados.Som(id));*/
 				}
 			}
+			
+			
+			//Adiciona quem não tem like
+			for (int i = seguindo.size() -1 ; i >=0; i--) {
+				Usuario u = dados.usuarioPorId(seguindo.get(i));
+				for (Integer id : u.getPerfilMusical()) {
+					
+					//Se ja estiver na lista nao adiciona
+					if(!retorno.contains(dados.Som(id))){
+						retorno.add(dados.Som(id));
+					}
+				}
+			}
+			
 			return retorno;
 			
 		}else{

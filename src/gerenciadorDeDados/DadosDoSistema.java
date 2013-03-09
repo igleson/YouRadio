@@ -16,6 +16,7 @@ public class DadosDoSistema {
 	private Map<String, Usuario> todosOsUsuarios;
 	private Map<Integer, String> todasAsSessoes;
 	private Map<Integer, Som> todosOsSons;
+	private Map<Integer, Integer> sonsComMaisFavoritos;
 	
 	private DadosDoSistema(){
 		this.zeraSistema();
@@ -24,7 +25,8 @@ public class DadosDoSistema {
 	public void zeraSistema(){
 		todosOsUsuarios = new HashMap<String, Usuario>();
 		todasAsSessoes = new HashMap<Integer, String>();
-		todosOsSons = new HashMap<Integer, Som>();		
+		todosOsSons = new HashMap<Integer, Som>();
+		sonsComMaisFavoritos= new HashMap<Integer, Integer>();
 	}
 	
 	public static DadosDoSistema getInstance(){
@@ -111,6 +113,20 @@ public class DadosDoSistema {
 	
 	public String login(int sessaoId) {
 		return todasAsSessoes.get(sessaoId);
+	}
+
+	public void adicionaQtdeDeFavoritos(Integer idSom, Integer numero) {
+		sonsComMaisFavoritos.put(idSom, +numero);
+		
+	}
+	
+	public Integer getQtdeFavoritos(Integer idSom){
+		return  sonsComMaisFavoritos.get(idSom);
+		
+	}
+
+	public boolean contemFavorito(Integer idSom) {
+		return sonsComMaisFavoritos.containsKey(idSom);
 	}
 
 
