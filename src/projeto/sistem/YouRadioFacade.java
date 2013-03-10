@@ -17,6 +17,11 @@ import excessoes.sistemaEncerradoException;
 public class YouRadioFacade {
 
 	private YouRadio sistema;
+	
+	 private final String REGRA1 = "PRIMEIRO OS SONS POSTADOS MAIS RECENTEMENTE PELAS FONTES DE SONS";
+	 private final String REGRA2 = "PRIMEIRO OS SONS COM MAIS FAVORITOS";
+	 private final String REGRA3 = "PRIMEIRO SONS DE FONTES DAS QUAIS FAVORITEI SONS NO PASSADO";
+	private String regra;
 
 	public YouRadioFacade() {
 		sistema = new YouRadio();
@@ -149,8 +154,6 @@ public class YouRadioFacade {
 		if (sessaoId == null || sessaoId.equals(""))
 			throw new SessaoException("Sessão inválida");
 		if (idSom == null || idSom.equals("")) {
-			System.out.println("aqui");
-			System.out.println(idSom);
 			throw new SomException("Som inválido");
 		}
 		if (!Strings.ehUmNumero(sessaoId))
@@ -186,6 +189,40 @@ public class YouRadioFacade {
 		return Colecaoes.ColecaoParaStringReverso(listSonsIds);
 	}
 
+	public String getFirstCompositionRule(){
+		return REGRA1;
+	}
+	
+	public String getSecondCompositionRule(){
+		return REGRA2;
+	}
+	
+	public String getThirdCompositionRule(){
+		return REGRA3;
+	}
+	
+	public String getMainFeed(String idSessao) throws SessaoException, NumberFormatException, SomException{
+		if (idSessao == null || idSessao.equals(""))
+			throw new SessaoException("Sessão inválida");
+		if (!Strings.ehUmNumero(idSessao))
+			throw new SessaoException("Sessão inexistente");
+		return Colecaoes.ColecaoParaString(sistema.getMainFeed(Integer.parseInt(idSessao)));
+	}
+
+	public void setMainFeedRule(String idSessao, String regra) throws Exception{
+		if (idSessao == null || idSessao.equals(""))
+			throw new SessaoException("Sessão inválida");
+		if (!Strings.ehUmNumero(idSessao))
+			throw new SessaoException("Sessão inexistente");
+		if(regra == null || regra.equals("")) throw new Exception("Regra de composição inválida");
+		if(!regra.equals(REGRA1) && !regra.equals(REGRA2) && !regra.equals(REGRA3)) throw new Exception("Regra de composição inexistente");
+		OrdenacoesFeedPrincipal ordem = null;
+		if(regra.equals(REGRA1)) ordem = OrdenacoesFeedPrincipal.MAIS_RECENTES;
+		if(regra.equals(REGRA2)) ordem = OrdenacoesFeedPrincipal.COM_MAIS_FAVORITOS;
+		if(regra.equals(REGRA3)) ordem = OrdenacoesFeedPrincipal.DE_QUEM_FAVORITEI_NO_PASSADO;
+		sistema.setMainFeedRule(Integer.parseInt(idSessao), ordem);
+	}
+	
 	public void encerrarSistema() {
 		sistema.encerrarSistema();
 	}

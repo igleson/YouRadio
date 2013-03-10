@@ -124,7 +124,6 @@ public class YouRadio implements Serializable{
 		return som.hashCode();
 	}
 	
-	
 	/**
 	 * @paramsessaoId - identificador da sessão, link - link da música
 	 * @return int identificador do som
@@ -248,8 +247,6 @@ public class YouRadio implements Serializable{
 		return this.dados.usuario(idSessao).getNumeroDeSeguidores();
 	}
 
-
-
 	//NOVO METODO
 	public Usuario usuario(int idSessao) {
 		return dados.usuario(idSessao);
@@ -280,8 +277,24 @@ public class YouRadio implements Serializable{
 		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(idSessao).getFeedExtra();
 	}
+	
+	public void setMainFeedRule(int idSessao, OrdenacoesFeedPrincipal ordem) throws SessaoException {
+		if(!dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		Usuario usuario = dados.usuario(idSessao);
+		usuario.setMainFeedRule(ordem);
+	}	
+
 
 	public boolean contemSessao(String sessaoId) {
 		return this.dados.contemSessao(Integer.parseInt(sessaoId));
 	}
+
+
+	
+	public List<Integer> getMainFeed(int idSessao) throws SessaoException, SomException {
+		if(!dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		Usuario usuario = dados.usuario(idSessao);
+		return usuario.getMainFeed();
+	}
+	
 }

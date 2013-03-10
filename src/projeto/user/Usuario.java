@@ -3,10 +3,13 @@ package projeto.user;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import projeto.perfil.NumeroDeVezesFavoritado;
 import projeto.perfil.Som;
+import projeto.sistem.OrdenacoesFeedPrincipal;
 
 
 import excessoes.SomException;
@@ -30,6 +33,7 @@ public class Usuario implements Serializable{
 	private List<Integer> seguidores;
 	private List<Integer> sonsFavoritos;
 	private List<Integer> feedExtra;
+	private OrdenacoesFeedPrincipal ordem;
 		
 
 	/**
@@ -49,6 +53,7 @@ public class Usuario implements Serializable{
 		this.seguidores = new ArrayList<Integer>();
 		this.sonsFavoritos = new ArrayList<Integer>();
 		this.feedExtra = new ArrayList<Integer>();
+		this.ordem = OrdenacoesFeedPrincipal.MAIS_RECENTES;
 	}
 
 	
@@ -213,6 +218,56 @@ public class Usuario implements Serializable{
 	
 	public List<Integer> getFeedExtra() {
 		return this.feedExtra;
+	}
+
+	public void setMainFeedRule(OrdenacoesFeedPrincipal ordem) {
+		this.ordem = ordem;
+	}
+	
+	private List<Integer> mainFeed(){
+		List<Integer> retorno = new ArrayList<Integer>();
+		DadosDoSistema dados = DadosDoSistema.getInstance();
+		for (int i = seguindo.size()-1; i >= 0; i--) {
+			Usuario u = dados.usuarioPorId(seguindo.get(i));
+			retorno.addAll(u.getPerfilMusical());
+		}
+		return retorno;
+	}
+	
+	private List<Som> idsParaSons(List<Integer> ids) throws SomException{
+		List<Som> retorno = new ArrayList<Som>();
+		DadosDoSistema dados = DadosDoSistema.getInstance();
+		for (Integer id : ids) {
+			retorno.add(dados.Som(id));
+		}
+		return retorno;
+	}
+	
+	private List<Integer> sonsParaIds(List<Som> sons){
+		List<Integer> retorno = new ArrayList<Integer>();
+		for (Som som : sons) {
+			retorno.add(som.hashCode());
+		}
+		return retorno;
+	}
+	
+	private List<Integer> mainFeedMaisRecentes(){
+		List<Integer> retorno = mainFeed();
+		Collections.reverse(retorno);
+		return retorno;
+	}
+
+
+	public List<Integer> getMainFeed() throws SomException {
+		if(ordem.ordinal() == 0) return mainFeedMaisRecentes();
+		else if(ordem.ordinal() == 1){
+			List<Integer> ids = mainFeed();
+			List<Som> sons = idsParaSons(ids);
+			Collections.sort(sons, new NumeroDeVezesFavoritado());
+			return sonsParaIds(sons);
+		}
+		else if(ordem.ordinal() == 2){}
+		return new ArrayList<Integer>();
 	}
 
 }
