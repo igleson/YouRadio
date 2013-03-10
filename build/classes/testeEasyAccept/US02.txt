@@ -158,4 +158,3 @@ encerrarSessao login="steve"
 
 encerrarSistema
 quit
-

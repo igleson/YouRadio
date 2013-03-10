@@ -28,7 +28,7 @@ public class YouRadioTest {
 	@Before
 	public void setup(){
 		sistema = new YouRadio();
-		
+		sistema.zerarSistema();
 	}
 	
 	@Test

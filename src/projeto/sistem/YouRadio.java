@@ -32,7 +32,8 @@ public class YouRadio implements Serializable{
 	 * @return cria um sistema 
 	 **/
 	public YouRadio(){
-		this.zerarSistema();
+		dados = DadosDoSistema.getInstance();
+		sistemaEstaAberto = true;
 	}
 	
 	
@@ -63,7 +64,7 @@ public class YouRadio implements Serializable{
 	 **/
 	public void criarUsuario(String login, String senha, String nome,
 			String email) throws CadastroException, UsuarioException, sistemaEncerradoException {
-		//if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
+		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
 		if (this.dados.contemUsuario(login))
 			throw new CadastroException("Já existe um usuário com este login");
 		if(this.dados.contemEmail(email)) throw new CadastroException("Já existe um usuário com este email");
@@ -100,10 +101,10 @@ public class YouRadio implements Serializable{
 	 * 
 	 **/
 	public List<Integer> getPerfilMusical(int sessaoId) throws SessaoException, sistemaEncerradoException {
-		//if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
+		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
 		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessao inexistente");
-		String loginTemp = this.dados.login(sessaoId);
-		return this.dados.usuario(loginTemp).getPerfilMusical();
+		String login = this.dados.login(sessaoId);
+		return this.dados.usuario(login).getPerfilMusical();
 	}
 	
 	/**
@@ -114,13 +115,13 @@ public class YouRadio implements Serializable{
 	 **/
 	public int postarSom(int sessaoId, String link, String dataCriacao)
 			throws SomException, SessaoException, sistemaEncerradoException {
-		//if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
+		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
 		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessao inexistente");
 
-		Som temp = new Som(link, dataCriacao);
-		this.dados.adicionaSom(temp);
-		this.dados.usuario(sessaoId).postarSom(temp.hashCode());
-		return temp.hashCode();
+		Som som = new Som(link, dataCriacao);
+		this.dados.adicionaSom(som);
+		this.dados.usuario(sessaoId).postarSom(som.hashCode());
+		return som.hashCode();
 	}
 	
 	
@@ -143,8 +144,8 @@ public class YouRadio implements Serializable{
 		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
 		if(login == null || login.equals("")) throw new UsuarioException("Login inválido");
 		if (!this.dados.contemUsuario(login)) throw new UsuarioException("Usuário inexistente");
-		Usuario temp = this.dados.usuario(login);
-		return temp.getNome();
+		Usuario usuario = this.dados.usuario(login);
+		return usuario.getNome();
 	}
 	
 	
@@ -157,8 +158,8 @@ public class YouRadio implements Serializable{
 		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
 		if(login == null || login.equals("")) throw new UsuarioException("Login inválido");
 		if (!this.dados.contemUsuario(login)) throw new UsuarioException("Usuário inexistente");
-		Usuario temp = this.dados.usuario(login);
-		return temp.getEmail();
+		Usuario usuario = this.dados.usuario(login);
+		return usuario.getEmail();
 	}
 	
 	
@@ -169,8 +170,8 @@ public class YouRadio implements Serializable{
 	 **/
 	public String linkDoSom(int idSom) throws SomException, sistemaEncerradoException{
 		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
-		Som temp = this.dados.Som(idSom);
-		return temp.getLink();
+		Som som = this.dados.Som(idSom);
+		return som.getLink();
 	}
 	
 	
@@ -181,9 +182,9 @@ public class YouRadio implements Serializable{
 	 **/
 	public String dataDeCriacaoSom(int idSom) throws SomException, sistemaEncerradoException{
 		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
-		Som temp = this.dados.Som(idSom);
+		Som som = this.dados.Som(idSom);
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		return dateFormat.format(temp.getDataCriacao().getTime());
+		return dateFormat.format(som.getDataCriacao().getTime());
 	}
 	
 	
@@ -265,31 +266,20 @@ public class YouRadio implements Serializable{
 		return this.dados.usuario(idSessao).getVisaoDosSons();
 	}
 	
-	public void favoritarSom(int sessaoId, int idSom) throws SessaoException{
+	public void favoritarSom(int sessaoId, int idSom) throws SessaoException, SomException{
 		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
-		this.dados.usuario(sessaoId).favoritarSom(idSom);
-		
+		this.dados.usuario(sessaoId).favoritarSom(idSom);		
 	}
+
 	public List<Integer> getSonsFavoritos(int sessaoId) throws SessaoException, sistemaEncerradoException {
 		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(sessaoId).getSonsFavoritos();
 	}
 
-
 	public List<Integer> getFeedExtra(int idSessao) throws SessaoException {
 		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(idSessao).getFeedExtra();
 	}
-
-	public void setMainFeedRules(int sessaoId, String Regra) throws SessaoException{
-		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
-		this.dados.usuario(sessaoId).setMainFeedRule(Regra);
-	}
-	public List<Som> getMainFeed(int sessaoId) throws SessaoException, SomException {
-		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
-		return this.dados.usuario(sessaoId).getMainFeed();
-	}
-
 
 	public boolean contemSessao(String sessaoId) {
 		return this.dados.contemSessao(Integer.parseInt(sessaoId));

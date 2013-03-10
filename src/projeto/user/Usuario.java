@@ -30,9 +30,7 @@ public class Usuario implements Serializable{
 	private List<Integer> seguidores;
 	private List<Integer> sonsFavoritos;
 	private List<Integer> feedExtra;
-	
-	private String regra = "PRIMEIRO OS SONS POSTADOS MAIS RECENTEMENTE PELAS FONTES DE SONS";
-	
+		
 
 	/**
 	 * @param login, senha , nome e email
@@ -140,10 +138,7 @@ public class Usuario implements Serializable{
 	 **/
 	public void postarSom(int somId) {
 		if (perfilMusical == null) perfilMusical = new ArrayList<Integer>();
-		perfilMusical.add(somId);
-		DadosDoSistema dados = DadosDoSistema.getInstance();
-		dados.adicionaQtdeDeFavoritos(somId,0);
-		
+		perfilMusical.add(somId);		
 	}
 
 	
@@ -199,10 +194,10 @@ public class Usuario implements Serializable{
 		return this.seguidores.size();
 	}
 	
-	public void favoritarSom(int idSom){
+	public void favoritarSom(int idSom) throws SomException{
 		sonsFavoritos.add(idSom);
 		DadosDoSistema dados = DadosDoSistema.getInstance();
-		dados.adicionaQtdeDeFavoritos(idSom,1);
+		dados.Som(idSom).favoritou();
 		for (int usuario : this.seguidores) {
 			dados.usuarioPorId(usuario).adicionaAoFeedExtra(idSom);
 		}
@@ -218,78 +213,6 @@ public class Usuario implements Serializable{
 	
 	public List<Integer> getFeedExtra() {
 		return this.feedExtra;
-	}
-
-	
-	public void setMainFeedRule(String regra){
-		this.regra = regra;
-	}
-	
-//Construção
-	public List<Som> getMainFeed() throws SomException {
-		
-		
-		if(regra.equals("PRIMEIRO OS SONS POSTADOS MAIS RECENTEMENTE PELAS FONTES DE SONS")){
-		
-			List<Som> retorno = new ArrayList<Som>();
-			DadosDoSistema dados = DadosDoSistema.getInstance();
-			for (int i = seguindo.size()-1; i >= 0; i--) {
-				Usuario u = dados.usuarioPorId(seguindo.get(i));
-				for (Integer id : u.getPerfilMusical()) {
-					retorno.add(dados.Som(id));
-				}
-			}
-			return retorno;
-		}
-		
-		
-		//Complexidade n^3, vish
-		else if(regra.equals("PRIMEIRO OS SONS COM MAIS FAVORITOS")){
-			List<Som> retorno = new ArrayList<Som>();
-			DadosDoSistema dados = DadosDoSistema.getInstance();
-			for (int i = 0 ; i <seguindo.size(); i++) {
-				Usuario u = dados.usuarioPorId(seguindo.get(i));
-				for (Integer id : u.getSonsFavoritos()) {
-					
-					if(retorno.contains(dados.Som(id))){
-						 retorno.add(0,dados.Som(id));
-					}else retorno.add(dados.Som(id));
-					
-					
-					//Compara a quantidade de likes do som passado e os que ja tem na lista de retorno
-					/*if(!retorno.isEmpty()){
-						for (int j = 0; j < retorno.size(); j++) {
-							if(dados.getQtdeFavoritos(id)>dados.getQtdeFavoritos(retorno.get(j).hashCode())){
-								retorno.add(0,dados.Som(id));
-								
-							}else{
-								retorno.add(dados.Som(id));
-							}
-						}
-					}else retorno.add(dados.Som(id));*/
-				}
-			}
-			
-			
-			//Adiciona quem não tem like
-			for (int i = seguindo.size() -1 ; i >=0; i--) {
-				Usuario u = dados.usuarioPorId(seguindo.get(i));
-				for (Integer id : u.getPerfilMusical()) {
-					
-					//Se ja estiver na lista nao adiciona
-					if(!retorno.contains(dados.Som(id))){
-						retorno.add(dados.Som(id));
-					}
-				}
-			}
-			
-			return retorno;
-			
-		}else{
-			
-			return null;
-		}
-		
 	}
 
 }

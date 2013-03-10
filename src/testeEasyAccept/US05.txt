@@ -166,7 +166,9 @@ expect {} getMainFeed idSessao=${sessaoSergey}
 #    fonte de sons isoladamente. Quando duas fontes tem o mesmo numero de favoritos,
 #    a ordem de entrada da lista de quem o usuario estah seguindo eh levada em consideracao
 #    aqui para reordenar o feed principal, de maneira que os sons do usuario que o proprio usuario
-#    comecou a seguir antes de seguir outro, aparecerao primeiro que os deste outro.
+#    comecou a seguir antes de seguir outro, aparecerao primeiro que os deste outro. Os sons devem
+#    aparecer em ordem cronologica de entrada (do som) para cada fonte de som que eh considerada na analise
+#    para esta rule.
 
 favoritarSom idSessao=${sessaoBill} idSom=${som2ID}
 favoritarSom idSessao=${sessaoSteve} idSom=${som1ID}
@@ -182,7 +184,7 @@ setMainFeedRule idSessao=${sessaoBill} rule=${rule3}
 expect {${som2ID},${som1ID},${som8ID},${som5ID},${som4ID},${som3ID}} getMainFeed idSessao=${sessaoBill}
 
 setMainFeedRule idSessao=${sessaoSteve} rule=${rule3}
-expect {${som1ID},${som2ID}} getMainFeed idSessao=${sessaoSteve}
+expect {${som2ID},${som1ID}} getMainFeed idSessao=${sessaoSteve}
 
 setMainFeedRule idSessao=${sessaoMark} rule=${rule3}
 expect {${som6ID}} getMainFeed idSessao=${sessaoMark}

@@ -1,7 +1,5 @@
 package projeto.perfil;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
 import excessoes.SomException;
@@ -13,22 +11,8 @@ public class Som implements Comparable<Som>{
 
 	private String link;
 	private GregorianCalendar dataCriacao;
-	
-	
-	/**
-	 * @return int hascode do som
-	 **/
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((dataCriacao == null) ? 0 : dataCriacao.hashCode());
-		result = prime * result + ((link == null) ? 0 : link.hashCode());
-		return Math.abs(result);
-	}
-	
-	
+	private int qtdeFavoritados;
+
 	/**
 	 * @param link , dataCriação - da musica
 	 * @throws  SomException 
@@ -43,6 +27,27 @@ public class Som implements Comparable<Som>{
 		int ano = Integer.parseInt(dataCriacao.substring(6, 10));
 		
 		this.dataCriacao = new GregorianCalendar(ano, mes, dia);
+	}
+	
+	public int getQtdeFavoritados() {
+		return qtdeFavoritados;
+	}
+	
+	public void favoritou(){
+		this.qtdeFavoritados++;
+	}
+	
+	/**
+	 * @return int hascode do som
+	 **/
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((dataCriacao == null) ? 0 : dataCriacao.hashCode());
+		result = prime * result + ((link == null) ? 0 : link.hashCode());
+		return Math.abs(result);
 	}
 	
 	
@@ -79,7 +84,6 @@ public class Som implements Comparable<Som>{
 		
 		this.dataCriacao = new GregorianCalendar(ano, mes, dia);
 	}
-
 
 	@Override
 	public int compareTo(Som som) {
