@@ -262,9 +262,8 @@ public class Usuario implements Serializable{
 		if(ordem.ordinal() == 0) return mainFeedMaisRecentes();
 		else if(ordem.ordinal() == 1){
 			List<Integer> ids = mainFeed();
-			List<Som> sons = idsParaSons(ids);
-			Collections.sort(sons, new NumeroDeVezesFavoritado());
-			return sonsParaIds(sons);
+			Collections.sort(ids, new NumeroDeVezesFavoritado());
+			return ids;
 		}
 		else if(ordem.ordinal() == 2){}
 		return new ArrayList<Integer>();
