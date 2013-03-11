@@ -118,7 +118,7 @@ public class YouRadio implements Serializable{
 		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
 		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessao inexistente");
 
-		Som som = new Som(link, dataCriacao);
+		Som som = new Som(link, dataCriacao, this.dados.usuario(sessaoId).hashCode());
 		this.dados.adicionaSom(som);
 		this.dados.usuario(sessaoId).postarSom(som.hashCode());
 		return som.hashCode();

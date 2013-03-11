@@ -88,6 +88,11 @@ public class CadastroBean implements Serializable {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null, new FacesMessage("Falhou", e.getLocalizedMessage()));
 		}
+		finally{
+			nome = null;
+			login = null;
+			email = null;
+		}
 		return null;
 	}
 

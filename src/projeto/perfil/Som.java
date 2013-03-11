@@ -1,6 +1,10 @@
 package projeto.perfil;
 
 import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Set;
+
+import projeto.user.Usuario;
 
 import excessoes.SomException;
 
@@ -9,15 +13,16 @@ import util.Date;
 
 public class Som implements Comparable<Som>{
 
+	private int idDono;
 	private String link;
 	private GregorianCalendar dataCriacao;
-	private int qtdeFavoritados;
+	private Set<Integer> quemFavoritou;
 
 	/**
 	 * @param link , dataCriação - da musica
 	 * @throws  SomException 
 	 **/
-	public Som(String link, String dataCriacao) throws SomException {
+	public Som(String link, String dataCriacao, int idDono) throws SomException {
 		if(link == null || link.equals("")) throw new SomException("Som inválido");
 		if(!Date.dataEhValida(dataCriacao)) throw new SomException("Data de Criação inválida");
 		this.link = link;
@@ -27,14 +32,26 @@ public class Som implements Comparable<Som>{
 		int ano = Integer.parseInt(dataCriacao.substring(6, 10));
 		
 		this.dataCriacao = new GregorianCalendar(ano, mes, dia);
+		
+		quemFavoritou = new HashSet<Integer>();
+		
+		this.idDono = idDono;
+	}
+	
+	public int getIdDono(){
+		return idDono;
 	}
 	
 	public int getQtdeFavoritados() {
-		return qtdeFavoritados;
+		return this.quemFavoritou.size();
 	}
 	
-	public void favoritou(){
-		this.qtdeFavoritados++;
+	public void favoritou(Usuario usuario){
+		this.quemFavoritou.add(usuario.hashCode());
+	}
+	
+	public boolean usuarioFavoritou(Usuario usuario){
+		return this.quemFavoritou.contains(usuario);
 	}
 	
 	/**

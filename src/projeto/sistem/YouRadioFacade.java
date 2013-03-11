@@ -214,6 +214,7 @@ public class YouRadioFacade {
 			throw new SessaoException("Sessão inválida");
 		if (!Strings.ehUmNumero(idSessao))
 			throw new SessaoException("Sessão inexistente");
+		if (!sistema.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
 		if(regra == null || regra.equals("")) throw new Exception("Regra de composição inválida");
 		if(!regra.equals(REGRA1) && !regra.equals(REGRA2) && !regra.equals(REGRA3)) throw new Exception("Regra de composição inexistente");
 		OrdenacoesFeedPrincipal ordem = null;

@@ -22,4 +22,9 @@ public class Colecaoes {
 		return "{" +retorno.substring(0, retorno.length() - 1) + "}";
 	}
 	
+	public static void copiar(Collection<Integer> destino, Collection<Integer> origem){
+		for (Integer inteiro : origem) {
+			destino.add(inteiro);
+		}
+	}
 }

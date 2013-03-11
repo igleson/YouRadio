@@ -5,7 +5,7 @@ import gerenciadorDeDados.DadosDoSistema;
 
 import java.util.Comparator;
 
-public class NumeroDeVezesFavoritado implements Comparator<Integer>{
+public class populares implements Comparator<Integer>{
 
 	@Override
 	public int compare(Integer som1Id, Integer som2Id) {

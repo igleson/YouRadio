@@ -5,11 +5,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import projeto.perfil.NumeroDeVezesFavoritado;
+import projeto.perfil.populares;
 import projeto.perfil.Som;
 import projeto.sistem.OrdenacoesFeedPrincipal;
+import util.Colecaoes;
 
 
 import excessoes.SomException;
@@ -34,7 +37,6 @@ public class Usuario implements Serializable{
 	private List<Integer> sonsFavoritos;
 	private List<Integer> feedExtra;
 	private OrdenacoesFeedPrincipal ordem;
-		
 
 	/**
 	 * @param login, senha , nome e email
@@ -202,7 +204,7 @@ public class Usuario implements Serializable{
 	public void favoritarSom(int idSom) throws SomException{
 		sonsFavoritos.add(idSom);
 		DadosDoSistema dados = DadosDoSistema.getInstance();
-		dados.Som(idSom).favoritou();
+		dados.Som(idSom).favoritou(this);
 		for (int usuario : this.seguidores) {
 			dados.usuarioPorId(usuario).adicionaAoFeedExtra(idSom);
 		}
@@ -234,38 +236,45 @@ public class Usuario implements Serializable{
 		return retorno;
 	}
 	
-	private List<Som> idsParaSons(List<Integer> ids) throws SomException{
-		List<Som> retorno = new ArrayList<Som>();
-		DadosDoSistema dados = DadosDoSistema.getInstance();
-		for (Integer id : ids) {
-			retorno.add(dados.Som(id));
-		}
-		return retorno;
-	}
-	
-	private List<Integer> sonsParaIds(List<Som> sons){
-		List<Integer> retorno = new ArrayList<Integer>();
-		for (Som som : sons) {
-			retorno.add(som.hashCode());
-		}
-		return retorno;
-	}
-	
 	private List<Integer> mainFeedMaisRecentes(){
 		List<Integer> retorno = mainFeed();
 		Collections.reverse(retorno);
 		return retorno;
 	}
 
-
+	private List<Integer> mainFeedPopulares(){
+		List<Integer> ids = mainFeed();
+		Collections.sort(ids, new populares());
+		return ids;
+	}
+	
 	public List<Integer> getMainFeed() throws SomException {
+		DadosDoSistema dados = DadosDoSistema.getInstance();
+		
 		if(ordem.ordinal() == 0) return mainFeedMaisRecentes();
 		else if(ordem.ordinal() == 1){
-			List<Integer> ids = mainFeed();
-			Collections.sort(ids, new NumeroDeVezesFavoritado());
-			return ids;
+			return mainFeedPopulares();
 		}
-		else if(ordem.ordinal() == 2){}
+		else if(ordem.ordinal() == 2){
+			Map<Integer, Integer> qtdeDeFavoritados = new HashMap<Integer, Integer>();
+			for (Integer id : sonsFavoritos) {
+				Som som = dados.Som(id);
+				if(!qtdeDeFavoritados.containsKey(som.getIdDono())) qtdeDeFavoritados.put(som.getIdDono(), 0);
+				int qtde = qtdeDeFavoritados.get(som.getIdDono());
+				qtdeDeFavoritados.put(som.getIdDono(), qtde+1);
+			}
+			List<Integer> tempSeguindo = new ArrayList<Integer>();
+			Colecaoes.copiar(tempSeguindo, this.seguindo);
+			Collections.sort(tempSeguindo, new qtdeDeFavoritos(qtdeDeFavoritados));
+			List<Integer> retorno = new ArrayList<Integer>();
+			for (Integer id : tempSeguindo) {
+				List<Integer> perfil = new ArrayList<Integer>();
+				Colecaoes.copiar(perfil, dados.usuarioPorId(id).getPerfilMusical());
+				Collections.reverse(perfil);
+				retorno.addAll(perfil);
+			}
+			return retorno;
+		}
 		return new ArrayList<Integer>();
 	}
 
