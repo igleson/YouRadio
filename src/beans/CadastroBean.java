@@ -12,12 +12,13 @@ import excessoes.UsuarioException;
 import excessoes.sistemaEncerradoException;
 
 import projeto.sistem.YouRadio;
+import projeto.sistem.adapterWUISistema;
 
 @ManagedBean
 @SessionScoped
 public class CadastroBean implements Serializable {
 
-	private YouRadio sistema;
+	private adapterWUISistema sistema;
 
 	private static final long serialVersionUID = 1L;
 
@@ -64,7 +65,7 @@ public class CadastroBean implements Serializable {
 	}
 
 	private void iniciaSistema() {
-		sistema = new YouRadio();
+		sistema = new adapterWUISistema();
 	}
 
 	public String cadastrar() {

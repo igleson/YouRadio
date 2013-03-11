@@ -10,7 +10,9 @@ import excessoes.SessaoException;
 import excessoes.SomException;
 import excessoes.sistemaEncerradoException;
 
+import projeto.sistem.OrdenacoesFeedPrincipal;
 import projeto.sistem.YouRadio;
+import projeto.sistem.adapterWUISistema;
 
 @ManagedBean
 @SessionScoped
@@ -18,11 +20,11 @@ public class YouRadioBean {
 	private String login;
 	private String senha;
 	private String subLogin;
-	private YouRadio sistema = new YouRadio();
+	private adapterWUISistema sistema = new adapterWUISistema();
 	private int idSessao;
 	private UsuarioLogadoBean usuarioLogado;
 	private String postagem;
-	private String pesquisa;
+	private String seguir;
 
 	public String getLogin() {
 		return login;
@@ -60,7 +62,11 @@ public class YouRadioBean {
 			context.addMessage(null,
 					new FacesMessage("Falhou", e.getLocalizedMessage()));
 			e.printStackTrace();
-		} finally {
+		
+		} catch (SomException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
 			login = null;
 		}
 		return null;
@@ -77,9 +83,17 @@ public class YouRadioBean {
 	}
 	
 	
-	public void ordenarRecentes(){}
-	public void ordenarFavoritos(){}
-	public void ordenarPopular(){}
+	public void ordenarRecentes() throws SessaoException, SomException{
+		usuarioLogado.setRegra(OrdenacoesFeedPrincipal.MAIS_RECENTES);
+	}
+	public void ordenarFavoritos() throws SessaoException, SomException{
+
+		usuarioLogado.setRegra(OrdenacoesFeedPrincipal.DE_QUEM_FAVORITEI_NO_PASSADO);
+	}
+	public void ordenarPopular() throws SessaoException, SomException{
+
+		usuarioLogado.setRegra(OrdenacoesFeedPrincipal.COM_MAIS_FAVORITOS);
+	}
 
 	public String postar() {
 		if (postagem.equals(""))return null;
@@ -122,20 +136,21 @@ public class YouRadioBean {
 		this.postagem = postagem;
 	}
 
-	public String getPesquisa() {
-		return pesquisa;
+	public String getSeguir() {
+		return seguir;
 	}
 
-	public void setPesquisa(String pesquisa) {
-		this.pesquisa = pesquisa;
+	public void setSeguir(String seguir) {
+		this.seguir = seguir;
 	}
-	public void pesquisar() {
-		if (!pesquisa.equals("")) {
+	public void seguir() throws SomException {
+		if (!seguir.equals("")) {
 
 			try {
-				sistema.seguirUsuario(idSessao, pesquisa);
+				sistema.seguirUsuario(idSessao, seguir);
+				usuarioLogado.setFeedPrincipal(sistema.getMainFeed(idSessao));
 				FacesContext context = FacesContext.getCurrentInstance();
-				context.addMessage(null, new FacesMessage("Ok", ("Agora você está seguindo "+ pesquisa)));
+				context.addMessage(null, new FacesMessage("Ok", ("Agora você está seguindo "+ seguir)));
 				
 			} catch (SessaoException e) {
 				FacesContext context = FacesContext.getCurrentInstance();
@@ -145,7 +160,7 @@ public class YouRadioBean {
 				FacesContext context = FacesContext.getCurrentInstance();
 				context.addMessage(null, new FacesMessage("Falhou", e.getLocalizedMessage()));
 				
-			}finally{pesquisa = null;}
+			}finally{seguir = null;}
 
 		}
 	}

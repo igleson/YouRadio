@@ -12,6 +12,7 @@ import excessoes.SessaoException;
 import excessoes.SomException;
 import excessoes.UsuarioException;
 import excessoes.sistemaEncerradoException;
+import gerenciadorDeDados.DadosDoSistema;
 
 public class adapterWUISistema {
 
@@ -43,11 +44,7 @@ public class adapterWUISistema {
 	public List<String> getPerfilMusical(int sessaoId) throws SessaoException,
 		sistemaEncerradoException, SomException {
 		List<Integer> sons = sistema.getPerfilMusical(sessaoId);
-		List<String> retorno = new ArrayList<String>();
-		for (Integer id : sons) {
-			retorno.add(sistema.Som(id).getLink());
-		}
-		return retorno;
+		return idsParaSons(sons);
 	}
 
 	public int postarSom(int sessaoId, String link, String dataCriacao)
@@ -105,9 +102,15 @@ public class adapterWUISistema {
 		return sistema.getListaDeSeguidores(sessaoId);
 	}
 
-	public Collection<Integer> getListaDeSeguindo(int sessaoId)
+	public Collection<String> getListaDeSeguindo(int sessaoId)
 			throws SessaoException {
-		return sistema.getListaDeSeguindo(sessaoId);
+		Collection<Integer> seguindo = sistema.getListaDeSeguindo(sessaoId);
+		Collection<String> retorno = new ArrayList<String>();
+		DadosDoSistema dados = DadosDoSistema.getInstance();
+		for (Integer id : seguindo) {
+			retorno.add(dados.usuarioPorId(id).getNome());
+		}
+		return retorno;
 	}
 
 	public void seguirUsuario(int idSessao, String login)
@@ -159,9 +162,18 @@ public class adapterWUISistema {
 		return sistema.equals(obj);
 	}
 
-	public List<Integer> getMainFeed(int idSessao) throws SessaoException,
+	public List<String> getMainFeed(int idSessao) throws SessaoException,
 			SomException {
-		return sistema.getMainFeed(idSessao);
+		return idsParaSons(sistema.getMainFeed(idSessao));
+	}
+	
+	private List<String> idsParaSons(List<Integer> ids) throws SomException{
+		List<String> retorno = new ArrayList<String>();
+		DadosDoSistema dados = DadosDoSistema.getInstance();
+		for (Integer id : ids) {
+			retorno.add(dados.Som(id).getLink());
+		}
+		return retorno;
 	}
 	
 }

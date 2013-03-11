@@ -14,7 +14,7 @@
 
 <h:body>
 	<h:form>
-	<p:growl id="messages"/> 
+		<p:growl id="messages" />
 		<p:dataGrid var="usuarioLogado" value="#{youRadioBean.usuarioLogado}">
 			<p:panel header="You Radio - #{usuarioLogado.nome}"
 				footer="Fagner Gomes, Igleson Freire, Leonardo Avelino e Raiff Ramalho">
@@ -28,9 +28,10 @@
 						<p:layoutUnit position="center">
 							<h:panelGrid>
 								<p:row>
-									<p:commandButton action = "#{youRadioBean.pesquisar}" ajax = "false" icon="ui-icon-search"></p:commandButton>
+									<p:commandButton action="#{youRadioBean.seguir}" ajax="false"
+										value="Seguir"></p:commandButton>
 
-									<p:inputText value = "#{youRadioBean.pesquisa}" required="false" />
+									<p:inputText value="#{youRadioBean.seguir}" required="false" />
 									<!--         -->
 									<p:commandButton value="sair" action="#{youRadioBean.deslogar}"></p:commandButton>
 								</p:row>
@@ -39,25 +40,47 @@
 
 						</p:layoutUnit>
 					</p:layout>
+
 					<p:panel>
 						<p:row>
-							<p:inputTextarea rows="3" cols="57" minQueryLength="4" value = "#{youRadioBean.postagem}"/>
-							<p:commandButton value="postar" action = "#{youRadioBean.postar}" ajax="false"></p:commandButton>
-							<p:commandButton value="apagar" action = "#{youRadioBean.apagar}" ajax="false"></p:commandButton>
+							<p:inputTextarea rows="3" cols="57" minQueryLength="4"
+								value="#{youRadioBean.postagem}" />
+							<p:commandButton value="postar" action="#{youRadioBean.postar}"
+								ajax="false"></p:commandButton>
+							<p:commandButton value="apagar" action="#{youRadioBean.apagar}"
+								ajax="false"></p:commandButton>
 						</p:row>
 					</p:panel>
 
-					<p:panel>
+					<p:panel header="Meus Sons">
 
-						<p:splitButton value="Recentes" actionListener="#{youRadioBean.ordenarRecentes}" ajax="false"		>
-							<p:menuitem value="Popular" actionListener="#{youRadioBean.ordenarPopular}" ajax="false"  />
-							<p:menuitem value="Favoritos" actionListener="#{youRadioBean.ordenarFavoritos}" ajax="false" />
-						</p:splitButton>
-						
+
+
 						<p:dataList var="feed" value="#{usuarioLogado.feed}"
 							itemType="square">
 
-							<a href=" #{feed}"  target="_blank">	#{feed} </a>
+							<a href="#{feed}" target="_blank"> #{feed} </a>
+
+
+
+
+						</p:dataList>
+					</p:panel>
+					<p:splitButton value="Recentes"
+						actionListener="#{youRadioBean.ordenarRecentes}" ajax="false">
+						<p:menuitem value="Popular"
+							actionListener="#{youRadioBean.ordenarPopular}" ajax="false" />
+						<p:menuitem value="Favoritos"
+							actionListener="#{youRadioBean.ordenarFavoritos}" ajax="false" />
+					</p:splitButton>
+					<p:panel header="Feed Principal">
+
+
+
+						<p:dataList var="feed" value="#{usuarioLogado.feedPrincipal}"
+							itemType="square">
+
+							<a href="#{feed}" target="_blank"> #{feed} </a>
 
 
 

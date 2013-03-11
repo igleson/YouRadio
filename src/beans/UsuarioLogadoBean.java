@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -11,9 +12,13 @@ import javax.faces.context.FacesContext;
 
 import excessoes.LoginException;
 import excessoes.SessaoException;
+import excessoes.SomException;
 import excessoes.sistemaEncerradoException;
+import gerenciadorDeDados.DadosDoSistema;
 
+import projeto.sistem.OrdenacoesFeedPrincipal;
 import projeto.sistem.YouRadio;
+import projeto.sistem.adapterWUISistema;
 
 public class UsuarioLogadoBean implements Serializable {
 
@@ -22,40 +27,50 @@ public class UsuarioLogadoBean implements Serializable {
 	private String nome;
 	private List<SeguindoBean> seguindo;
 	private List<String> feed;
-	private YouRadio sistema;
+	private adapterWUISistema sistema;
 	private int idSessao;
+	private List<String> feedPrincipal;
+	private OrdenacoesFeedPrincipal regra;
 
 
 	public UsuarioLogadoBean(String nome, int idSessao) throws SessaoException,
-			sistemaEncerradoException {
+			sistemaEncerradoException, SomException {
 		this.nome = nome;
 		this.setIdSessao(idSessao);
-		sistema = new YouRadio();
-		System.out.println(idSessao);
-		setSeguindo(seguidoresDoUsuario());
+		sistema = new adapterWUISistema();
+		setFeedPrincipal(sistema.getMainFeed(idSessao));
+		setSeguindo(usuariosSenguidos());
 		setFeed(perfilMusical());
 	}
 
-	// TODO fazer o adapter
-	private List<SeguindoBean> seguidoresDoUsuario() throws SessaoException {
+	private List<SeguindoBean> usuariosSenguidos() throws SessaoException {
 		List<SeguindoBean> retorno = new ArrayList<SeguindoBean>();
-		Collection<Integer> seguindo = sistema
-				.getListaDeSeguidores(getIdSessao());
-		for (Integer inteiro : seguindo) {
-			retorno.add(new SeguindoBean("igleson")); // TODO implementar após o
-														// push de raiff
+		Collection<String> seguindo = sistema.getListaDeSeguindo(getIdSessao());
+		for (String nome : seguindo) {
+			retorno.add(new SeguindoBean(nome)); 
 		}
 		return retorno;
 	}
 
-	private List<String> perfilMusical() throws SessaoException,
-			sistemaEncerradoException {
-		List<String> retorno = new ArrayList<String>();
-		List<Integer> sons = sistema.getPerfilMusical(getIdSessao());
-		for (Integer inteiro : sons) {
-			retorno.add(inteiro.toString());// TODO após o push de raiff
-		}
-		return retorno;
+	private List<String> perfilMusical(){
+
+		
+				try {
+					List<String> temp = sistema.getPerfilMusical(getIdSessao());
+					Collections.reverse(temp);
+					return temp;
+				} catch (SessaoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (sistemaEncerradoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SomException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return null;
+			
 	}
 
 	
@@ -69,7 +84,7 @@ public class UsuarioLogadoBean implements Serializable {
 	}
 
 	public List<SeguindoBean> getSeguindo() throws SessaoException {
-		this.seguindo = seguidoresDoUsuario();
+		this.seguindo = usuariosSenguidos();
 		return seguindo;
 	}
 
@@ -95,5 +110,22 @@ public class UsuarioLogadoBean implements Serializable {
 		this.idSessao = idSessao;
 	}
 
+	public List<String> getFeedPrincipal() {
+		return feedPrincipal;
+	}
+
+	public void setFeedPrincipal(List<String> feedPrincipal) {
+		this.feedPrincipal = feedPrincipal;
+	}
+
+	public OrdenacoesFeedPrincipal getRegra() {
+		return regra;
+	}
+
+	public void setRegra(OrdenacoesFeedPrincipal regra) throws SessaoException, SomException {
+		sistema.setMainFeedRule(idSessao, regra);
+		feedPrincipal = sistema.getMainFeed(idSessao);
+		this.regra = regra;
+	}
 
 }
