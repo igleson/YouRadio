@@ -18,6 +18,7 @@ public class Som implements Comparable<Som>{
 	private GregorianCalendar dataCriacao;
 	private Set<Integer> quemFavoritou;
 
+
 	/**
 	 * @param link , dataCriação - da musica
 	 * @throws  SomException 
@@ -47,7 +48,9 @@ public class Som implements Comparable<Som>{
 	}
 	
 	public void favoritou(Usuario usuario){
-		this.quemFavoritou.add(usuario.hashCode());
+		if(!this.usuarioFavoritou(usuario)){
+			this.quemFavoritou.add(usuario.hashCode());	
+		}
 	}
 	
 	public boolean usuarioFavoritou(Usuario usuario){
@@ -106,5 +109,11 @@ public class Som implements Comparable<Som>{
 	public int compareTo(Som som) {
 		return -1*this.dataCriacao.compareTo(som.getDataCriacao());
 	}
+
+	public int getId() {
+		return this.hashCode();
+	}
+
+
 	
 }

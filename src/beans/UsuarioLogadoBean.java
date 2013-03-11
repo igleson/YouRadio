@@ -16,6 +16,7 @@ import excessoes.SomException;
 import excessoes.sistemaEncerradoException;
 import gerenciadorDeDados.DadosDoSistema;
 
+import projeto.perfil.Som;
 import projeto.sistem.OrdenacoesFeedPrincipal;
 import projeto.sistem.YouRadio;
 import projeto.sistem.adapterWUISistema;
@@ -26,16 +27,16 @@ public class UsuarioLogadoBean implements Serializable {
 
 	private String nome;
 	private List<SeguindoBean> seguindo;
-	private List<String> feed;
+	private List<Som> feed;
 	private adapterWUISistema sistema;
 	private int idSessao;
-	private List<String> feedPrincipal;
+	private List<Som> feedPrincipal;
 	private OrdenacoesFeedPrincipal regra;
 
 
 	public UsuarioLogadoBean(String nome, int idSessao) throws SessaoException,
 			sistemaEncerradoException, SomException {
-		this.nome = nome;
+		if (nome.length()> 8) this.nome = nome.substring(0,7); else this.nome = nome;
 		this.setIdSessao(idSessao);
 		sistema = new adapterWUISistema();
 		setFeedPrincipal(sistema.getMainFeed(idSessao));
@@ -52,21 +53,20 @@ public class UsuarioLogadoBean implements Serializable {
 		return retorno;
 	}
 
-	private List<String> perfilMusical(){
+	private List<Som> perfilMusical(){
 
 		
 				try {
-					List<String> temp = sistema.getPerfilMusical(getIdSessao());
+					List<Som> temp = sistema.getPerfilMusical(getIdSessao());
 					Collections.reverse(temp);
 					return temp;
 				} catch (SessaoException e) {
-					// TODO Auto-generated catch block
+				
 					e.printStackTrace();
 				} catch (sistemaEncerradoException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				} catch (SomException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				return null;
@@ -92,13 +92,13 @@ public class UsuarioLogadoBean implements Serializable {
 		this.seguindo = seguindo;
 	}
 
-	public List<String> getFeed() throws SessaoException,
+	public List<Som> getFeed() throws SessaoException,
 			sistemaEncerradoException {
 		this.feed = perfilMusical();
 		return feed;
 	}
 
-	public void setFeed(List<String> feed) {
+	public void setFeed(List<Som> feed) {
 		this.feed = feed;
 	}
 
@@ -110,11 +110,11 @@ public class UsuarioLogadoBean implements Serializable {
 		this.idSessao = idSessao;
 	}
 
-	public List<String> getFeedPrincipal() {
+	public List<Som> getFeedPrincipal() {
 		return feedPrincipal;
 	}
 
-	public void setFeedPrincipal(List<String> feedPrincipal) {
+	public void setFeedPrincipal(List<Som> feedPrincipal) {
 		this.feedPrincipal = feedPrincipal;
 	}
 

@@ -41,7 +41,7 @@ public class adapterWUISistema {
 		return sistema.abrirSessao(login, senha);
 	}
 
-	public List<String> getPerfilMusical(int sessaoId) throws SessaoException,
+	public List<Som> getPerfilMusical(int sessaoId) throws SessaoException,
 		sistemaEncerradoException, SomException {
 		List<Integer> sons = sistema.getPerfilMusical(sessaoId);
 		return idsParaSons(sons);
@@ -162,16 +162,16 @@ public class adapterWUISistema {
 		return sistema.equals(obj);
 	}
 
-	public List<String> getMainFeed(int idSessao) throws SessaoException,
+	public List<Som> getMainFeed(int idSessao) throws SessaoException,
 			SomException {
 		return idsParaSons(sistema.getMainFeed(idSessao));
 	}
 	
-	private List<String> idsParaSons(List<Integer> ids) throws SomException{
-		List<String> retorno = new ArrayList<String>();
+	private List<Som> idsParaSons(List<Integer> ids) throws SomException{
+		List<Som> retorno = new ArrayList<Som>();
 		DadosDoSistema dados = DadosDoSistema.getInstance();
 		for (Integer id : ids) {
-			retorno.add(dados.Som(id).getLink());
+			retorno.add(dados.Som(id));
 		}
 		return retorno;
 	}

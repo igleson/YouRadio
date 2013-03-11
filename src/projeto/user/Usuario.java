@@ -171,15 +171,16 @@ public class Usuario implements Serializable{
 	
 	
 	public void addSeguidores(Usuario usuario){
-		
-		this.seguidores.add(usuario.hashCode());
+		if(!this.seguidores.contains(usuario.hashCode()))
+			this.seguidores.add(usuario.hashCode());
 	}
 	
 	
 	public void seguirUsuario(Usuario usuario) {
-		this.seguindo.add(usuario.hashCode());
-		usuario.addSeguidores(this);	
-		
+		if(!this.seguindo.contains(usuario.hashCode())){
+			this.seguindo.add(usuario.hashCode());
+			usuario.addSeguidores(this);				
+		}
 	}
 
 	public List<Som> getVisaoDosSons() throws SomException{

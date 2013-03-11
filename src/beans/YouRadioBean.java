@@ -1,5 +1,8 @@
 package beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -10,6 +13,7 @@ import excessoes.SessaoException;
 import excessoes.SomException;
 import excessoes.sistemaEncerradoException;
 
+import projeto.perfil.Som;
 import projeto.sistem.OrdenacoesFeedPrincipal;
 import projeto.sistem.YouRadio;
 import projeto.sistem.adapterWUISistema;
@@ -25,6 +29,10 @@ public class YouRadioBean {
 	private UsuarioLogadoBean usuarioLogado;
 	private String postagem;
 	private String seguir;
+	private String ordenador;
+	private String idSom;
+	
+	
 
 	public String getLogin() {
 		return login;
@@ -42,7 +50,10 @@ public class YouRadioBean {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-
+	public void favoritar() throws NumberFormatException, SessaoException, SomException, Exception{
+		System.out.println(idSom);
+		if( idSom.equals(""))	sistema.favoritarSom(idSessao,Integer.parseInt(idSom));
+	}
 	public String logar() {
 		try {
 			idSessao = sistema.abrirSessao(subLogin, senha);
@@ -85,14 +96,17 @@ public class YouRadioBean {
 	
 	public void ordenarRecentes() throws SessaoException, SomException{
 		usuarioLogado.setRegra(OrdenacoesFeedPrincipal.MAIS_RECENTES);
+		ordenador = "Recentes";
 	}
 	public void ordenarFavoritos() throws SessaoException, SomException{
 
 		usuarioLogado.setRegra(OrdenacoesFeedPrincipal.DE_QUEM_FAVORITEI_NO_PASSADO);
+		ordenador = "Favoritos";
 	}
 	public void ordenarPopular() throws SessaoException, SomException{
 
 		usuarioLogado.setRegra(OrdenacoesFeedPrincipal.COM_MAIS_FAVORITOS);
+		ordenador = "Popular";
 	}
 
 	public String postar() {
@@ -148,11 +162,11 @@ public class YouRadioBean {
 
 			try {
 				sistema.seguirUsuario(idSessao, seguir);
-				usuarioLogado.setFeedPrincipal(sistema.getMainFeed(idSessao));
 				FacesContext context = FacesContext.getCurrentInstance();
-				context.addMessage(null, new FacesMessage("Ok", ("Agora você está seguindo "+ seguir)));
+				context.addMessage(null, new FacesMessage("OK", "adicionado com sucesso"));
 				
-			} catch (SessaoException e) {
+				usuarioLogado.setFeedPrincipal(sistema.getMainFeed(idSessao));
+				} catch (SessaoException e) {
 				FacesContext context = FacesContext.getCurrentInstance();
 				context.addMessage(null, new FacesMessage("Falhou", e.getLocalizedMessage()));
 				
@@ -163,6 +177,23 @@ public class YouRadioBean {
 			}finally{seguir = null;}
 
 		}
+	}
+
+	public String getOrdenador() {
+		return ordenador;
+	}
+
+	public void setOrdenador(String ordenador) {
+		this.ordenador = ordenador;
+	}
+
+	
+	public String getIdSom() {
+		return idSom;
+	}
+
+	public void setIdSom(String idSom) {
+		this.idSom = idSom;
 	}
 
 }

@@ -59,42 +59,52 @@
 						<p:dataList var="feed" value="#{usuarioLogado.feed}"
 							itemType="square">
 
-							<a href="#{feed}" target="_blank"> #{feed} </a>
+							<a href="#{feed.link}" target="_blank"> #{feed.link} </a>
 
 
 
 
 						</p:dataList>
 					</p:panel>
-					<p:splitButton value="Recentes"
+					<p:row>
+					<p:commandButton value="Recentes"
 						actionListener="#{youRadioBean.ordenarRecentes}" ajax="false">
-						<p:menuitem value="Popular"
+						<p:commandButton value="Popular"
 							actionListener="#{youRadioBean.ordenarPopular}" ajax="false" />
-						<p:menuitem value="Favoritos"
+						<p:commandButton value="Favoritos"
 							actionListener="#{youRadioBean.ordenarFavoritos}" ajax="false" />
-					</p:splitButton>
-					<p:panel header="Feed Principal">
+					</p:commandButton></p:row>
+					<p:panel header="Feed Principal  - #{youRadioBean.ordenador}">
 
 
 
-						<p:dataList var="feed" value="#{usuarioLogado.feedPrincipal}"
+						<p:dataList var="feedPrincipal" value="#{usuarioLogado.feedPrincipal}"
 							itemType="square">
+							<p:row>
+								
+								<a href="#{feedPrincipal.link}" target="_blank">  #{feedPrincipal.link} - id:#{feedPrincipal.id}  </a>
 
-							<a href="#{feed}" target="_blank"> #{feed} </a>
 
+			
 
+							</p:row>
 
 
 						</p:dataList>
+						<p:row>
+						<h:outputText value="Digite o id do Som    " />
+						<p:inputText value="#{youRadioBean.idSom}" required="false" />
+						<p:commandButton value="Favoritar" action="#{youRadioBean.favoritar}" ajax = "false"></p:commandButton>
+						</p:row>			
 					</p:panel>
 					<p:panel header="Quem estou seguindo">
 						<p:scrollPanel style="width:672px;height:200px">
 							<p:dataGrid var="seguindo" value="#{usuarioLogado.seguindo}"
 								columns="5">
-								<p:panel header="#{seguindo.nome}" style="text-align:center">
-									<h:panelGrid columns="2" style="width:100%">
-										<h:outputText value="#{seguindo.desde}" />
-									</h:panelGrid>
+								<p:panel header="#{seguindo.nome}" style="width:80px;height:100px">
+								
+										<p:graphicImage width="40" height="40" 	value="/images/profile.jpg" />
+								
 								</p:panel>
 							</p:dataGrid>
 						</p:scrollPanel>
