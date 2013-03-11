@@ -233,6 +233,11 @@ public class YouRadio implements Serializable{
 		return this.dados.usuario(sessaoId).getListaDeSeguidores();
 	}
 
+	//Teste Feito, algumas duvidas
+	public Collection<Integer> getListaDeSeguindo(int sessaoId) throws SessaoException {
+		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
+		return this.dados.usuario(sessaoId).getListaDeSeguindo();
+	}
 
 	public void seguirUsuario(int idSessao, String login) throws SessaoException, LoginException {
 		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
@@ -289,7 +294,9 @@ public class YouRadio implements Serializable{
 		return this.dados.contemSessao(Integer.parseInt(sessaoId));
 	}
 
-
+	public Som Som(int idSom) throws SomException{
+		return dados.Som(idSom);
+	}
 	
 	public List<Integer> getMainFeed(int idSessao) throws SessaoException, SomException {
 		if(!dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");

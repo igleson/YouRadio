@@ -278,4 +278,9 @@ public class Usuario implements Serializable{
 		return new ArrayList<Integer>();
 	}
 
+
+	public Collection<Integer> getListaDeSeguindo() {
+		return this.seguindo;
+	}
+
 }
