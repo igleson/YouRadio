@@ -11,7 +11,6 @@ import excessoes.CadastroException;
 import excessoes.UsuarioException;
 import excessoes.sistemaEncerradoException;
 
-import projeto.sistem.YouRadio;
 import projeto.sistem.adapterWUISistema;
 
 @ManagedBean

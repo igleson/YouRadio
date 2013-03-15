@@ -14,7 +14,8 @@
 
 <h:body>
 	<h:form>
-		<p:growl id="messages" />
+	<p:growl id="messages" showDetail="true" sticky="true"/> 
+	
 		<p:dataGrid var="usuarioLogado" value="#{youRadioBean.usuarioLogado}">
 			<p:panel header="You Radio - #{usuarioLogado.nome}"
 				footer="Fagner Gomes, Igleson Freire, Leonardo Avelino e Raiff Ramalho">
@@ -68,26 +69,22 @@
 					</p:panel>
 					<p:row>
 					<p:commandButton value="Recentes"
-						actionListener="#{youRadioBean.ordenarRecentes}" ajax="false">
+						actionListener="#{youRadioBean.ordenarRecentes()}" ajax="false">
 						<p:commandButton value="Popular"
-							actionListener="#{youRadioBean.ordenarPopular}" ajax="false" />
+							actionListener="#{youRadioBean.ordenarPopular()}" ajax="false" />
 						<p:commandButton value="Favoritos"
-							actionListener="#{youRadioBean.ordenarFavoritos}" ajax="false" />
+							actionListener="#{youRadioBean.ordenarFavoritos()}" ajax="false" />
 					</p:commandButton></p:row>
 					<p:panel header="Feed Principal  - #{youRadioBean.ordenador}">
 
 
 
-						<p:dataList var="feedPrincipal" value="#{usuarioLogado.feedPrincipal}"
-							itemType="square">
-							<p:row>
+						  <p:dataList var="musicas" value="#{usuarioLogado.feedPrincipal}">
+
+								<h:outputLabel value="#{musicas.link}" />  
+								<p:commandButton value="Favoritar" action="#{youRadioBean.favoritar(musicas.getId())}" ajax = "false"></p:commandButton>
 								
-								<a href="#{feedPrincipal.link}" target="_blank">  #{feedPrincipal.link} - id:#{feedPrincipal.id}  </a>
-
-
-			
-
-							</p:row>
+		
 
 
 						</p:dataList>

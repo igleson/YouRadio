@@ -6,19 +6,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
-import excessoes.LoginException;
 import excessoes.SessaoException;
 import excessoes.SomException;
 import excessoes.sistemaEncerradoException;
-import gerenciadorDeDados.DadosDoSistema;
-
 import projeto.perfil.Som;
-import projeto.sistem.OrdenacoesFeedPrincipal;
-import projeto.sistem.YouRadio;
 import projeto.sistem.adapterWUISistema;
 
 public class UsuarioLogadoBean implements Serializable {
@@ -30,8 +21,7 @@ public class UsuarioLogadoBean implements Serializable {
 	private List<Som> feed;
 	private adapterWUISistema sistema;
 	private int idSessao;
-	private List<Som> feedPrincipal;
-	private OrdenacoesFeedPrincipal regra;
+
 
 
 	public UsuarioLogadoBean(String nome, int idSessao) throws SessaoException,
@@ -110,22 +100,14 @@ public class UsuarioLogadoBean implements Serializable {
 		this.idSessao = idSessao;
 	}
 
-	public List<Som> getFeedPrincipal() {
-		return feedPrincipal;
+	public List<Som> getFeedPrincipal() throws SessaoException, SomException {
+		return sistema.getMainFeed(idSessao);
 	}
 
 	public void setFeedPrincipal(List<Som> feedPrincipal) {
-		this.feedPrincipal = feedPrincipal;
+		//this.feedPrincipal = feedPrincipal;
 	}
 
-	public OrdenacoesFeedPrincipal getRegra() {
-		return regra;
-	}
 
-	public void setRegra(OrdenacoesFeedPrincipal regra) throws SessaoException, SomException {
-		sistema.setMainFeedRule(idSessao, regra);
-		feedPrincipal = sistema.getMainFeed(idSessao);
-		this.regra = regra;
-	}
 
 }
