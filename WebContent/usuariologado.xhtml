@@ -14,8 +14,8 @@
 
 <h:body>
 	<h:form>
-	<p:growl id="messages" showDetail="true" sticky="true"/> 
-	
+		<p:growl id="messages" showDetail="true" sticky="true" />
+
 		<p:dataGrid var="usuarioLogado" value="#{youRadioBean.usuarioLogado}">
 			<p:panel header="You Radio - #{usuarioLogado.nome}"
 				footer="Fagner Gomes, Igleson Freire, Leonardo Avelino e Raiff Ramalho">
@@ -46,6 +46,7 @@
 						<p:row>
 							<p:inputTextarea rows="3" cols="57" minQueryLength="4"
 								value="#{youRadioBean.postagem}" />
+							<!--  -->
 							<p:commandButton value="postar" action="#{youRadioBean.postar}"
 								ajax="false"></p:commandButton>
 							<p:commandButton value="apagar" action="#{youRadioBean.apagar}"
@@ -68,40 +69,42 @@
 						</p:dataList>
 					</p:panel>
 					<p:row>
-					<p:commandButton value="Recentes"
-						actionListener="#{youRadioBean.ordenarRecentes()}" ajax="false">
-						<p:commandButton value="Popular"
-							actionListener="#{youRadioBean.ordenarPopular()}" ajax="false" />
-						<p:commandButton value="Favoritos"
-							actionListener="#{youRadioBean.ordenarFavoritos()}" ajax="false" />
-					</p:commandButton></p:row>
-					<p:panel header="Feed Principal  - #{youRadioBean.ordenador}">
+						<p:commandButton value="Recentes"
+							actionListener="#{youRadioBean.ordenarRecentes()}" ajax="false">
+							<p:commandButton value="Popular"
+								actionListener="#{youRadioBean.ordenarPopular()}" ajax="false" />
+							<p:commandButton value="Favoritos"
+								actionListener="#{youRadioBean.ordenarFavoritos()}" ajax="false" />
+						</p:commandButton>
+					</p:row>
+					<p:panel  header="Feed Principal  - #{youRadioBean.ordenador}">
 
 
 
-						  <p:dataList var="musicas" value="#{usuarioLogado.feedPrincipal}">
+						<p:dataList var="musica" value="#{usuarioLogado.feedPrincipal}">
+							
+								<h:outputText value="#{musica.link}" />
+								<!--  -->
+								<p:commandButton style="height:30px"
+									value="#{musica.getQtdeFavoritados()} " icon="ui-icon-check"
+									action="#{youRadioBean.favoritar(musica)}" ajax="true" ></p:commandButton>
+							<p/>
 
-								<h:outputLabel value="#{musicas.link}" />  
-								<p:commandButton value="Favoritar" action="#{youRadioBean.favoritar(musicas.getId())}" ajax = "false"></p:commandButton>
-								
-		
 
 
 						</p:dataList>
-						<p:row>
-						<h:outputText value="Digite o id do Som    " />
-						<p:inputText value="#{youRadioBean.idSom}" required="false" />
-						<p:commandButton value="Favoritar" action="#{youRadioBean.favoritar}" ajax = "false"></p:commandButton>
-						</p:row>			
+
 					</p:panel>
 					<p:panel header="Quem estou seguindo">
 						<p:scrollPanel style="width:672px;height:200px">
 							<p:dataGrid var="seguindo" value="#{usuarioLogado.seguindo}"
 								columns="5">
-								<p:panel header="#{seguindo.nome}" style="width:80px;height:100px">
-								
-										<p:graphicImage width="40" height="40" 	value="/images/profile.jpg" />
-								
+								<p:panel header="#{seguindo.nome}"
+									style="height:100px">
+
+									<p:graphicImage width="40" height="40"
+										value="/images/profile.jpg" />
+
 								</p:panel>
 							</p:dataGrid>
 						</p:scrollPanel>

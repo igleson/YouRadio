@@ -23,7 +23,7 @@ public class YouRadioBean {
 	private String postagem;
 	private String seguir;
 	private String ordenador;
-	private String idSom;
+
 
 	public String getLogin() {
 		return login;
@@ -42,14 +42,22 @@ public class YouRadioBean {
 		this.senha = senha;
 	}
 
-	public void favoritar(Integer musica) throws SessaoException,
-			SomException, Exception {
+	public void favoritar(projeto.perfil.Som musica){
 	
-		System.out.println(musica);
-		if (!idSom.equals(""))
 		
-			sistema.favoritarSom(idSessao, musica);
-			idSom = null;
+		
+			try {
+				sistema.favoritarSom(idSessao, musica.getId());
+			} catch (SessaoException e) {
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null,new FacesMessage("Falhou", e.getLocalizedMessage()));
+
+			} catch (SomException e) {
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null,new FacesMessage("Falhou", e.getLocalizedMessage()));
+
+			}
+
 	}
 
 	public String logar() {
@@ -70,13 +78,17 @@ public class YouRadioBean {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null,
 					new FacesMessage("Falhou", e.getLocalizedMessage()));
-			e.printStackTrace();
+			
 
 		} catch (SomException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// FacesContext context = FacesContext.getCurrentInstance();
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null,new FacesMessage("Falhou", e.getLocalizedMessage()));
+
+			
 		} finally {
 			login = null;
+			senha = null;
 		}
 		return null;
 	}
@@ -84,6 +96,7 @@ public class YouRadioBean {
 	public String deslogar() {
 		sistema.encerrarSessao(subLogin);
 		usuarioLogado = null;
+		subLogin = null;
 		return "faces/index.xhtml";
 	}
 
@@ -196,12 +209,5 @@ public class YouRadioBean {
 		this.ordenador = ordenador;
 	}
 
-	public String getIdSom() {
-		return idSom;
-	}
-
-	public void setIdSom(String idSom) {
-		this.idSom = idSom;
-	}
 
 }

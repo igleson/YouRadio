@@ -38,7 +38,12 @@ public class UsuarioLogadoBean implements Serializable {
 		List<SeguindoBean> retorno = new ArrayList<SeguindoBean>();
 		Collection<String> seguindo = sistema.getListaDeSeguindo(getIdSessao());
 		for (String nome : seguindo) {
-			retorno.add(new SeguindoBean(nome)); 
+			if (nome.length()>10){
+			retorno.add(new SeguindoBean(nome.substring(0, 10)));
+			}
+			else{
+				retorno.add(new SeguindoBean(nome));
+			}
 		}
 		return retorno;
 	}
