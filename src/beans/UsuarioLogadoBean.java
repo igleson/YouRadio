@@ -66,7 +66,6 @@ public class UsuarioLogadoBean implements Serializable {
 					e.printStackTrace();
 				}
 				return null;
-			
 	}
 
 	
@@ -106,10 +105,30 @@ public class UsuarioLogadoBean implements Serializable {
 		this.idSessao = idSessao;
 	}
 
-	public List<Som> getFeedPrincipal() throws SessaoException, SomException {
-		return sistema.getMainFeed(idSessao);
+	public List<Som> getFeedPrincipal(){
+		try {
+			return sistema.getMainFeed(idSessao);
+		} catch (SessaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SomException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
-
+	public List<Som> feedExtra(){
+		try {
+			return sistema.feedExtra(idSessao);
+		} catch (SessaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SomException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public void setFeedPrincipal(List<Som> feedPrincipal) {
 		//this.feedPrincipal = feedPrincipal;
 	}

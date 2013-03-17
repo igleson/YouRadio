@@ -58,7 +58,7 @@
 
 
 
-						<p:dataList var="feed" value="#{usuarioLogado.feed}"
+						  <p:dataList var="feed" value="#{usuarioLogado.feed}"
 							itemType="square">
 
 							<a href="#{feed.link}" target="_blank"> #{feed.link} </a>
@@ -76,8 +76,6 @@
 							<p:commandButton value="Favoritos"
 								actionListener="#{youRadioBean.ordenarFavoritos()}" ajax="false" />
 
-						<p:commandButton value="Extra"
-							actionListener="#{youRadioBean.ordenarFeedExtra()}" ajax="false" />
 
 					</p:row>
 					<p:panel header="Feed Principal  - #{youRadioBean.ordenador}">
@@ -90,8 +88,26 @@
 							<!--  -->
 							<p:commandButton style="height:30px"
 								value="#{musica.getQtdeFavoritados()} " icon="ui-icon-check"
-								action="#{youRadioBean.favoritar(musica)}" ajax="true"></p:commandButton>
-							<p />
+								action="#{youRadioBean.favoritar(musica)}" ajax="false"></p:commandButton>
+							<p/>
+
+
+
+						</p:dataList>
+
+					</p:panel>
+					<p:panel header="Feed Extra">
+
+
+
+						<p:dataList var="musica" value="#{usuarioLogado.feedExtra()}">
+
+							<h:outputText value="#{musica.link}" />
+							
+							<p:commandButton style="height:30px"
+								value="#{musica.getQtdeFavoritados()} " icon="ui-icon-check"
+								action="#{youRadioBean.favoritar(musica)}" ajax="false"></p:commandButton>
+							<p/> 
 
 
 

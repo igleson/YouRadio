@@ -1,6 +1,5 @@
 package beans;
 
-import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -20,20 +19,18 @@ public class YouRadioBean {
 	private String senha;
 	private String subLogin;
 	private adapterWUISistema sistema = new adapterWUISistema();
-	private int idSessao;
+	private Integer idSessao;
 	private UsuarioLogadoBean usuarioLogado;
 	private String postagem;
 	private String seguir;
 	private String ordenador;
-	
-
 
 	public String getLogin() {
 		return login;
 	}
 
 	public void setLogin(String login) {
-		this.subLogin = login;
+		
 		this.login = login;
 	}
 
@@ -45,28 +42,37 @@ public class YouRadioBean {
 		this.senha = senha;
 	}
 
-	public void favoritar(projeto.perfil.Som musica){
-	
-		
-		
-			try {
-				sistema.favoritarSom(idSessao, musica.getId());
-			} catch (SessaoException e) {
-				FacesContext context = FacesContext.getCurrentInstance();
-				context.addMessage(null,new FacesMessage("Falhou", e.getLocalizedMessage()));
+	public void favoritar(projeto.perfil.Som musica) {
 
-			} catch (SomException e) {
-				FacesContext context = FacesContext.getCurrentInstance();
-				context.addMessage(null,new FacesMessage("Falhou", e.getLocalizedMessage()));
+		try {
+			sistema.favoritarSom(idSessao, musica.getId());
+		} catch (SessaoException e) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null,
+					new FacesMessage("Falhou", e.getLocalizedMessage()));
 
-			}
+		} catch (SomException e) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null,
+					new FacesMessage("Falhou", e.getLocalizedMessage()));
+
+		}
+
+	}
+
+	public boolean favoritou(projeto.perfil.Som som) {
+		System.out.println(som.usuarioFavoritou(sistema.usuario(idSessao)));
+		return som.usuarioFavoritou(sistema.usuario(idSessao));
 
 	}
 
 	public String logar() {
 		try {
-			idSessao = sistema.abrirSessao(subLogin, senha);
-			usuarioLogado = new UsuarioLogadoBean(subLogin, idSessao);
+		if (usuarioLogado == null) {
+				this.subLogin = login;
+				idSessao = sistema.abrirSessao(subLogin, senha);
+				usuarioLogado = new UsuarioLogadoBean(subLogin, idSessao);
+			}
 			return "faces/usuariologado.xhtml";
 
 		} catch (LoginException e) {
@@ -81,14 +87,13 @@ public class YouRadioBean {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null,
 					new FacesMessage("Falhou", e.getLocalizedMessage()));
-			
 
 		} catch (SomException e) {
 			// FacesContext context = FacesContext.getCurrentInstance();
 			FacesContext context = FacesContext.getCurrentInstance();
-			context.addMessage(null,new FacesMessage("Falhou", e.getLocalizedMessage()));
+			context.addMessage(null,
+					new FacesMessage("Falhou", e.getLocalizedMessage()));
 
-			
 		} finally {
 			login = null;
 			senha = null;
@@ -98,9 +103,20 @@ public class YouRadioBean {
 
 	public String deslogar() {
 		sistema.encerrarSessao(subLogin);
-		usuarioLogado = null;
-		subLogin = null;
+		dispose();
 		return "faces/index.xhtml";
+	}
+
+	private void dispose() {
+		login = "";
+		senha = "";
+		subLogin = "";
+		idSessao = 0;
+		usuarioLogado = null;
+		postagem = "";
+		seguir = "";
+		ordenador = "";
+
 	}
 
 	public UsuarioLogadoBean getUsuarioLogado() {
@@ -112,11 +128,6 @@ public class YouRadioBean {
 		ordenador = "Recentes";
 	}
 
-	public void ordenarFavoritos() throws SessaoException, SomException {
-		sistema.setMainFeedRule(idSessao,
-				OrdenacoesFeedPrincipal.DE_QUEM_FAVORITEI_NO_PASSADO);
-		ordenador = "Favoritos";
-	}
 
 	public void ordenarPopular() throws SessaoException, SomException {
 		sistema.setMainFeedRule(idSessao,
@@ -124,11 +135,12 @@ public class YouRadioBean {
 		ordenador = "Popular";
 	}
 	
-	public void ordenarFeedExtra() throws SessaoException, SomException {
+	public void ordenarFavoritos() throws SessaoException, SomException {
 		sistema.setMainFeedRule(idSessao,
-				OrdenacoesFeedPrincipal.COM_MAIS_FAVORITOS);
-		ordenador = "Extra";
+				OrdenacoesFeedPrincipal.DE_QUEM_FAVORITEI_NO_PASSADO);
+		ordenador = "Favoritos";
 	}
+
 
 	public String postar() {
 		if (postagem.equals(""))
@@ -217,9 +229,5 @@ public class YouRadioBean {
 	public void setOrdenador(String ordenador) {
 		this.ordenador = ordenador;
 	}
-	
-	
-	
-	
 
 }
