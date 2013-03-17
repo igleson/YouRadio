@@ -100,6 +100,8 @@ public class YouRadio implements Serializable{
 	 * @throws SessaoException, sistemaEncerradoException
 	 * 
 	 **/
+	
+	// testar
 	public List<Integer> getPerfilMusical(int sessaoId) throws SessaoException, sistemaEncerradoException {
 		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
 		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessao inexistente");
@@ -206,7 +208,6 @@ public class YouRadio implements Serializable{
 		return this.dados.sessaoExiste(idSessao);
 	}
 	
-	
 	/**
 	 * @return void
 	 **/
@@ -215,29 +216,29 @@ public class YouRadio implements Serializable{
 		this.dados = null;
 	}
 
-	//TESTE FEITO
 	public String getIdUsuario(int sessaoId) throws SessaoException {
 		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
 		return Integer.toString(dados.usuario(sessaoId).hashCode());
 	}
 
-	//Teste Feito, algumas duvidass
+
 	public List<Integer> getFontesDeSons(int sessaoId) throws SessaoException {
 		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(sessaoId).getFontesDeSons();
 	}
 
-	//Teste Feito, algumas duvidas
+
 	public Collection<Integer> getListaDeSeguidores(int sessaoId) throws SessaoException {
 		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(sessaoId).getListaDeSeguidores();
 	}
 
-	//Teste Feito, algumas duvidas
+
 	public Collection<Integer> getListaDeSeguindo(int sessaoId) throws SessaoException {
 		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(sessaoId).getListaDeSeguindo();
 	}
+
 
 	public void seguirUsuario(int idSessao, String login) throws SessaoException, LoginException {
 		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
@@ -246,58 +247,65 @@ public class YouRadio implements Serializable{
 		this.dados.usuario(idSessao).seguirUsuario(this.dados.usuario(login));
 	}
 
-	//Teste Feito
+
 	public int getNumeroDeSeguidores(int idSessao) throws SessaoException {
 		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(idSessao).getNumeroDeSeguidores();
 	}
 
-	//NOVO METODO
+	//testar
 	public Usuario usuario(int idSessao) {
 		return dados.usuario(idSessao);
 	}
 
-	//NOVO METODO
+	//testar
 	public Usuario usuario(String login) throws SessaoException {
 		if(login == null || login.equals("")) throw new SessaoException("Sessão inválida");
 		return dados.usuario(login);
 	}
 	
+
 	public List<Som> getVisaoDosSons(int idSessao) throws SessaoException, SomException{
 		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(idSessao).getVisaoDosSons();
 	}
 	
+	
 	public void favoritarSom(int sessaoId, int idSom) throws SessaoException, SomException{
 		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
 		this.dados.usuario(sessaoId).favoritarSom(idSom);		
 	}
-
+	
+	
 	public List<Integer> getSonsFavoritos(int sessaoId) throws SessaoException, sistemaEncerradoException {
 		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(sessaoId).getSonsFavoritos();
 	}
-
+	
+	//testar
 	public List<Integer> getFeedExtra(int idSessao) throws SessaoException {
 		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(idSessao).getFeedExtra();
 	}
 	
+	//testar
 	public void setMainFeedRule(int idSessao, OrdenacoesFeedPrincipal ordem) throws SessaoException {
 		if(!dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
 		Usuario usuario = dados.usuario(idSessao);
 		usuario.setMainFeedRule(ordem);
 	}	
 
-
+	//testar
 	public boolean contemSessao(String sessaoId) {
 		return this.dados.contemSessao(Integer.parseInt(sessaoId));
 	}
-
+	
+	//testar
 	public Som Som(int idSom) throws SomException{
 		return dados.Som(idSom);
 	}
 	
+	//testar
 	public List<Integer> getMainFeed(int idSessao) throws SessaoException, SomException {
 		if(!dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
 		Usuario usuario = dados.usuario(idSessao);

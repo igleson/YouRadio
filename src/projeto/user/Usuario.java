@@ -114,6 +114,7 @@ public class Usuario implements Serializable{
 	 * @param senha a se averiguada
 	 * @return boolean 
 	 **/
+	//testar
 	public boolean testaSenha(String senha) {
 		return this.senha.equals(senha);
 	}
@@ -122,6 +123,7 @@ public class Usuario implements Serializable{
 	/**
 	 * @return  String 
 	 **/
+	//testar
 	public String getEmail() {
 		return email;
 	}
@@ -133,6 +135,7 @@ public class Usuario implements Serializable{
 	 * @throws UsuarioException
 	 * 
 	 **/
+	//testar
 	public void setEmail(String email) throws UsuarioException {
 		if (email == null || email.equals("")) throw new UsuarioException("Email inválido");
 		this.email = email;
@@ -143,6 +146,7 @@ public class Usuario implements Serializable{
 	 * @param som id - identificador do som
 	 * @return void 
 	 **/
+	//testar
 	public void postarSom(int somId) {
 		if (perfilMusical == null) perfilMusical = new ArrayList<Integer>();
 		perfilMusical.add(somId);		
@@ -152,11 +156,11 @@ public class Usuario implements Serializable{
 	/**
 	 * @return List<Integer>
 	 **/
+	//testar
 	public List<Integer> getPerfilMusical() {
 		if (perfilMusical == null) return new ArrayList<Integer>();
 		return perfilMusical;
 	}
-
 
 	public List<Integer> getFontesDeSons() {
 		List<Integer> retorno = new ArrayList<Integer>();
@@ -164,25 +168,26 @@ public class Usuario implements Serializable{
 		return retorno;
 
 	}
-	
+	//testar
 	public List<Integer> getListaDeSeguidores() {
 		return seguidores;
 	}
 	
 	
+	//testar
 	public void addSeguidores(Usuario usuario){
 		if(!this.seguidores.contains(usuario.hashCode()))
 			this.seguidores.add(usuario.hashCode());
 	}
 	
-	
+	//testar
 	public void seguirUsuario(Usuario usuario) {
 		if(!this.seguindo.contains(usuario.hashCode())){
 			this.seguindo.add(usuario.hashCode());
 			usuario.addSeguidores(this);				
 		}
 	}
-
+	//testar
 	public List<Som> getVisaoDosSons() throws SomException{
 		List<Som> retorno = new ArrayList<Som>();
 		DadosDoSistema dados = DadosDoSistema.getInstance();
@@ -201,7 +206,7 @@ public class Usuario implements Serializable{
 	public int getNumeroDeSeguidores() {
 		return this.seguidores.size();
 	}
-	
+	//testar
 	public void favoritarSom(int idSom) throws SomException{
 		sonsFavoritos.add(idSom);
 		DadosDoSistema dados = DadosDoSistema.getInstance();
@@ -211,18 +216,22 @@ public class Usuario implements Serializable{
 		}
 	}
 	
+	//testar
 	public List<Integer> getSonsFavoritos(){
 		return sonsFavoritos;
 	}
-
+	
+	//testar
 	public void adicionaAoFeedExtra(int somId){
 		this.feedExtra.add(somId);
 	}
 	
+	//testar
 	public List<Integer> getFeedExtra() {
 		return this.feedExtra;
 	}
-
+	
+	//testar
 	public void setMainFeedRule(OrdenacoesFeedPrincipal ordem) {
 		this.ordem = ordem;
 	}
@@ -249,6 +258,7 @@ public class Usuario implements Serializable{
 		return ids;
 	}
 	
+	//testar
 	public List<Integer> getMainFeed() throws SomException {
 		DadosDoSistema dados = DadosDoSistema.getInstance();
 		
@@ -279,7 +289,7 @@ public class Usuario implements Serializable{
 		return new ArrayList<Integer>();
 	}
 
-
+	//testar
 	public Collection<Integer> getListaDeSeguindo() {
 		return this.seguindo;
 	}

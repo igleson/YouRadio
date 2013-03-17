@@ -21,7 +21,6 @@ public class YouRadioFacade {
 	 private final String REGRA1 = "PRIMEIRO OS SONS POSTADOS MAIS RECENTEMENTE PELAS FONTES DE SONS";
 	 private final String REGRA2 = "PRIMEIRO OS SONS COM MAIS FAVORITOS";
 	 private final String REGRA3 = "PRIMEIRO SONS DE FONTES DAS QUAIS FAVORITEI SONS NO PASSADO";
-	private String regra;
 
 	public YouRadioFacade() {
 		sistema = new YouRadio();

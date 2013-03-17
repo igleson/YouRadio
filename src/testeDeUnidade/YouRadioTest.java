@@ -11,6 +11,7 @@ import excessoes.SessaoException;
 import excessoes.SomException;
 import excessoes.UsuarioException;
 import excessoes.sistemaEncerradoException;
+import gerenciadorDeDados.DadosDoSistema;
 
 import projeto.perfil.Som;
 import projeto.sistem.YouRadio;
@@ -18,12 +19,6 @@ import projeto.sistem.YouRadio;
 public class YouRadioTest {
 
 	YouRadio sistema;
-	
-	Som som02;
-	Som som03;
-	Som som04;
-	Som som05;
-	
 	
 	@Before
 	public void setup(){
@@ -334,8 +329,6 @@ public class YouRadioTest {
 		}
 	}
 	
-	
-	
 	@Test
 	public void testGetIdUsuarioSessaoInexistente() throws SessaoException{
 		try{
@@ -381,7 +374,6 @@ public class YouRadioTest {
 		}
 	}
 	
-	
 	@Test
 	public void testGetListaDeSeguidores() throws CadastroException, UsuarioException, sistemaEncerradoException, LoginException, SessaoException{
 		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
@@ -394,7 +386,6 @@ public class YouRadioTest {
 		assertEquals(1,sistema.usuario("steve").getListaDeSeguidores().size());
 	}
 	
-	
 	@Test
 	public void testGetNumeroDeSeguidoresSessaoInexistente(){
 		try{
@@ -403,7 +394,6 @@ public class YouRadioTest {
 			assertEquals("Sessão inexistente", e.getMessage());
 		}
 	}
-	
 	
 	@Test
 	public void testGetNumeroDeSeguidores() throws CadastroException, UsuarioException, sistemaEncerradoException, LoginException, SessaoException{
@@ -434,5 +424,142 @@ public class YouRadioTest {
 		assertEquals("mark@face.com", sistema.usuario("mark").getEmail());
 		assertEquals("steve@apple.com", sistema.usuario("steve").getEmail());
 	}
+	
+	
+	@Test
+	public void testEncerraSessao() throws CadastroException, UsuarioException, sistemaEncerradoException, LoginException{
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		int idSessao = sistema.abrirSessao("mark", "MaRk");
+		assertTrue(sistema.sessaoAberta(idSessao));
+		sistema.encerrarSessao("mark");
+		assertTrue(!sistema.sessaoAberta(idSessao));
+	}
+	
+	@Test
+	public void testSessaoAberta() throws CadastroException, UsuarioException, sistemaEncerradoException, LoginException{
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		int idSessao = 0;
+		assertFalse(sistema.sessaoAberta(idSessao));
+		idSessao = sistema.abrirSessao("mark", "MaRk");
+		assertTrue(sistema.sessaoAberta(idSessao));
+	}
+	
+	@Test
+	public void testSeguirUsuarioLoginInvalido() throws CadastroException, UsuarioException, sistemaEncerradoException,  SessaoException, LoginException{
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		sistema.criarUsuario("steve", "StEvE", "Steve", "steve@apple.com");
+		int idSessao = sistema.abrirSessao("mark", "MaRk");
+		
+		try{
+			sistema.seguirUsuario(idSessao, "mark");
+		}catch(LoginException e){
+			assertEquals("Login inválido", e.getMessage());
+		}
+		
+	}
+	
+	@Test
+	public void testSeguirUsuarioLoginInexistente() throws CadastroException, UsuarioException, sistemaEncerradoException,  SessaoException, LoginException{
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		sistema.criarUsuario("steve", "StEvE", "Steve", "steve@apple.com");
+		int idSessao = sistema.abrirSessao("mark", "MaRk");
+		
+		try{
+			sistema.seguirUsuario(idSessao, "jose");
+		}catch(LoginException e){
+			assertEquals("Login inexistente", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testSeguirUsuario() throws CadastroException, UsuarioException, sistemaEncerradoException, LoginException, SessaoException{
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		sistema.criarUsuario("steve", "StEvE", "Steve", "steve@apple.com");
+		int idSessao = sistema.abrirSessao("mark", "MaRk");
+		assertEquals(0, sistema.usuario("mark").getListaDeSeguindo().size());
+		sistema.seguirUsuario(idSessao, "steve");
+		assertEquals(1, sistema.usuario("mark").getListaDeSeguindo().size());
+	}
+	
+	@Test
+	public void testSeguirUsuarioSessaoInexistente() throws CadastroException, UsuarioException, sistemaEncerradoException,  SessaoException, LoginException{
+		try{
+			sistema.seguirUsuario(1237, "jose");
+		}catch(SessaoException e){
+			assertEquals("Sessão inexistente", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testGetVisaoDeSonsSessaoInexistente() throws SomException{
+		try{
+			sistema.getVisaoDosSons(123456);
+		}catch(SessaoException e){
+			assertEquals("Sessão inexistente", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testGetVisaoDosSons() throws CadastroException, UsuarioException, sistemaEncerradoException, SessaoException, LoginException, SomException{
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		sistema.criarUsuario("steve", "StEvE", "Steve", "steve@apple.com");		
+		int idSessao = sistema.abrirSessao("mark", "MaRk");
+		sistema.postarSom(idSessao, "musica1");
+		sistema.postarSom(idSessao, "musica2");
+		sistema.postarSom(idSessao, "musica3");
+		int idSessao2 = sistema.abrirSessao("steve", "StEvE");
+		assertEquals(0,sistema.getVisaoDosSons(idSessao2).size());
+		sistema.seguirUsuario(idSessao2, "mark");
+		assertEquals(3,sistema.getVisaoDosSons(idSessao2).size());
+	}
+	
+	
+	@Test
+	public void testFavoritarSomSessaoInexistente() throws SomException{
+		try{
+			sistema.favoritarSom(123456,9876);
+		}catch(SessaoException e){
+			assertEquals("Sessão inexistente", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testFavoritarSomComSomInexistente() throws SomException, CadastroException, UsuarioException, sistemaEncerradoException, LoginException{
+		
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		int idSessao = sistema.abrirSessao("mark", "MaRk");
+		try{
+			sistema.favoritarSom(idSessao,9876);
+		}catch(SessaoException e){
+			fail();
+		}catch(SomException e){
+			assertEquals("Som inexistente", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testFavoritarSom() throws SomException, CadastroException, UsuarioException, sistemaEncerradoException, LoginException, SessaoException{
+		
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		int idSessao = sistema.abrirSessao("mark", "MaRk");
+		int idSom = sistema.postarSom(idSessao, "musica1");
+		sistema.favoritarSom(idSessao,idSom);
+		assertEquals(idSom,sistema.usuario("mark").getSonsFavoritos().get(0).hashCode());
+		
+	}
+	
+	@Test
+	public void testGetSonsFavoritos() throws SomException, CadastroException, UsuarioException, sistemaEncerradoException, LoginException, SessaoException{
+		
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		int idSessao = sistema.abrirSessao("mark", "MaRk");
+		int idSom = sistema.postarSom(idSessao, "musica1");
+		sistema.favoritarSom(idSessao,idSom);
+		assertEquals(1,sistema.usuario("mark").getSonsFavoritos().size());
+		
+	}
+	
+	
+	
 	
 }
