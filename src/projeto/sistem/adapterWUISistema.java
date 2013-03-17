@@ -176,4 +176,8 @@ public class adapterWUISistema {
 		return retorno;
 	}
 	
+	public List<Som> feedExtra(int idSessao) throws SessaoException, SomException{
+		return idsParaSons(sistema.getFeedExtra(idSessao));
+	}
+	
 }

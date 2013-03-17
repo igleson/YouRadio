@@ -32,6 +32,7 @@ public class UsuarioLogadoBean implements Serializable {
 		setFeedPrincipal(sistema.getMainFeed(idSessao));
 		setSeguindo(usuariosSenguidos());
 		setFeed(perfilMusical());
+		
 	}
 
 	private List<SeguindoBean> usuariosSenguidos() throws SessaoException {
@@ -112,6 +113,8 @@ public class UsuarioLogadoBean implements Serializable {
 	public void setFeedPrincipal(List<Som> feedPrincipal) {
 		//this.feedPrincipal = feedPrincipal;
 	}
+	
+	
 
 
 

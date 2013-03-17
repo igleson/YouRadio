@@ -70,37 +70,40 @@
 					</p:panel>
 					<p:row>
 						<p:commandButton value="Recentes"
-							actionListener="#{youRadioBean.ordenarRecentes()}" ajax="false">
+							actionListener="#{youRadioBean.ordenarRecentes()}" ajax="false"/>
 							<p:commandButton value="Popular"
 								actionListener="#{youRadioBean.ordenarPopular()}" ajax="false" />
 							<p:commandButton value="Favoritos"
 								actionListener="#{youRadioBean.ordenarFavoritos()}" ajax="false" />
-						</p:commandButton>
+
+						<p:commandButton value="Extra"
+							actionListener="#{youRadioBean.ordenarFeedExtra()}" ajax="false" />
+
 					</p:row>
-					<p:panel  header="Feed Principal  - #{youRadioBean.ordenador}">
+					<p:panel header="Feed Principal  - #{youRadioBean.ordenador}">
 
 
 
 						<p:dataList var="musica" value="#{usuarioLogado.feedPrincipal}">
-							
-								<h:outputText value="#{musica.link}" />
-								<!--  -->
-								<p:commandButton style="height:30px"
-									value="#{musica.getQtdeFavoritados()} " icon="ui-icon-check"
-									action="#{youRadioBean.favoritar(musica)}" ajax="true" ></p:commandButton>
-							<p/>
+
+							<h:outputText value="#{musica.link}" />
+							<!--  -->
+							<p:commandButton style="height:30px"
+								value="#{musica.getQtdeFavoritados()} " icon="ui-icon-check"
+								action="#{youRadioBean.favoritar(musica)}" ajax="true"></p:commandButton>
+							<p />
 
 
 
 						</p:dataList>
 
 					</p:panel>
+
 					<p:panel header="Quem estou seguindo">
 						<p:scrollPanel style="width:672px;height:200px">
 							<p:dataGrid var="seguindo" value="#{usuarioLogado.seguindo}"
 								columns="5">
-								<p:panel header="#{seguindo.nome}"
-									style="height:100px">
+								<p:panel header="#{seguindo.nome}" style="height:100px">
 
 									<p:graphicImage width="40" height="40"
 										value="/images/profile.jpg" />

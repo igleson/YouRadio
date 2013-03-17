@@ -1,5 +1,7 @@
 package beans;
 
+import java.util.List;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -23,6 +25,7 @@ public class YouRadioBean {
 	private String postagem;
 	private String seguir;
 	private String ordenador;
+	
 
 
 	public String getLogin() {
@@ -120,6 +123,12 @@ public class YouRadioBean {
 				OrdenacoesFeedPrincipal.COM_MAIS_FAVORITOS);
 		ordenador = "Popular";
 	}
+	
+	public void ordenarFeedExtra() throws SessaoException, SomException {
+		sistema.setMainFeedRule(idSessao,
+				OrdenacoesFeedPrincipal.COM_MAIS_FAVORITOS);
+		ordenador = "Extra";
+	}
 
 	public String postar() {
 		if (postagem.equals(""))
@@ -208,6 +217,9 @@ public class YouRadioBean {
 	public void setOrdenador(String ordenador) {
 		this.ordenador = ordenador;
 	}
-
+	
+	
+	
+	
 
 }
