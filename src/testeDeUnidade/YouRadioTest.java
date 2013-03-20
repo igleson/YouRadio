@@ -560,6 +560,76 @@ public class YouRadioTest {
 	}
 	
 	
+	@Test
+	public void testGetNumFavoritosEmComum() throws CadastroException, UsuarioException, sistemaEncerradoException, LoginException, SomException, SessaoException{
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		sistema.criarUsuario("steve", "StEvE", "Steve", "steve@apple.com");		
+		
+		int idSessao = sistema.abrirSessao("mark", "MaRk");
+		int som1 = sistema.postarSom(idSessao, "musica1");
+		int som2 = sistema.postarSom(idSessao, "musica2");
+		int som3 = sistema.postarSom(idSessao, "musica3");
+		
+		int idSessao2 = sistema.abrirSessao("steve", "StEvE");
+		int som4 = sistema.postarSom(idSessao2, "musica4");
+		int som5 = sistema.postarSom(idSessao2, "musica5");
+		int som6 = sistema.postarSom(idSessao2, "musica6");
+		
+		
+		
+		int idUsuario1 = Integer.parseInt(sistema.getIdUsuario(idSessao));
+		int idUsuario2 = Integer.parseInt(sistema.getIdUsuario(idSessao2));
+		
+		sistema.favoritarSom(idSessao, som1);
+		sistema.favoritarSom(idSessao, som2);
+		sistema.favoritarSom(idSessao, som5);
+		
+		sistema.favoritarSom(idSessao2, som4);
+		sistema.favoritarSom(idSessao2, som6);
+		
+		assertEquals(0,sistema.getNumFavoritosEmComum(idSessao, idUsuario2));
+		
+		sistema.favoritarSom(idSessao2, som1);
+		sistema.favoritarSom(idSessao2, som2);
+		
+		assertEquals(2,sistema.getNumFavoritosEmComum(idSessao, idUsuario2));
+		assertEquals(2,sistema.getNumFavoritosEmComum(idSessao2, idUsuario1));
+		
+		
+	}
+	
+	@Test
+	public void testGetNumFontesEmComum() throws CadastroException, UsuarioException, sistemaEncerradoException, LoginException, SomException, SessaoException{
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		sistema.criarUsuario("steve", "StEvE", "Steve", "steve@apple.com");	
+		sistema.criarUsuario("raiff", "gruffs", "Raiff", "bo");
+		sistema.criarUsuario("igls", "iglfreire", "Iglesson", "bi");
+		sistema.criarUsuario("fagner", "bifah", "Fagner", "be");
+		sistema.criarUsuario("leo", "lheo", "Leonardo", "ba");
+		
+		int idSessao = sistema.abrirSessao("mark", "MaRk");
+		int idSessao2 = sistema.abrirSessao("steve", "StEvE");
+		
+		sistema.seguirUsuario(idSessao, "raiff");
+		sistema.seguirUsuario(idSessao, "fagner");
+		sistema.seguirUsuario(idSessao2, "leo");
+		
+		int idUsuario1 = Integer.parseInt(sistema.getIdUsuario(idSessao));
+		int idUsuario2 = Integer.parseInt(sistema.getIdUsuario(idSessao2));
+		
+		assertEquals(0,sistema.getNumFontesEmComum(idSessao, idUsuario2));
+		
+		
+		sistema.seguirUsuario(idSessao2, "raiff");
+		sistema.seguirUsuario(idSessao2, "fagner");
+		assertEquals(2,sistema.getNumFontesEmComum(idSessao,idUsuario2));
+		assertEquals(2,sistema.getNumFontesEmComum(idSessao2, idUsuario1));
+		
+		
+	}
+	
+	
+	
 	
 	
 }

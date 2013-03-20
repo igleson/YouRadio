@@ -40,9 +40,6 @@ public class DadosDoSistema {
 		return todosOsUsuarios.size();
 	}
 
-	public boolean contemUsuario(String login) {
-		return this.todosOsUsuarios.containsKey(login);
-	}
 
 	public boolean contemEmail(String email) {
 		for (Usuario usuario : todosOsUsuarios.values()) {
@@ -127,5 +124,11 @@ public class DadosDoSistema {
 	public boolean contemFavorito(Integer idSom) {
 		return sonsComMaisFavoritos.containsKey(idSom);
 	}
+
+	public boolean contemUsuario(String login) {
+		return this.todosOsUsuarios.containsKey(login);
+	}
+	
+	
 
 }

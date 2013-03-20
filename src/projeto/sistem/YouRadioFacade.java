@@ -226,5 +226,43 @@ public class YouRadioFacade {
 	public void encerrarSistema() {
 		sistema.encerrarSistema();
 	}
+	
+	public String getNumFavoritosEmComum(String idSessao, String idUsuario) throws NumberFormatException, SessaoException, UsuarioException{
+		if (idSessao == null || idSessao.equals(""))
+			throw new SessaoException("Sessão inválida");
+		
+		if (idUsuario == null || idUsuario.equals(""))
+			throw new UsuarioException("Usuário inválido");
+		if (!Strings.ehUmNumero(idSessao))
+			throw new SessaoException("Sessão inexistente");
+		
+		if (!sistema.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		if (!sistema.contemUsuario(Integer.parseInt(idUsuario)))
+			throw new UsuarioException("Usuário inexistente");
+		
+		String retorno = "";
+		return retorno + sistema.getNumFavoritosEmComum(Integer.parseInt(idSessao),Integer.parseInt(idUsuario));
+	}
+	
+	public String getNumFontesEmComum(String idSessao, String idUsuario) throws NumberFormatException, SessaoException, UsuarioException{
+		if (idSessao == null || idSessao.equals(""))
+			throw new SessaoException("Sessão inválida");
+		if (idUsuario == null || idUsuario.equals(""))
+			throw new UsuarioException("Usuário inválido");
+		if (!Strings.ehUmNumero(idSessao))
+			throw new SessaoException("Sessão inexistente");
+	
+		if (!sistema.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		if (!sistema.contemUsuario(Integer.parseInt(idUsuario)))
+			throw new UsuarioException("Usuário inexistente");
+		
+		
+		
+		String retorno = "";
+		return retorno + sistema.getNumFontesEmComum(Integer.parseInt(idSessao),Integer.parseInt(idUsuario));
+	}
+	
+	
+	
 
 }

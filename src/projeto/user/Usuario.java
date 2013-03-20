@@ -206,6 +206,9 @@ public class Usuario implements Serializable{
 	public int getNumeroDeSeguidores() {
 		return this.seguidores.size();
 	}
+	
+	
+	
 	//testar
 	public void favoritarSom(int idSom) throws SomException{
 		sonsFavoritos.add(idSom);
@@ -293,5 +296,34 @@ public class Usuario implements Serializable{
 	public Collection<Integer> getListaDeSeguindo() {
 		return this.seguindo;
 	}
+	
+	
+	public int getNumFavoritosEmComum(int idUsuario){
+		int resultado = 0;
+		DadosDoSistema dados = DadosDoSistema.getInstance();
+		Usuario usuario = dados.usuarioPorId(idUsuario);
+		for (Integer idSom : sonsFavoritos) {
+			if(usuario.getSonsFavoritos().contains(idSom)) resultado++;
+		}
+		
+		return resultado;
+	}
+	
+	public Integer getNumFontesEmComum(int idUsuario){
+		int resultado = 0;
+		DadosDoSistema dados = DadosDoSistema.getInstance();
+		Usuario usuario = dados.usuarioPorId(idUsuario);
+		for (Integer idSom : seguindo) {
+			if(usuario.getFontesDeSons().contains(idSom)) resultado++;
+		}
+		return resultado;
+		
+	}
+	
+	
+	
+	
+	
+	
 
 }

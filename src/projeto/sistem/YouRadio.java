@@ -311,5 +311,32 @@ public class YouRadio implements Serializable{
 		Usuario usuario = dados.usuario(idSessao);
 		return usuario.getMainFeed();
 	}
+
+
+	public int getNumFavoritosEmComum(int idSessao, int idUsuario) throws SessaoException {
+		if(!dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		Usuario usuario1 = dados.usuario(idSessao);
+		
+		return usuario1.getNumFavoritosEmComum(idUsuario);
+		
+	}
+	
+	public int getNumFontesEmComum(int idSessao, int idUsuario) throws SessaoException {
+		if(!dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		Usuario usuario1 = dados.usuario(idSessao);
+		return usuario1.getNumFontesEmComum(idUsuario);
+		
+	}
+
+
+	
+
+
+	public boolean contemUsuario(int idUsuario) {
+		//DadosDoSistema dados = DadosDoSistema.getInstance();
+		Usuario usuario = this.dados.usuarioPorId(idUsuario);
+		return this.dados.contemUsuario(usuario.getLogin());
+	}
+	
 	
 }
