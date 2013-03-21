@@ -37,6 +37,7 @@ public class Usuario implements Serializable{
 	private List<Integer> sonsFavoritos;
 	private List<Integer> feedExtra;
 	private OrdenacoesFeedPrincipal ordem;
+	
 
 	/**
 	 * @param login, senha , nome e email
@@ -56,6 +57,7 @@ public class Usuario implements Serializable{
 		this.sonsFavoritos = new ArrayList<Integer>();
 		this.feedExtra = new ArrayList<Integer>();
 		this.ordem = OrdenacoesFeedPrincipal.MAIS_RECENTES;
+		
 	}
 
 	
@@ -214,11 +216,13 @@ public class Usuario implements Serializable{
 		sonsFavoritos.add(idSom);
 		DadosDoSistema dados = DadosDoSistema.getInstance();
 		dados.Som(idSom).favoritou(this);
-		for (int usuario : this.seguidores) {
-			dados.usuarioPorId(usuario).adicionaAoFeedExtra(idSom);
+		for (int idUsuario : this.seguidores) {
+			dados.usuarioPorId(idUsuario).adicionaAoFeedExtra(idSom);
 		}
 	}
 	
+		
+
 	//testar
 	public List<Integer> getSonsFavoritos(){
 		return sonsFavoritos;
@@ -298,18 +302,18 @@ public class Usuario implements Serializable{
 	}
 	
 	
-	public int getNumFavoritosEmComum(int idUsuario){
+	public int getNumFavoritosEmComum(Integer idUsuario){
 		int resultado = 0;
 		DadosDoSistema dados = DadosDoSistema.getInstance();
 		Usuario usuario = dados.usuarioPorId(idUsuario);
-		for (Integer idSom : sonsFavoritos) {
-			if(usuario.getSonsFavoritos().contains(idSom)) resultado++;
+		for (Integer idSom : usuario.getSonsFavoritos()) {
+			if(sonsFavoritos.contains(idSom)) resultado++;
 		}
 		
 		return resultado;
 	}
 	
-	public Integer getNumFontesEmComum(int idUsuario){
+	public Integer getNumFontesEmComum(Integer idUsuario){
 		int resultado = 0;
 		DadosDoSistema dados = DadosDoSistema.getInstance();
 		Usuario usuario = dados.usuarioPorId(idUsuario);
@@ -317,13 +321,40 @@ public class Usuario implements Serializable{
 			if(usuario.getFontesDeSons().contains(idSom)) resultado++;
 		}
 		return resultado;
-		
+	}
+	
+	
+	public List<Integer> fontesQueNaoTenho(Usuario usuario){
+		List<Integer> retorno = new ArrayList<Integer>();
+		for(Integer idUsuario : usuario.getFontesDeSons()){
+			if(!seguindo.contains(idUsuario)) retorno.add(idUsuario);
+		}
+		return retorno;
 	}
 	
 	
 	
+	private int qntsSonsFavoritei(Integer idUsuario) throws SomException{
+		int retorno = 0;
+		DadosDoSistema dados = DadosDoSistema.getInstance();
+		for(Integer idSom : sonsFavoritos){
+			Som som = dados.Som(idSom);
+			if(som.getIdDono() == idUsuario) retorno ++;
+		}
+		return retorno;
+	}
 	
 	
-	
+	private int compareTo(Integer idUsuario){
+		int retorno = 0;
+		DadosDoSistema dados = DadosDoSistema.getInstance();
+		Usuario usuario = dados.usuarioPorId(idUsuario);
+		String nome2 = usuario.getNome();
+		
+		if(this.nome.compareTo(nome2) < 0) retorno = -1;
+		else retorno = 1;
+		
+		return retorno;
+	}
 
 }

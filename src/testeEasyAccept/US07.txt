@@ -96,10 +96,10 @@ favoritarSom idSessao=${sessaoBill} idSom=${som2ID}
 favoritarSom idSessao=${sessaoBill} idSom=${som3ID}
 
 # Larry favorita o som2ID
-favoritarSom idSessao=${sessaoBill} idSom=${som2ID}
+favoritarSom idSessao=${sessaoLarry} idSom=${som2ID}
 
 # Larry favorita o som3ID
-favoritarSom idSessao=${sessaoBill} idSom=${som3ID}
+favoritarSom idSessao=${sessaoLarry} idSom=${som3ID}
 
 # Steve favorita o som2ID
 favoritarSom idSessao=${sessaoSteve} idSom=${som2ID}
@@ -199,7 +199,7 @@ expect {${IDSergey},${IDLarry},${IDBill},${IDSteve}} getFontesDeSonsRecomendadas
 expect 2 getNumFavoritosEmComum idSessao=${sessaoSergey} idUsuario=${IDLarry}
 expect 0 getNumFontesEmComum idSessao=${sessaoSergey} idUsuario=${IDLarry}
 
-expect 2 getNumFavoritosEmComum idSessao=${sessaoSergey} idUsuario=${IDFilo}
+expect 0 getNumFavoritosEmComum idSessao=${sessaoSergey} idUsuario=${IDFilo}
 expect 0 getNumFontesEmComum idSessao=${sessaoSergey} idUsuario=${IDFilo}
 
 expect {${IDMark},${IDLarry},${IDBill},${IDSteve}} getFontesDeSonsRecomendadas idSessao=${sessaoSergey}
@@ -237,7 +237,7 @@ expectError "Sess„o inexistente" getNumFavoritosEmComum idSessao=${sessaoBill} i
 
 expectError "Usu·rio inv·lido" getNumFavoritosEmComum idSessao=${sessaoSteve} idUsuario=
 expectError "Usu·rio inv·lido" getNumFavoritosEmComum idSessao=${sessaoSteve} idUsuario=""
-expectError "Usu√°rio inexistente" getNumFavoritosEmComum idSessao=${sessaoSteve} idUsuario=${IDYang}
+expectError "Usu·rio inexistente" getNumFavoritosEmComum idSessao=${sessaoSteve} idUsuario=${IDYang}
 
 expectError "Sess„o inv·lida" getNumFontesEmComum idSessao= idUsuario=
 expectError "Sess„o inv·lida" getNumFontesEmComum idSessao="" idUsuario=
@@ -245,7 +245,7 @@ expectError "Sess„o inexistente" getNumFontesEmComum idSessao=${sessaoBill} idUs
 
 expectError "Usu·rio inv·lido" getNumFontesEmComum idSessao=${sessaoSteve} idUsuario=
 expectError "Usu·rio inv·lido" getNumFontesEmComum idSessao=${sessaoSteve} idUsuario=""
-expectError "Usu√°rio inexistente" getNumFontesEmComum idSessao=${sessaoSteve} idUsuario=${IDYang}
+expectError "Usu·rio inexistente" getNumFontesEmComum idSessao=${sessaoSteve} idUsuario=${IDYang}
 
 expectError "Sess„o inv·lida" getFontesDeSonsRecomendadas idSessao=
 expectError "Sess„o inv·lida" getFontesDeSonsRecomendadas idSessao=""

@@ -253,16 +253,24 @@ public class YouRadioFacade {
 			throw new SessaoException("Sessão inexistente");
 	
 		if (!sistema.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
-		if (!sistema.contemUsuario(Integer.parseInt(idUsuario)))
-			throw new UsuarioException("Usuário inexistente");
-		
-		
+		if (!sistema.contemUsuario(Integer.parseInt(idUsuario))) throw new UsuarioException("Usuário inexistente");
 		
 		String retorno = "";
 		return retorno + sistema.getNumFontesEmComum(Integer.parseInt(idSessao),Integer.parseInt(idUsuario));
 	}
 	
 	
-	
+	public String getFontesDeSonsRecomendadas(String idSessao) throws Exception{
+		
+		if (idSessao == null || idSessao.equals(""))
+			throw new SessaoException("Sessão inválida");
+		if (!Strings.ehUmNumero(idSessao))
+			throw new SessaoException("Sessão inexistente");
+
+		if (!sistema.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		
+		//sistema.getFontesDeSonsRecomendadas(Integer.parseInt(idSessao));
+		return "";
+	}
 
 }
