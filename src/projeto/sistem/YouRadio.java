@@ -22,6 +22,8 @@ import gerenciadorDeDados.DadosDoSistema;
 
 import projeto.perfil.Som;
 import projeto.user.Usuario;
+import sessao.Sessao;
+import sessao.SessaoNormal;
 
 public class YouRadio implements Serializable{
 
@@ -84,17 +86,9 @@ public class YouRadio implements Serializable{
 	 **/
 	public int abrirSessao(String login, String senha) throws LoginException, sistemaEncerradoException {
 		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
-		if (login == null || login.equals(""))
-			throw new LoginException("Login inválido");
-		if (senha == null || senha.equals(""))
-			throw new LoginException("Senha inválida");
-		if (!this.dados.contemUsuario(login))
-			throw new LoginException("Usuário inexistente");
-		if (this.dados.senhaValida(login, senha))
-			this.dados.adicionaSessao(login);
-		else
-			throw new LoginException("Login inválido");
-		return login.hashCode();
+		Sessao sessao = new SessaoNormal();
+		sessao.abrirSessao(login, senha);
+		return sessao.hashCode();
 	}
 	
 	

@@ -8,13 +8,14 @@ import excessoes.UsuarioException;
 
 import projeto.perfil.Som;
 import projeto.user.Usuario;
+import sessao.Sessao;
 
 public class DadosDoSistema {
 
 	private static DadosDoSistema dados;
 
 	private Map<String, Usuario> todosOsUsuarios;
-	private Map<Integer, String> todasAsSessoes;
+	private Map<Integer, Sessao> todasAsSessoes;
 	private Map<Integer, Som> todosOsSons;
 	private Map<Integer, Integer> sonsComMaisFavoritos;
 
@@ -24,7 +25,7 @@ public class DadosDoSistema {
 
 	public void zeraSistema() {
 		todosOsUsuarios = new HashMap<String, Usuario>();
-		todasAsSessoes = new HashMap<Integer, String>();
+		todasAsSessoes = new HashMap<Integer, Sessao>();
 		todosOsSons = new HashMap<Integer, Som>();
 		sonsComMaisFavoritos = new HashMap<Integer, Integer>();
 	}
@@ -67,7 +68,7 @@ public class DadosDoSistema {
 	}
 
 	public Usuario usuario(int idSessao) {
-		return todosOsUsuarios.get(todasAsSessoes.get(idSessao));
+		return todosOsUsuarios.get(todasAsSessoes.get(idSessao).getLogin());
 	}
 
 	public Usuario usuarioPorId(int idUsuario) {
@@ -92,8 +93,8 @@ public class DadosDoSistema {
 
 	// gerenciando sessoes
 
-	public void adicionaSessao(String login) {
-		this.todasAsSessoes.put(login.hashCode(), login);
+	public void adicionaSessao(Sessao sessao) {
+		this.todasAsSessoes.put(sessao.hashCode(), sessao);
 	}
 
 	public void removeSessao(String login) {
@@ -109,7 +110,7 @@ public class DadosDoSistema {
 	}
 
 	public String login(int sessaoId) {
-		return todasAsSessoes.get(sessaoId);
+		return todasAsSessoes.get(sessaoId).getLogin();
 	}
 
 	public void adicionaQtdeDeFavoritos(Integer idSom, Integer numero) {
