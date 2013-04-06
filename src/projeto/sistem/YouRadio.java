@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -336,33 +337,13 @@ public class YouRadio implements Serializable{
 	public List<Integer> getFontesDeSonsRecomendadas(int idSessao) throws SomException {
 		List<Integer> retorno = new ArrayList<Integer>();
 		Usuario usuario = dados.usuario(idSessao);
-		//Map<Integer, Integer> usuarios = new HashMap<Integer, Integer>();
-		retorno.add(usuario.getFontesDeSons().get(0));
 		
-		for (int i = 1; i < usuario.getFontesDeSons().size(); i++) {
-			
-			int num1 = usuario.getNumFavoritosEmComum(retorno.get(0))+usuario.getNumFontesEmComum(retorno.get(0));
-			int num2 =usuario.getNumFavoritosEmComum(i)+usuario.getNumFontesEmComum(i);
-			
-			/**if(num2 > num1) retorno.add(0,i);
-			else if(num2 < num1) retorno.add(i);
-			else{
-				
-				int favoritei1 = usuario.qntsSonsFavoritei(retorno.get(0));
-				int favoritei2 = usuario.qntsSonsFavoritei(i);
-				
-				if(favoritei2 > favoritei1) retorno.add(0,i);
-				else if(favoritei2 < favoritei1) retorno.add(i);
-				else{
-					DadosDoSistema dados = DadosDoSistema.getInstance();
-					Usuario usuarioInd0 = dados.usuarioPorId(retorno.get(0));
-					if(usuarioInd0.compareTo(i)==-1) retorno.add(0, i);
-					else retorno.add(i);
-				}
-			//}
-			//Integer nums = usuario.getNumFavoritosEmComum(idUsuario) + usuario.getNumFontesEmComum(idUsuario);
-			**///usuarios.put(idUsuario, nums);
+		
+		for (int i = 0; i < usuario.getFontesDeSons().size(); i++) {
+			retorno.add(usuario.getFontesDeSons().get(i).hashCode());
 		}
+		
+	//	Collections.sort(retorno, new ComparaFontes(usuario));
 		//TODO
 		//criterios de desempate e preencher a lista de retorno;
 		return retorno;

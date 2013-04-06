@@ -334,7 +334,7 @@ public class Usuario implements Serializable{
 	
 	
 	
-	private int qntsSonsFavoritei(Integer idUsuario) throws SomException{
+	public int qntsSonsFavoritei(Integer idUsuario) throws SomException{
 		int retorno = 0;
 		DadosDoSistema dados = DadosDoSistema.getInstance();
 		for(Integer idSom : sonsFavoritos){
@@ -345,7 +345,7 @@ public class Usuario implements Serializable{
 	}
 	
 	
-	private int compareTo(Integer idUsuario){
+	public int compareTo(Integer idUsuario){
 		int retorno = 0;
 		DadosDoSistema dados = DadosDoSistema.getInstance();
 		Usuario usuario = dados.usuarioPorId(idUsuario);
