@@ -433,7 +433,6 @@ public class YouRadio implements Serializable {
 				System.out.println(idPossivelAmigo);
 			}
 		}
-
 		return retorno;
 
 	}

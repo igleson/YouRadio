@@ -324,21 +324,7 @@ public class Usuario implements Serializable{
 	}
 	
 	
-//	public List<Integer> fontesQueNaoTenho(){
-//		
-//		
-//		
-//		
-//		List<Integer> retorno = new ArrayList<Integer>();
-//		
-//		for (Integer idAmigo : seguindo) {
-//			
-//		}
-//		for(Integer idUsuario : usuario.getFontesDeSons()){
-//			if(!seguindo.contains(idUsuario)) retorno.add(idUsuario);
-//		}
-//		return retorno;
-//	}
+
 	
 	
 	
