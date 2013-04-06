@@ -290,13 +290,13 @@ public class YouRadioTest {
 		assertEquals("musica1", sistema.linkDoSom(linkTemp));
 	}
 	
-	@Test
-	public void testDataDeCriacaoSom() throws CadastroException, UsuarioException, LoginException, SomException, SessaoException, sistemaEncerradoException{
-		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
-		int sessao = sistema.abrirSessao("mark", "MaRk");
-		int som = sistema.postarSom(sessao, "musica1", "22/02/2013");
-		assertEquals("22/02/2013", sistema.dataDeCriacaoSom(som));
-	}
+//	@Test
+//	public void testDataDeCriacaoSom() throws CadastroException, UsuarioException, LoginException, SomException, SessaoException, sistemaEncerradoException{
+//		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+//		int sessao = sistema.abrirSessao("mark", "MaRk");
+//		int som = sistema.postarSom(sessao, "musica1", "22/02/2013");
+//		assertEquals("22/02/2013", sistema.dataDeCriacaoSom(som));
+//	}
 	
 	@Test
 	public void testDataDeCriacaoSomSomInexistente() throws CadastroException, UsuarioException, SomException, SessaoException, LoginException, sistemaEncerradoException{
@@ -624,6 +624,36 @@ public class YouRadioTest {
 		sistema.seguirUsuario(idSessao2, "fagner");
 		assertEquals(2,sistema.getNumFontesEmComum(idSessao,idUsuario2));
 		assertEquals(2,sistema.getNumFontesEmComum(idSessao2, idUsuario1));
+		
+		
+	}
+	
+	
+	@Test
+	public void testGetFonteDeSonsRecomendadas() throws CadastroException, UsuarioException, sistemaEncerradoException, LoginException, SessaoException, SomException{
+		
+		sistema.criarUsuario("mark", "MaRk", "Mark", "mark@face.com");
+		sistema.criarUsuario("steve", "StEvE", "Steve", "steve@apple.com");	
+		sistema.criarUsuario("raiff", "gruffs", "Raiff", "bo");
+		sistema.criarUsuario("igls", "iglfreire", "Iglesson", "bi");
+		sistema.criarUsuario("fagner", "bifah", "Fagner", "be");
+		sistema.criarUsuario("leo", "lheo", "Leonardo", "ba");
+		
+		
+
+		int idSessao = sistema.abrirSessao("mark", "MaRk");
+		int idSessao2 = sistema.abrirSessao("steve", "StEvE");
+		
+		sistema.seguirUsuario(idSessao, "steve");
+		sistema.seguirUsuario(idSessao2, "fagner");
+		sistema.seguirUsuario(idSessao2, "leo");
+		
+		
+		System.out.println(sistema.getFontesDeSonsRecomendadas(idSessao));
+		
+		
+		
+		
 		
 		
 	}

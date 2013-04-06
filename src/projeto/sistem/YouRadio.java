@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import excessoes.CadastroException;
 import excessoes.LoginException;
 import excessoes.SessaoException;
@@ -21,30 +20,33 @@ import excessoes.UsuarioException;
 import excessoes.sistemaEncerradoException;
 import gerenciadorDeDados.DadosDoSistema;
 
+import projeto.comparator.ComparaFontes;
 import projeto.perfil.Som;
 import projeto.user.Usuario;
 import sessao.Sessao;
 import sessao.SessaoNormal;
 
-public class YouRadio implements Serializable{
+public class YouRadio implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private DadosDoSistema dados;
-		
+
 	private boolean sistemaEstaAberto = false;
-	
-	
-	/** criar um sistema
-	 * @return cria um sistema 
+
+	/**
+	 * criar um sistema
+	 * 
+	 * @return cria um sistema
 	 **/
-	public YouRadio(){
+	public YouRadio() {
 		dados = DadosDoSistema.getInstance();
 		sistemaEstaAberto = true;
 	}
-	
-	
-	/** zerar um sistema
+
+	/**
+	 * zerar um sistema
+	 * 
 	 * @return void
 	 **/
 	public void zerarSistema() {
@@ -52,161 +54,200 @@ public class YouRadio implements Serializable{
 		dados.zeraSistema();
 		sistemaEstaAberto = true;
 	}
-	
-	
+
 	/**
 	 * @return int - quantidade de usuários
-	 * @throws sistemaEncerradoException 
+	 * @throws sistemaEncerradoException
 	 **/
-	public int qtdeUsuarios() throws sistemaEncerradoException{
-		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
+	public int qtdeUsuarios() throws sistemaEncerradoException {
+		if (!sistemaEstaAberto)
+			throw new sistemaEncerradoException("sistema encerrado");
 		return this.dados.qtdeDeUsuarios();
 	}
-	
+
 	/**
-	 * @param login, senha, nome e email do usuário
+	 * @param login
+	 *            , senha, nome e email do usuário
 	 * @return void
-	 * @throws CadastroException, UsuarioException, sistemaEncerradoException
+	 * @throws CadastroException
+	 *             , UsuarioException, sistemaEncerradoException
 	 * 
 	 **/
 	public void criarUsuario(String login, String senha, String nome,
-			String email) throws CadastroException, UsuarioException, sistemaEncerradoException {
-		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
+			String email) throws CadastroException, UsuarioException,
+			sistemaEncerradoException {
+		if (!sistemaEstaAberto)
+			throw new sistemaEncerradoException("sistema encerrado");
 		if (this.dados.contemUsuario(login))
 			throw new CadastroException("Já existe um usuário com este login");
-		if(this.dados.contemEmail(email)) throw new CadastroException("Já existe um usuário com este email");
+		if (this.dados.contemEmail(email))
+			throw new CadastroException("Já existe um usuário com este email");
 		this.dados.adicionaUsuario(login, senha, nome, email);
 	}
-	
 
 	/**
-	 * @param login , senha - do usuário
+	 * @param login
+	 *            , senha - do usuário
 	 * @return int - identificador da sessão
-	 * @throws LoginException, sistemaEncerradoException
+	 * @throws LoginException
+	 *             , sistemaEncerradoException
 	 * 
 	 **/
-	public int abrirSessao(String login, String senha) throws LoginException, sistemaEncerradoException {
-		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
+	public int abrirSessao(String login, String senha) throws LoginException,
+			sistemaEncerradoException {
+		if (!sistemaEstaAberto)
+			throw new sistemaEncerradoException("sistema encerrado");
 		Sessao sessao = new SessaoNormal();
 		sessao.abrirSessao(login, senha);
 		return sessao.hashCode();
 	}
-	
-	
+
 	/**
-	 * @param sessãoId - identificador da sessão
+	 * @param sessãoId
+	 *            - identificador da sessão
 	 * @return List - perfil musical do usuário
-	 * @throws SessaoException, sistemaEncerradoException
+	 * @throws SessaoException
+	 *             , sistemaEncerradoException
 	 * 
 	 **/
-	
+
 	// testar
-	public List<Integer> getPerfilMusical(int sessaoId) throws SessaoException, sistemaEncerradoException {
-		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
-		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessao inexistente");
+	public List<Integer> getPerfilMusical(int sessaoId) throws SessaoException,
+			sistemaEncerradoException {
+		if (!sistemaEstaAberto)
+			throw new sistemaEncerradoException("sistema encerrado");
+		if (!this.dados.contemSessao(sessaoId))
+			throw new SessaoException("Sessao inexistente");
 		String login = this.dados.login(sessaoId);
 		return this.dados.usuario(login).getPerfilMusical();
 	}
-	
+
 	/**
-	 * @param sessaoId - identificador da sessão, link - link da música, dataCriação - data da postagem
+	 * @param sessaoId
+	 *            - identificador da sessão, link - link da música, dataCriação
+	 *            - data da postagem
 	 * @return int identificador do som
-	 * @throws SomException, SessaoException, sistemaEncerradoException 
+	 * @throws SomException
+	 *             , SessaoException, sistemaEncerradoException
 	 * 
 	 **/
 	public int postarSom(int sessaoId, String link, String dataCriacao)
 			throws SomException, SessaoException, sistemaEncerradoException {
-		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
-		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessao inexistente");
+		if (!sistemaEstaAberto)
+			throw new sistemaEncerradoException("sistema encerrado");
+		if (!this.dados.contemSessao(sessaoId))
+			throw new SessaoException("Sessao inexistente");
 
-		Som som = new Som(link, dataCriacao, this.dados.usuario(sessaoId).hashCode());
+		Som som = new Som(link, dataCriacao, this.dados.usuario(sessaoId)
+				.hashCode());
 		this.dados.adicionaSom(som);
 		this.dados.usuario(sessaoId).postarSom(som.hashCode());
 		return som.hashCode();
 	}
-	
+
 	/**
 	 * @paramsessaoId - identificador da sessão, link - link da música
 	 * @return int identificador do som
-	 * @throws SomException, SessaoException, sistemaEncerradoException 
+	 * @throws SomException
+	 *             , SessaoException, sistemaEncerradoException
 	 **/
-	public int postarSom(int sessaoId, String link) throws SomException, SessaoException, sistemaEncerradoException{
+	public int postarSom(int sessaoId, String link) throws SomException,
+			SessaoException, sistemaEncerradoException {
 		DateFormat formatoDeData = new SimpleDateFormat("dd/MM/yyyy");
-		return this.postarSom(sessaoId, link, formatoDeData.format((new GregorianCalendar().getTime())));
-	}	
-	
+		return this.postarSom(sessaoId, link,
+				formatoDeData.format((new GregorianCalendar().getTime())));
+	}
+
 	/**
-	 * @param login do usuário
+	 * @param login
+	 *            do usuário
 	 * @return String - nome do usuário
-	 * @throws UsuarioException, sistemaEncerradoException
+	 * @throws UsuarioException
+	 *             , sistemaEncerradoException
 	 **/
-	public String nomeDoUsuario(String login) throws UsuarioException, sistemaEncerradoException{
-		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
-		if(login == null || login.equals("")) throw new UsuarioException("Login inválido");
-		if (!this.dados.contemUsuario(login)) throw new UsuarioException("Usuário inexistente");
+	public String nomeDoUsuario(String login) throws UsuarioException,
+			sistemaEncerradoException {
+		if (!sistemaEstaAberto)
+			throw new sistemaEncerradoException("sistema encerrado");
+		if (login == null || login.equals(""))
+			throw new UsuarioException("Login inválido");
+		if (!this.dados.contemUsuario(login))
+			throw new UsuarioException("Usuário inexistente");
 		Usuario usuario = this.dados.usuario(login);
 		return usuario.getNome();
 	}
-	
-	
+
 	/**
-	 * @param login do usuário
-	 * @return String -  email do usuário
-	 * @throws UsuarioException, sistemaEncerradoException
+	 * @param login
+	 *            do usuário
+	 * @return String - email do usuário
+	 * @throws UsuarioException
+	 *             , sistemaEncerradoException
 	 **/
-	public String emailDoUsuario(String login) throws UsuarioException, sistemaEncerradoException {
-		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
-		if(login == null || login.equals("")) throw new UsuarioException("Login inválido");
-		if (!this.dados.contemUsuario(login)) throw new UsuarioException("Usuário inexistente");
+	public String emailDoUsuario(String login) throws UsuarioException,
+			sistemaEncerradoException {
+		if (!sistemaEstaAberto)
+			throw new sistemaEncerradoException("sistema encerrado");
+		if (login == null || login.equals(""))
+			throw new UsuarioException("Login inválido");
+		if (!this.dados.contemUsuario(login))
+			throw new UsuarioException("Usuário inexistente");
 		Usuario usuario = this.dados.usuario(login);
 		return usuario.getEmail();
 	}
-	
-	
+
 	/**
-	 * @param idSom - identificador do som
+	 * @param idSom
+	 *            - identificador do som
 	 * @return String - link da música
-	 * @throws SomException, sistemaEncerradoException
+	 * @throws SomException
+	 *             , sistemaEncerradoException
 	 **/
-	public String linkDoSom(int idSom) throws SomException, sistemaEncerradoException{
-		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
+	public String linkDoSom(int idSom) throws SomException,
+			sistemaEncerradoException {
+		if (!sistemaEstaAberto)
+			throw new sistemaEncerradoException("sistema encerrado");
 		Som som = this.dados.Som(idSom);
 		return som.getLink();
 	}
-	
-	
+
 	/**
-	 * @param idSom - identificador do som
+	 * @param idSom
+	 *            - identificador do som
 	 * @return String - data da criação
-	 * @throws SomException, sistemaEncerradoException
+	 * @throws SomException
+	 *             , sistemaEncerradoException
 	 **/
-	public String dataDeCriacaoSom(int idSom) throws SomException, sistemaEncerradoException{
-		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
+	public String dataDeCriacaoSom(int idSom) throws SomException,
+			sistemaEncerradoException {
+		if (!sistemaEstaAberto)
+			throw new sistemaEncerradoException("sistema encerrado");
 		Som som = this.dados.Som(idSom);
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		return dateFormat.format(som.getDataCriacao().getTime());
 	}
-	
-	
+
 	/**
-	 * @param login do usuário
+	 * @param login
+	 *            do usuário
 	 * @return void
 	 **/
 	public void encerrarSessao(String login) {
 		this.dados.removeSessao(login);
 	}
-	
-	
+
 	/**
-	 * @param idSessão identificador da sessão
+	 * @param idSessão
+	 *            identificador da sessão
 	 * @return boolean
 	 * @throws sistemaEncerradoException
 	 **/
-	public boolean sessaoAberta(int idSessao) throws sistemaEncerradoException{
-		if(!sistemaEstaAberto) throw new sistemaEncerradoException("sistema encerrado");
+	public boolean sessaoAberta(int idSessao) throws sistemaEncerradoException {
+		if (!sistemaEstaAberto)
+			throw new sistemaEncerradoException("sistema encerrado");
 		return this.dados.sessaoExiste(idSessao);
 	}
-	
+
 	/**
 	 * @return void
 	 **/
@@ -216,138 +257,184 @@ public class YouRadio implements Serializable{
 	}
 
 	public String getIdUsuario(int sessaoId) throws SessaoException {
-		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
+		if (!this.dados.contemSessao(sessaoId))
+			throw new SessaoException("Sessão inexistente");
 		return Integer.toString(dados.usuario(sessaoId).hashCode());
 	}
 
-
 	public List<Integer> getFontesDeSons(int sessaoId) throws SessaoException {
-		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
+		if (!this.dados.contemSessao(sessaoId))
+			throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(sessaoId).getFontesDeSons();
 	}
 
-
-	public Collection<Integer> getListaDeSeguidores(int sessaoId) throws SessaoException {
-		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
+	public Collection<Integer> getListaDeSeguidores(int sessaoId)
+			throws SessaoException {
+		if (!this.dados.contemSessao(sessaoId))
+			throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(sessaoId).getListaDeSeguidores();
 	}
 
-
-	public Collection<Integer> getListaDeSeguindo(int sessaoId) throws SessaoException {
-		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
+	public Collection<Integer> getListaDeSeguindo(int sessaoId)
+			throws SessaoException {
+		if (!this.dados.contemSessao(sessaoId))
+			throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(sessaoId).getListaDeSeguindo();
 	}
 
-
-	public void seguirUsuario(int idSessao, String login) throws SessaoException, LoginException {
-		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
-		else if(this.dados.usuario(idSessao).getLogin().equals(login)) throw new LoginException("Login inválido");
-		else if(!this.dados.contemLogin(login)) throw new LoginException("Login inexistente");
+	public void seguirUsuario(int idSessao, String login)
+			throws SessaoException, LoginException {
+		if (!this.dados.contemSessao(idSessao))
+			throw new SessaoException("Sessão inexistente");
+		else if (this.dados.usuario(idSessao).getLogin().equals(login))
+			throw new LoginException("Login inválido");
+		else if (!this.dados.contemLogin(login))
+			throw new LoginException("Login inexistente");
 		this.dados.usuario(idSessao).seguirUsuario(this.dados.usuario(login));
 	}
 
-
 	public int getNumeroDeSeguidores(int idSessao) throws SessaoException {
-		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		if (!this.dados.contemSessao(idSessao))
+			throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(idSessao).getNumeroDeSeguidores();
 	}
 
-	//testar
+	// testar
 	public Usuario usuario(int idSessao) {
 		return dados.usuario(idSessao);
 	}
 
-	//testar
+	// testar
 	public Usuario usuario(String login) throws SessaoException {
-		if(login == null || login.equals("")) throw new SessaoException("Sessão inválida");
+		if (login == null || login.equals(""))
+			throw new SessaoException("Sessão inválida");
 		return dados.usuario(login);
 	}
-	
 
-	public List<Som> getVisaoDosSons(int idSessao) throws SessaoException, SomException{
-		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+	public List<Som> getVisaoDosSons(int idSessao) throws SessaoException,
+			SomException {
+		if (!this.dados.contemSessao(idSessao))
+			throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(idSessao).getVisaoDosSons();
 	}
-	
-	
-	public void favoritarSom(int sessaoId, int idSom) throws SessaoException, SomException{
-		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
-		this.dados.usuario(sessaoId).favoritarSom(idSom);		
+
+	public void favoritarSom(int sessaoId, int idSom) throws SessaoException,
+			SomException {
+		if (!this.dados.contemSessao(sessaoId))
+			throw new SessaoException("Sessão inexistente");
+		this.dados.usuario(sessaoId).favoritarSom(idSom);
 	}
-	
-	
-	public List<Integer> getSonsFavoritos(int sessaoId) throws SessaoException, sistemaEncerradoException {
-		if(!this.dados.contemSessao(sessaoId)) throw new SessaoException("Sessão inexistente");
+
+	public List<Integer> getSonsFavoritos(int sessaoId) throws SessaoException,
+			sistemaEncerradoException {
+		if (!this.dados.contemSessao(sessaoId))
+			throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(sessaoId).getSonsFavoritos();
 	}
-	
-	//testar
+
+	// testar
 	public List<Integer> getFeedExtra(int idSessao) throws SessaoException {
-		if(!this.dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		if (!this.dados.contemSessao(idSessao))
+			throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(idSessao).getFeedExtra();
 	}
-	
-	//testar
-	public void setMainFeedRule(int idSessao, OrdenacoesFeedPrincipal ordem) throws SessaoException {
-		if(!dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+
+	// testar
+	public void setMainFeedRule(int idSessao, OrdenacoesFeedPrincipal ordem)
+			throws SessaoException {
+		if (!dados.contemSessao(idSessao))
+			throw new SessaoException("Sessão inexistente");
 		Usuario usuario = dados.usuario(idSessao);
 		usuario.setMainFeedRule(ordem);
-	}	
+	}
 
-	//testar
+	// testar
 	public boolean contemSessao(String sessaoId) {
 		return this.dados.contemSessao(Integer.parseInt(sessaoId));
 	}
-	
-	//testar
-	public Som Som(int idSom) throws SomException{
+
+	// testar
+	public Som Som(int idSom) throws SomException {
 		return dados.Som(idSom);
 	}
-	
-	//testar
-	public List<Integer> getMainFeed(int idSessao) throws SessaoException, SomException {
-		if(!dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+
+	// testar
+	public List<Integer> getMainFeed(int idSessao) throws SessaoException,
+			SomException {
+		if (!dados.contemSessao(idSessao))
+			throw new SessaoException("Sessão inexistente");
 		Usuario usuario = dados.usuario(idSessao);
 		return usuario.getMainFeed();
 	}
 
-
-	public int getNumFavoritosEmComum(int idSessao, int idUsuario) throws SessaoException {
-		if(!dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+	public int getNumFavoritosEmComum(int idSessao, int idUsuario)
+			throws SessaoException {
+		if (!dados.contemSessao(idSessao))
+			throw new SessaoException("Sessão inexistente");
 		Usuario usuario1 = dados.usuario(idSessao);
-		
+
 		return usuario1.getNumFavoritosEmComum(idUsuario);
-		
+
 	}
-	
-	public int getNumFontesEmComum(int idSessao, int idUsuario) throws SessaoException {
-		if(!dados.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+
+	public int getNumFontesEmComum(int idSessao, int idUsuario)
+			throws SessaoException {
+		if (!dados.contemSessao(idSessao))
+			throw new SessaoException("Sessão inexistente");
 		Usuario usuario1 = dados.usuario(idSessao);
 		return usuario1.getNumFontesEmComum(idUsuario);
-		
-	}
 
+	}
 
 	public boolean contemUsuario(int idUsuario) {
 		Usuario usuario = this.dados.usuarioPorId(idUsuario);
 		return this.dados.contemUsuario(usuario.getLogin());
 	}
 
-
-	public List<Integer> getFontesDeSonsRecomendadas(int idSessao) throws SomException {
-		List<Integer> retorno = new ArrayList<Integer>();
+	public List<Integer> getFontesDeSonsRecomendadas(int idSessao)
+			throws SomException {
 		Usuario usuario = dados.usuario(idSessao);
-		
-		
-		for (int i = 0; i < usuario.getFontesDeSons().size(); i++) {
-			retorno.add(usuario.getFontesDeSons().get(i).hashCode());
-		}
-		
-	//	Collections.sort(retorno, new ComparaFontes(usuario));
-		//TODO
-		//criterios de desempate e preencher a lista de retorno;
+		List<Integer> retorno = getFontesEmComum(usuario);
+		retorno.addAll(getFavoritosEmComum(usuario));
+
 		return retorno;
 	}
-	
-	
+
+	private List<Integer> getFavoritosEmComum(Usuario usuario)
+			throws SomException {
+		List<Integer> retorno = new ArrayList<Integer>();
+		List<Integer> favoritos = usuario.getSonsFavoritos();
+		for (int i = 0; i < favoritos.size(); i++) {
+			Som som = dados.Som(favoritos.get(i));
+			for (Integer idPossivelAmigo : som.getQuemFavoritou()) {
+				if (!favoritos.contains(idPossivelAmigo)
+						&& !usuario.getFontesDeSons().contains(idPossivelAmigo)
+						&& !retorno.contains(idPossivelAmigo)
+						&& !idPossivelAmigo.equals(usuario.hashCode()))
+					retorno.add(idPossivelAmigo);
+			}
+		}
+
+		return retorno;
+
+	}
+
+	private List<Integer> getFontesEmComum(Usuario usuario) {
+		List<Integer> retorno = new ArrayList<Integer>();
+		List<Integer> fontes = usuario.getFontesDeSons();
+
+		for (int i = 0; i < fontes.size(); i++) {
+			Usuario usuarioLocal = dados.usuarioPorId(fontes.get(i));
+			for (Integer idPossivelAmigo : usuarioLocal.getFontesDeSons()) {
+				if (!fontes.contains(idPossivelAmigo)
+						&& !retorno.contains(idPossivelAmigo)
+						&& !idPossivelAmigo.equals(usuario.hashCode()))
+					retorno.add(idPossivelAmigo);
+				System.out.println(idPossivelAmigo);
+			}
+		}
+
+		return retorno;
+
+	}
 }

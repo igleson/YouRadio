@@ -2,7 +2,10 @@ package projeto.sistem;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+
+import projeto.comparator.ComparaFontes;
 import projeto.perfil.Som;
 import util.Colecaoes;
 import util.Strings;
@@ -268,9 +271,10 @@ public class YouRadioFacade {
 			throw new SessaoException("Sessão inexistente");
 
 		if (!sistema.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
-		
-		//sistema.getFontesDeSonsRecomendadas(Integer.parseInt(idSessao));
-		return "";
+		List<Integer>retorno = sistema.getFontesDeSonsRecomendadas(Integer.parseInt(idSessao));
+		Collections.sort(retorno,new ComparaFontes(sistema.usuario(Integer.parseInt(idSessao))));
+		return Colecaoes.ColecaoParaString(retorno);
+		 
 	}
 
 }

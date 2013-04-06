@@ -71,9 +71,9 @@ public class DadosDoSistema {
 		return todosOsUsuarios.get(todasAsSessoes.get(idSessao).getLogin());
 	}
 
-	public Usuario usuarioPorId(int idUsuario) {
+	public Usuario usuarioPorId(Integer o1) {
 		for (Usuario usuario : todosOsUsuarios.values()) {
-			if (usuario.hashCode() == idUsuario)
+			if (usuario.hashCode() == o1)
 				return usuario;
 		}
 		return null;

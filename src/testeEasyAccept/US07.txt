@@ -135,6 +135,7 @@ seguirUsuario idSessao=${sessaoSteve} login="mark"
 # Bill resolve seguir Mark
 seguirUsuario idSessao=${sessaoBill} login="mark"
 
+
 #----------------------------------------------------------------------------------------------------------------------------------
 
 # recomendacoes para bill

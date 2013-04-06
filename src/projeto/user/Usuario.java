@@ -324,13 +324,21 @@ public class Usuario implements Serializable{
 	}
 	
 	
-	public List<Integer> fontesQueNaoTenho(Usuario usuario){
-		List<Integer> retorno = new ArrayList<Integer>();
-		for(Integer idUsuario : usuario.getFontesDeSons()){
-			if(!seguindo.contains(idUsuario)) retorno.add(idUsuario);
-		}
-		return retorno;
-	}
+//	public List<Integer> fontesQueNaoTenho(){
+//		
+//		
+//		
+//		
+//		List<Integer> retorno = new ArrayList<Integer>();
+//		
+//		for (Integer idAmigo : seguindo) {
+//			
+//		}
+//		for(Integer idUsuario : usuario.getFontesDeSons()){
+//			if(!seguindo.contains(idUsuario)) retorno.add(idUsuario);
+//		}
+//		return retorno;
+//	}
 	
 	
 	
@@ -346,15 +354,11 @@ public class Usuario implements Serializable{
 	
 	
 	public int compareTo(Integer idUsuario){
-		int retorno = 0;
 		DadosDoSistema dados = DadosDoSistema.getInstance();
 		Usuario usuario = dados.usuarioPorId(idUsuario);
 		String nome2 = usuario.getNome();
-		
-		if(this.nome.compareTo(nome2) < 0) retorno = -1;
-		else retorno = 1;
-		
-		return retorno;
+
+		return this.nome.compareTo(nome2);
 	}
 
 }

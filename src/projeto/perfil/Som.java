@@ -1,5 +1,6 @@
 package projeto.perfil;
 
+import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -52,7 +53,10 @@ public class Som implements Comparable<Som>{
 			this.quemFavoritou.add(usuario.hashCode());	
 		}
 	}
-	
+	public Collection<Integer> getQuemFavoritou(){
+		
+		return quemFavoritou;
+	}
 	public boolean usuarioFavoritou(Usuario usuario){
 		return this.quemFavoritou.contains(usuario);
 	}
