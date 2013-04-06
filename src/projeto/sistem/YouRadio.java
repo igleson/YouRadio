@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import excessoes.CadastroException;
+import excessoes.ListaException;
 import excessoes.LoginException;
 import excessoes.SessaoException;
 import excessoes.SomException;
@@ -417,6 +418,20 @@ public class YouRadio implements Serializable {
 
 		return retorno;
 
+	}
+	
+	public void adicionarUsuario(Integer idSessao, int idLista, int idUsuario) throws ListaException {
+		if(idSessao == null) throw new ListaException("Nome inválido");
+		dados.usuario(idSessao).adicionarUsuario(idLista, dados.usuarioPorId(idUsuario));
+	}
+	
+	public List<Integer> getSonsEmLista(int idSessao, Integer idLista) {
+		return dados.usuario(idSessao).getSonsEmLista(dados.usuario(idSessao).getListasPorId(idLista));
+	}
+	
+	public int criarLista(String nomeDaLista, Integer idSessao) throws ListaException {
+		if(nomeDaLista==null || nomeDaLista.equals("")) throw new ListaException("Nome inválido");
+		return dados.usuario(idSessao).criarLista(nomeDaLista);
 	}
 
 	private List<Integer> getFontesEmComum(Usuario usuario) {

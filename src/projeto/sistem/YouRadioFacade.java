@@ -11,6 +11,7 @@ import util.Colecaoes;
 import util.Strings;
 import excessoes.AtributoException;
 import excessoes.CadastroException;
+import excessoes.ListaException;
 import excessoes.LoginException;
 import excessoes.SessaoException;
 import excessoes.SomException;
@@ -260,6 +261,43 @@ public class YouRadioFacade {
 		
 		String retorno = "";
 		return retorno + sistema.getNumFontesEmComum(Integer.parseInt(idSessao),Integer.parseInt(idUsuario));
+	}
+	
+	public void adicionarUsuario(String idSessao, String idLista, String idUsuario) throws SessaoException, UsuarioException, ListaException {
+		if (idUsuario == null || idUsuario.equals(""))
+			throw new UsuarioException("Usuário inválido");
+		if (idLista == null || idLista.equals("")) throw new ListaException("Lista inválida");
+		if (idSessao == null || idSessao.equals(""))
+			throw new SessaoException("Sessão inválida");
+		if (!Strings.ehUmNumero(idSessao))
+			throw new SessaoException("Sessão inexistente");
+	
+		if (!sistema.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		if (!sistema.contemUsuario(Integer.parseInt(idUsuario))) throw new UsuarioException("Usuário inexistente");
+		
+		sistema.adicionarUsuario(Integer.parseInt(idSessao), Integer.parseInt(idLista), Integer.parseInt(idUsuario));
+	}
+	
+	public String getSonsEmLista(String idSessao, String idLista) throws SessaoException, ListaException {
+		if (idLista == null || idLista.equals("")) throw new ListaException("Lista inválida");
+		if (idSessao == null || idSessao.equals(""))
+			throw new SessaoException("Sessão inválida");
+		if (!Strings.ehUmNumero(idSessao))
+			throw new SessaoException("Sessão inexistente");
+	
+		if (!sistema.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		return Colecaoes.ColecaoParaString(sistema.getSonsEmLista(Integer.parseInt(idSessao), Integer.parseInt(idLista)));
+	}
+	
+	public String criarLista(String idSessao, String nomeDaLista) throws SessaoException, ListaException {
+		System.out.println(idSessao);
+		if (idSessao == null || idSessao.equals(""))
+			throw new SessaoException("Sessão inválida");
+		if (!Strings.ehUmNumero(idSessao))
+			throw new SessaoException("Sessão inexistente");
+		if (!sistema.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		String retorno = "";
+		return retorno + sistema.criarLista(nomeDaLista, Integer.parseInt(idSessao));
 	}
 	
 	
