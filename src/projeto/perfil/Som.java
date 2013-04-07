@@ -48,17 +48,17 @@ public class Som implements Comparable<Som>{
 		return this.quemFavoritou.size();
 	}
 	
-	public void favoritou(Usuario usuario){
+	public void meFavoritou(Usuario usuario){
 		if(!this.usuarioFavoritou(usuario)){
 			this.quemFavoritou.add(usuario.hashCode());	
 		}
 	}
 	public Collection<Integer> getQuemFavoritou(){
-		
 		return quemFavoritou;
 	}
+	
 	public boolean usuarioFavoritou(Usuario usuario){
-		return this.quemFavoritou.contains(usuario);
+		return this.quemFavoritou.contains(usuario.hashCode());
 	}
 	
 	/**

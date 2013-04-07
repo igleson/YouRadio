@@ -8,7 +8,7 @@
 # limpar os dados do sistema
 zerarSistema
 
-# entradas v√°lidas
+# entradas v·lidas
 
 criarUsuario login="mark" senha="m@rk" nome="Mark Zuckerberg" email="mark@facebook.com"
 criarUsuario login="steve" senha="5t3v3" nome="Steven Paul Jobs" email="jobs@apple.com"
@@ -16,7 +16,7 @@ criarUsuario login="bill" senha="severino" nome="William Henry Gates III" email=
 criarUsuario login="larry" senha="p4G6" nome="Larry Page" email="larry@gmail.com"
 criarUsuario login="sergey" senha="3R1n" nome="Sergey Brin" email="brin@gmail.com"
 
-# o m√©todo 'abrirSessao' retorna o ID da sess√£o
+# o mÈtodo 'abrirSessao' retorna o ID da sess„o
 sessaoMark=abrirSessao login="mark" senha="m@rk"
 sessaoSteve=abrirSessao login="steve" senha="5t3v3"
 sessaoBill=abrirSessao login="bill" senha="severino"
@@ -63,7 +63,7 @@ expect {${som7ID}} getPerfilMusical idSessao=${sessaoSergey}
 
 #---------------------------------------------------------------------------------------------------------------------------------
 
-idLista1=criarLista idSessao={sessaoMark} nome="listaMark1" 
+idLista1=criarLista idSessao=${sessaoMark} nome="listaMark1" 
 
 adicionarUsuario idSessao=${sessaoMark} idLista=${idLista1} idUsuario=${IDSteve}
 adicionarUsuario idSessao=${sessaoMark} idLista=${idLista1} idUsuario=${IDBill}
@@ -73,7 +73,7 @@ expect {${som7ID},${som8ID},${som5ID},${som4ID},${som3ID}} getSonsEmLista idSess
 
 #----------------------------------------------------------------------------------------------------------------------------------
 
-idListaGoogle=criarLista idSessao={sessaoMark} nome="listaGoogle" 
+idListaGoogle=criarLista idSessao=${sessaoMark} nome="listaGoogle" 
 
 adicionarUsuario idSessao=${sessaoMark} idLista=${idListaGoogle} idUsuario=${IDLarry}
 adicionarUsuario idSessao=${sessaoMark} idLista=${idListaGoogle} idUsuario=${IDBill}
@@ -83,7 +83,7 @@ expect {${som7ID},${som6ID}} getSonsEmLista idSessao=${sessaoMark} idLista=${idL
 
 #----------------------------------------------------------------------------------------------------------------------------------
 
-idListaFace=criarLista idSessao={sessaoBill} nome="listaFacebook" 
+idListaFace=criarLista idSessao=${sessaoBill} nome="listaFacebook" 
 
 adicionarUsuario idSessao=${sessaoBill} idLista=${idListaFace} idUsuario=${IDMark}
 
@@ -99,36 +99,36 @@ encerrarSessao login="sergey"
 
 #----------------------------------------------------------------------------------------------------------------------------------
 
-# entradas inv√°lidas
+# entradas inv·lidas
 
-expectError "Sess√£o inv√°lida" criarLista idSessao= nome=
-expectError "Sess√£o inv√°lida" criarLista idSessao="" nome=
-expectError "Sess√£o inexistente" criarLista idSessao=${sessaoBill}
+expectError "Sess„o inv·lida" criarLista idSessao= nome=
+expectError "Sess„o inv·lida" criarLista idSessao="" nome=
+expectError "Sess„o inexistente" criarLista idSessao=${sessaoBill}
 
-expectError "Nome inv√°lido" criarLista idSessao=${sessaoSteve} nome=
-expectError "Nome inv√°lida" criarLista idSessao=${sessaoSteve} nome=""
-expectError "Nome j√° escolhido" criarLista idSessao=${sessaoMark} nome="listaMark1"
+expectError "Nome inv·lido" criarLista idSessao=${sessaoSteve} nome=
+expectError "Nome inv·lido" criarLista idSessao=${sessaoSteve} nome=""
+expectError "Nome j· escolhido" criarLista idSessao=${sessaoMark} nome="listaMark1"
 
-expectError "Sess√£o inv√°lida" adicionarUsuario idSessao= idLista=${idLista1} idUsuario=${IDSteve}
-expectError "Sess√£o inv√°lida" adicionarUsuario idSessao="" idLista=${idLista1} idUsuario=${IDSteve}
-expectError "Sess√£o inexistente" adicionarUsuario idSessao=${sessaoSergey} idLista=${idLista1} idUsuario=${IDSteve}
+expectError "Sess„o inv·lida" adicionarUsuario idSessao= idLista=${idLista1} idUsuario=${IDSteve}
+expectError "Sess„o inv·lida" adicionarUsuario idSessao="" idLista=${idLista1} idUsuario=${IDSteve}
+expectError "Sess„o inexistente" adicionarUsuario idSessao=${sessaoSergey} idLista=${idLista1} idUsuario=${IDSteve}
 
-expectError "Lista inv√°lida" adicionarUsuario idSessao=${sessaoMark} idLista= idUsuario=${IDSteve}
-expectError "Lista inv√°lida" adicionarUsuario idSessao="" idLista="" idUsuario=${IDSteve}
+expectError "Lista inv·lida" adicionarUsuario idSessao=${sessaoMark} idLista= idUsuario=${IDSteve}
+expectError "Lista inv·lida" adicionarUsuario idSessao="" idLista="" idUsuario=${IDSteve}
 expectError "Lista inexistente" adicionarUsuario idSessao=${sessaoSergey} idLista=${idLista10} idUsuario=${IDSteve}
 
-expectError "Usu√°rio inv√°lido" adicionarUsuario idSessao=${sessaoMark} idLista= idUsuario=
-expectError "Usu√°rio inv√°lido" adicionarUsuario idSessao=${sessaoMark} idLista="" idUsuario=
-expectError "Usu√°rio inexistente" adicionarUsuario idSessao=${sessaoMark} idLista=${idLista1} idUsuario=${IDDavidFilo}
-expectError "Usu√°rio n√£o pode adicionar-se a pr√≥pria lista" adicionarUsuario idSessao=${sessaoMark} idLista=${idLista1} idUsuario=${IDMark}
-expectError "Usu√°rio j√° existe nesta lista" adicionarUsuario idSessao=${sessaoMark} idLista=${idLista1} idUsuario=${IDSteve}
+expectError "Usu·rio inv·lido" adicionarUsuario idSessao=${sessaoMark} idLista= idUsuario=
+expectError "Usu·rio inv·lido" adicionarUsuario idSessao=${sessaoMark} idLista="" idUsuario=
+expectError "Usu·rio inexistente" adicionarUsuario idSessao=${sessaoMark} idLista=${idLista1} idUsuario=${IDDavidFilo}
+expectError "Usu·rio n„o pode adicionar-se a prÛpria lista" adicionarUsuario idSessao=${sessaoMark} idLista=${idLista1} idUsuario=${IDMark}
+expectError "Usu·rio j· existe nesta lista" adicionarUsuario idSessao=${sessaoMark} idLista=${idLista1} idUsuario=${IDSteve}
 
-expectError "Sess√£o inv√°lida" getSonsEmLista idSessao= idLista=${idLista1}
-expectError "Sess√£o inv√°lida" getSonsEmLista idSessao="" idLista=${idLista1}
-expectError "Sess√£o inexistente" getSonsEmLista idSessao={sessaoSergey} idLista=${idLista1}
+expectError "Sess„o inv·lida" getSonsEmLista idSessao= idLista=${idLista1}
+expectError "Sess„o inv·lida" getSonsEmLista idSessao="" idLista=${idLista1}
+expectError "Sess„o inexistente" getSonsEmLista idSessao={sessaoSergey} idLista=${idLista1}
 
-expectError "Lista inv√°lida" getSonsEmLista idSessao={sessaoLarry} idLista=
-expectError "Lista inv√°lida" getSonsEmLista idSessao={sessaoLarry} idLista=""
+expectError "Lista inv·lida" getSonsEmLista idSessao={sessaoLarry} idLista=
+expectError "Lista inv·lida" getSonsEmLista idSessao={sessaoLarry} idLista=""
 expectError "Lista inexistente" getSonsEmLista idSessao={sessaoLarry} idLista=${idLista10}
 
 #Encerrar a sessao de Mark

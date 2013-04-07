@@ -76,6 +76,7 @@ expect {${som2ID},${som1ID}} getPerfilMusical idSessao=${sessaoMark}
 expect {${som8ID},${som5ID},${som4ID},${som3ID}} getPerfilMusical idSessao=${sessaoSteve} 
 expect {${som6ID}} getPerfilMusical idSessao=${sessaoLarry}
 expect {${som7ID}} getPerfilMusical idSessao=${sessaoSergey}
+expect {} getPerfilMusical idSessao=${sessaoFilo}
 
 # sons favoritos
 expect {} getSonsFavoritos idSessao=${sessaoSteve}

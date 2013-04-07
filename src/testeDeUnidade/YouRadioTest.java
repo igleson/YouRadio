@@ -643,13 +643,39 @@ public class YouRadioTest {
 
 		int idSessao = sistema.abrirSessao("mark", "MaRk");
 		int idSessao2 = sistema.abrirSessao("steve", "StEvE");
+		int idSessao3 = sistema.abrirSessao("fagner", "bifah");
+		int idSessao4 = sistema.abrirSessao("leo", "lheo");
+		String musica1 = "musica1";
+		String musica2 = "musica2";
+		String musica3 = "musica3";
+		String musica4 = "musica4";
+		String musica5 = "musica5";
+		String musica6 = "musica6";
+		
 		
 		sistema.seguirUsuario(idSessao, "steve");
 		sistema.seguirUsuario(idSessao2, "fagner");
 		sistema.seguirUsuario(idSessao2, "leo");
+		int idSom1 = sistema.postarSom(idSessao, musica1);
+		int idSom2 = sistema.postarSom(idSessao, musica2);
+		int idSom3 = sistema.postarSom(idSessao2, musica3);
+		int idSom4 = sistema.postarSom(idSessao2, musica4);
+		int idSom5 = sistema.postarSom(idSessao2, musica5);
+		int idSom6 = sistema.postarSom(idSessao4, musica6);
 		
 		
-		System.out.println(sistema.getFontesDeSonsRecomendadas(idSessao));
+		
+		
+		
+		sistema.favoritarSom(idSessao2,idSom1);
+		sistema.favoritarSom(idSessao2, idSom2);
+		sistema.favoritarSom(idSessao, idSom3);
+		sistema.favoritarSom(idSessao, idSom6);
+		sistema.favoritarSom(idSessao4, idSom5);
+		
+		
+		
+		System.out.println(sistema.getFontesDeSonsRecomendadas(idSessao3));
 		
 		
 		

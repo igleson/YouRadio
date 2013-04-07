@@ -15,6 +15,7 @@ import projeto.sistem.OrdenacoesFeedPrincipal;
 import util.Colecaoes;
 
 
+import excessoes.ListaException;
 import excessoes.SomException;
 import excessoes.UsuarioException;
 import gerenciadorDeDados.DadosDoSistema;
@@ -37,6 +38,8 @@ public class Usuario implements Serializable{
 	private List<Integer> sonsFavoritos;
 	private List<Integer> feedExtra;
 	private OrdenacoesFeedPrincipal ordem;
+	private HashMap<String, Lista> listas;
+	private HashMap<Integer, String> listasPorId;
 	
 
 	/**
@@ -57,7 +60,13 @@ public class Usuario implements Serializable{
 		this.sonsFavoritos = new ArrayList<Integer>();
 		this.feedExtra = new ArrayList<Integer>();
 		this.ordem = OrdenacoesFeedPrincipal.MAIS_RECENTES;
+		this.listas = new HashMap<String, Lista>();
+		this.listasPorId = new HashMap<Integer, String>();
 		
+	}
+	
+	public String getListasPorId(Integer idLista){
+		return listasPorId.get(idLista);
 	}
 
 	
@@ -215,7 +224,7 @@ public class Usuario implements Serializable{
 	public void favoritarSom(int idSom) throws SomException{
 		sonsFavoritos.add(idSom);
 		DadosDoSistema dados = DadosDoSistema.getInstance();
-		dados.Som(idSom).favoritou(this);
+		dados.Som(idSom).meFavoritou(this);
 		for (int idUsuario : this.seguidores) {
 			dados.usuarioPorId(idUsuario).adicionaAoFeedExtra(idSom);
 		}
@@ -325,6 +334,23 @@ public class Usuario implements Serializable{
 	
 	
 
+	
+	public void adicionarUsuario(int idLista, Usuario usuario) throws ListaException {
+		if(this.hashCode()==usuario.hashCode()) throw new ListaException("Usuário não pode adicionar-se a própria lista");
+		listas.get(listasPorId.get(idLista)).adicionarUsuario(usuario);
+	}
+	
+	public List<Integer> getSonsEmLista(String nomeDaLista) {
+		return listas.get(nomeDaLista).getSonsEmLista();
+	}
+	
+	public int criarLista(String nomeDaLista) throws ListaException {
+		if(listas.containsKey(nomeDaLista)) throw new ListaException("Nome já escolhido");
+		Lista temp = new Lista(this, nomeDaLista);
+		listas.put(nomeDaLista, temp);
+		listasPorId.put(temp.getId(), temp.getNomeDaLista());
+		return temp.getId();
+	}
 	
 	
 	
