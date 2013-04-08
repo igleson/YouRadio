@@ -229,5 +229,6 @@ public class YouRadioBean {
 	public void setOrdenador(String ordenador) {
 		this.ordenador = ordenador;
 	}
+	
 
 }

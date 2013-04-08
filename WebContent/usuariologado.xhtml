@@ -55,19 +55,12 @@
 					</p:panel>
 
 					<p:panel header="Meus Sons">
-
-
-
 						  <p:dataList var="feed" value="#{usuarioLogado.feed}"
 							itemType="square">
-
 							<a href="#{feed.link}" target="_blank"> #{feed.link} </a>
-
-
-
-
 						</p:dataList>
 					</p:panel>
+					
 					<p:row>
 						<p:commandButton value="Recentes"
 							actionListener="#{youRadioBean.ordenarRecentes()}" ajax="false"/>
@@ -75,44 +68,27 @@
 								actionListener="#{youRadioBean.ordenarPopular()}" ajax="false" />
 							<p:commandButton value="Favoritos"
 								actionListener="#{youRadioBean.ordenarFavoritos()}" ajax="false" />
-
-
 					</p:row>
+
 					<p:panel header="Feed Principal  - #{youRadioBean.ordenador}">
-
-
-
 						<p:dataList var="musica" value="#{usuarioLogado.feedPrincipal}">
-
 							<h:outputText value="#{musica.link}" />
 							<!--  -->
 							<p:commandButton style="height:30px"
 								value="#{musica.getQtdeFavoritados()} " icon="ui-icon-check"
 								action="#{youRadioBean.favoritar(musica)}" ajax="false"></p:commandButton>
 							<p/>
-
-
-
 						</p:dataList>
-
 					</p:panel>
+					
 					<p:panel header="Feed Extra">
-
-
-
 						<p:dataList var="musica" value="#{usuarioLogado.feedExtra()}">
-
 							<h:outputText value="#{musica.link}" />
-							
 							<p:commandButton style="height:30px"
 								value="#{musica.getQtdeFavoritados()} " icon="ui-icon-check"
 								action="#{youRadioBean.favoritar(musica)}" ajax="false"></p:commandButton>
 							<p/> 
-
-
-
 						</p:dataList>
-
 					</p:panel>
 
 					<p:panel header="Quem estou seguindo">
@@ -120,19 +96,25 @@
 							<p:dataGrid var="seguindo" value="#{usuarioLogado.seguindo}"
 								columns="5">
 								<p:panel header="#{seguindo.nome}" style="height:100px">
-
 									<p:graphicImage width="40" height="40"
 										value="/images/profile.jpg" />
-
 								</p:panel>
 							</p:dataGrid>
 						</p:scrollPanel>
 					</p:panel>
+					
+					<p:panel header="Recomendações">
+						<p:dataList var="sugestao" value="#{usuarioLogado.recomendacoesDoSistema()}">
+								<h:outputText value="#{sugestao}" />
+						</p:dataList>
+					</p:panel>
+					
 				</h:panelGrid>
 
-
 			</p:panel>
+
 		</p:dataGrid>
+
 	</h:form>
 </h:body>
 </html>

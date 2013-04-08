@@ -180,4 +180,17 @@ public class adapterWUISistema {
 		return idsParaSons(sistema.getFeedExtra(idSessao));
 	}
 	
+	
+	public List<String> recomendacaoDoSistema(int idSessao) throws SomException{
+		List<String> retorno = new ArrayList<String>();
+		Collection<Integer> recomendacoes = sistema.getFontesDeSonsRecomendadas(idSessao);
+		DadosDoSistema dados = DadosDoSistema.getInstance();
+		for (Integer idUsuario : recomendacoes) {
+			Usuario usuario = dados.usuarioPorId(idUsuario);
+			retorno.add(usuario.getNome());
+			
+		}
+		
+		return retorno;
+	}
 }

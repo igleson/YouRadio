@@ -9,8 +9,11 @@ import java.util.List;
 import excessoes.SessaoException;
 import excessoes.SomException;
 import excessoes.sistemaEncerradoException;
+import gerenciadorDeDados.DadosDoSistema;
 import projeto.perfil.Som;
 import projeto.sistem.adapterWUISistema;
+import projeto.user.Usuario;
+import util.Colecaoes;
 
 public class UsuarioLogadoBean implements Serializable {
 
@@ -133,6 +136,12 @@ public class UsuarioLogadoBean implements Serializable {
 		//this.feedPrincipal = feedPrincipal;
 	}
 	
+	
+	public List<String> recomendacoesDoSistema() throws SomException{
+		
+		return sistema.recomendacaoDoSistema(getIdSessao());
+		
+	}
 	
 
 
