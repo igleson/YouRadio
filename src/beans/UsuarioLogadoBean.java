@@ -85,7 +85,7 @@ public class UsuarioLogadoBean implements Serializable {
 		this.seguindo = usuariosSenguidos();
 		return seguindo;
 	}
-
+	
 	public void setSeguindo(List<SeguindoBean> seguindo) {
 		this.seguindo = seguindo;
 	}

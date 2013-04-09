@@ -188,7 +188,6 @@ public class adapterWUISistema {
 		for (Integer idUsuario : recomendacoes) {
 			Usuario usuario = dados.usuarioPorId(idUsuario);
 			retorno.add(usuario.getNome());
-			
 		}
 		
 		return retorno;

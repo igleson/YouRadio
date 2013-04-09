@@ -398,7 +398,21 @@ public class YouRadio implements Serializable {
 		Usuario usuario = dados.usuario(idSessao);
 		List<Integer> retorno = getPossiveisAmigosFontesEmComum(usuario);
 		retorno.addAll(getPossiveisAmigosFavoritosEmComum(usuario));
-		if (retorno.isEmpty()) return quemTeveMaisSonsFavoritados();
+		Collections.sort(retorno,new ComparaFontes(dados.usuario(idSessao)));
+		if (retorno.isEmpty()){
+			
+			for (Integer idUsuario : quemTeveMaisSonsFavoritados()) {
+				if(!usuario.getListaDeSeguindo().contains(idUsuario))
+					if (dados.usuarioPorId(idUsuario).getNumeroDeSeguidores()!= 0){
+					retorno.add(idUsuario);
+					
+					}
+			}
+			//Collections.reverse(retorno);;
+		}
+
+		
+		
 		return retorno;
 	}
 

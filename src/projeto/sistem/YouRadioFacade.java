@@ -310,7 +310,8 @@ public class YouRadioFacade {
 
 		if (!sistema.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
 		List<Integer>retorno = sistema.getFontesDeSonsRecomendadas(Integer.parseInt(idSessao));
-		Collections.sort(retorno,new ComparaFontes(sistema.usuario(Integer.parseInt(idSessao))));
+		
+	
 		return Colecaoes.ColecaoParaString(retorno);
 		 
 	}
