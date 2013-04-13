@@ -301,12 +301,10 @@ public class YouRadio implements Serializable {
 		return this.dados.usuario(idSessao).getNumeroDeSeguidores();
 	}
 
-	// testar
 	public Usuario usuario(int idSessao) {
 		return dados.usuario(idSessao);
 	}
 
-	// testar
 	public Usuario usuario(String login) throws SessaoException {
 		if (login == null || login.equals(""))
 			throw new SessaoException("Sessão inválida");
@@ -334,14 +332,12 @@ public class YouRadio implements Serializable {
 		return this.dados.usuario(sessaoId).getSonsFavoritos();
 	}
 
-	// testar
 	public List<Integer> getFeedExtra(int idSessao) throws SessaoException {
 		if (!this.dados.contemSessao(idSessao))
 			throw new SessaoException("Sessão inexistente");
 		return this.dados.usuario(idSessao).getFeedExtra();
 	}
 
-	// testar
 	public void setMainFeedRule(int idSessao, OrdenacoesFeedPrincipal ordem)
 			throws SessaoException {
 		if (!dados.contemSessao(idSessao))
@@ -350,17 +346,15 @@ public class YouRadio implements Serializable {
 		usuario.setMainFeedRule(ordem);
 	}
 
-	// testar
 	public boolean contemSessao(String sessaoId) {
 		return this.dados.contemSessao(Integer.parseInt(sessaoId));
 	}
 
-	// testar
+
 	public Som Som(int idSom) throws SomException {
 		return dados.Som(idSom);
 	}
 
-	// testar
 	public List<Integer> getMainFeed(int idSessao) throws SessaoException,
 			SomException {
 		if (!dados.contemSessao(idSessao))
@@ -374,9 +368,7 @@ public class YouRadio implements Serializable {
 		if (!dados.contemSessao(idSessao))
 			throw new SessaoException("Sessão inexistente");
 		Usuario usuario1 = dados.usuario(idSessao);
-
 		return usuario1.getNumFavoritosEmComum(idUsuario);
-
 	}
 
 	public int getNumFontesEmComum(int idSessao, int idUsuario)
@@ -385,7 +377,6 @@ public class YouRadio implements Serializable {
 			throw new SessaoException("Sessão inexistente");
 		Usuario usuario1 = dados.usuario(idSessao);
 		return usuario1.getNumFontesEmComum(idUsuario);
-
 	}
 
 	public boolean contemUsuario(int idUsuario) {
@@ -400,24 +391,17 @@ public class YouRadio implements Serializable {
 		retorno.addAll(getPossiveisAmigosFavoritosEmComum(usuario));
 		Collections.sort(retorno,new ComparaFontes(dados.usuario(idSessao)));
 		if (retorno.isEmpty()){
-			
 			for (Integer idUsuario : quemTeveMaisSonsFavoritados()) {
 				if(!usuario.getListaDeSeguindo().contains(idUsuario))
 					if (dados.usuarioPorId(idUsuario).getNumeroDeSeguidores()!= 0){
 					retorno.add(idUsuario);
-					
 					}
 			}
-			//Collections.reverse(retorno);;
 		}
-
-		
-		
 		return retorno;
 	}
 
-	private List<Integer> getPossiveisAmigosFavoritosEmComum(Usuario usuario)
-			throws SomException {
+	private List<Integer> getPossiveisAmigosFavoritosEmComum(Usuario usuario)throws SomException {
 		List<Integer> retorno = new ArrayList<Integer>();
 		List<Integer> favoritos = usuario.getSonsFavoritos();
 		for (int i = 0; i < favoritos.size(); i++) {
@@ -430,9 +414,22 @@ public class YouRadio implements Serializable {
 					retorno.add(idPossivelAmigo);
 			}
 		}
-
 		return retorno;
-
+	}
+	
+	private List<Integer> getPossiveisAmigosFontesEmComum(Usuario usuario) {
+		List<Integer> retorno = new ArrayList<Integer>();
+		List<Integer> fontes = usuario.getFontesDeSons();
+		for (int i = 0; i < fontes.size(); i++) {
+			Usuario usuarioLocal = dados.usuarioPorId(fontes.get(i));
+			for (Integer idPossivelAmigo : usuarioLocal.getFontesDeSons()) {
+				if (!fontes.contains(idPossivelAmigo)
+						&& !retorno.contains(idPossivelAmigo)
+						&& !idPossivelAmigo.equals(usuario.hashCode()))
+					retorno.add(idPossivelAmigo);
+			}
+		}
+		return retorno;
 	}
 	
 	public void adicionarUsuario(Integer idSessao, int idLista, int idUsuario) throws ListaException {
@@ -448,40 +445,17 @@ public class YouRadio implements Serializable {
 		if(nomeDaLista==null || nomeDaLista.equals("")) throw new ListaException("Nome inválido");
 		return dados.usuario(idSessao).criarLista(nomeDaLista);
 	}
-
-	private List<Integer> getPossiveisAmigosFontesEmComum(Usuario usuario) {
-		List<Integer> retorno = new ArrayList<Integer>();
-		List<Integer> fontes = usuario.getFontesDeSons();
-
-		for (int i = 0; i < fontes.size(); i++) {
-			Usuario usuarioLocal = dados.usuarioPorId(fontes.get(i));
-			for (Integer idPossivelAmigo : usuarioLocal.getFontesDeSons()) {
-				if (!fontes.contains(idPossivelAmigo)
-						&& !retorno.contains(idPossivelAmigo)
-						&& !idPossivelAmigo.equals(usuario.hashCode()))
-					retorno.add(idPossivelAmigo);
-				System.out.println(idPossivelAmigo);
-			}
-		}
-		return retorno;
-	}
 	
 	private List<Integer> quemTeveMaisSonsFavoritados() throws SomException{
 		List<Integer> retorno = new ArrayList<Integer>();
 		Set<Integer> sons = dados.Sons();
-		
 		for (Integer idSom : sons) {
 			Som som = dados.Som(idSom);
 			if(som.getQtdeFavoritados()>0) {
 				if(!retorno.contains(som.getIdDono())) retorno.add(som.getIdDono());
 			}
 		}
-		
 		return retorno;
 	}
-	
-	
-	
-	
 	
 }

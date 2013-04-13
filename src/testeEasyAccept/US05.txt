@@ -75,7 +75,7 @@ expect {} getMainFeed idSessao=${sessaoSteve}
 expect {} getMainFeed idSessao=${sessaoLarry}
 expect {} getMainFeed idSessao=${sessaoSergey}
 
-# ------------------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------------
 
 # Bill resolve seguir Steve
 seguirUsuario idSessao=${sessaoBill} login="steve"
@@ -92,7 +92,7 @@ seguirUsuario idSessao=${sessaoMark} login="larry"
 # Larry resolver seguir Sergey
 seguirUsuario idSessao=${sessaoLarry} login="sergey"
 
-# --------------------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------------
 
 # Mark posta sons
 som1ID=postarSom idSessao=${sessaoMark} link="http://letras.mus.br/david-guetta/#mais-acessadas/1944260" dataCriacao="30/12/2013"
@@ -110,7 +110,7 @@ som6ID=postarSom idSessao=${sessaoLarry} link="http://www.youtube.com/watch?v=PV
 som7ID=postarSom idSessao=${sessaoSergey} link="http://www.youtube.com/watch?v=PVzljDmoPVs" dataCriacao="04/02/2016"
 
 # Steve posta o som8ID
-som8ID=postarSom idSessao=${sessaoSteve} link="http://www.youtube.com/watch?v=3KsPIJK17uk" dataCriacao="28/12/2013"
+som8ID=postarSom idSessao=${sessaoSteve} link="http://www.youtube.com/watch?v=3KsPIJK17uk" dataCriacao="28/12/2016"
 
 # perfis musicais
 expect {${som2ID},${som1ID}} getPerfilMusical idSessao=${sessaoMark}
@@ -118,7 +118,7 @@ expect {${som8ID},${som5ID},${som4ID},${som3ID}} getPerfilMusical idSessao=${ses
 expect {${som6ID}} getPerfilMusical idSessao=${sessaoLarry}
 expect {${som7ID}} getPerfilMusical idSessao=${sessaoSergey}
 
-# --------------------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------------
 
 # 1. deverao aparecer primeiro no feed principal do usuario apenas os sons
 #    postados pelas suas fontes de sons mais recentemente.
@@ -130,7 +130,7 @@ expect {${som2ID},${som1ID}} getMainFeed idSessao=${sessaoSteve}
 expect {${som7ID}} getMainFeed idSessao=${sessaoLarry}
 expect {} getMainFeed idSessao=${sessaoSergey}
 
-# ------------------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------------
 
 # 2. deverao aparecer primeiro os sons postados pelas suas fontes, os quais
 #    estarao ordenados pelo numero de favoritos que recebeu de todos
@@ -159,7 +159,7 @@ expect {${som6ID}} getMainFeed idSessao=${sessaoMark}
 expect {${som7ID}} getMainFeed idSessao=${sessaoLarry}
 expect {} getMainFeed idSessao=${sessaoSergey}
 
-# ------------------------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------------
 
 # 3. deverao aparecer primeiro os sons postados pelas suas fontes, os quais
 #    estarao ordenados segundo o numero de sons favoritados pelo proprio usuario de cada
@@ -193,7 +193,7 @@ expect {${som6ID}} getMainFeed idSessao=${sessaoMark}
 expect {${som7ID}} getMainFeed idSessao=${sessaoLarry}
 expect {} getMainFeed idSessao=${sessaoSergey}
 
-# ------------------------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------------
 
 # 1. deverao aparecer primeiro no feed principal do usuario apenas os sons
 #    postados pelas suas fontes de sons mais recentemente.
@@ -212,7 +212,7 @@ expect {${som6ID}} getMainFeed idSessao=${sessaoMark}
 expect {${som7ID}} getMainFeed idSessao=${sessaoLarry}
 expect {} getMainFeed idSessao=${sessaoSergey}
 
-# ------------------------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------------
 
 #Encerrar a sessao de Bill
 encerrarSessao login="bill"
@@ -220,7 +220,7 @@ encerrarSessao login="bill"
 #Encerrar a sessao de Sergey
 encerrarSessao login="sergey"
 
-# -----------------------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------------
 
 # entradas inválidas
 
@@ -245,3 +245,4 @@ encerrarSessao login="steve"
 encerrarSessao login="larry"
 
 encerrarSistema
+quit

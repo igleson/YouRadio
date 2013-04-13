@@ -159,7 +159,7 @@ expectError "Sessão inválida" favoritarSom idSessao="" idSom=${som2ID}
 expectError "Sessão inexistente" favoritarSom idSessao=${sessaoBill} idSom=${som2ID}
 expectError "Som inválido" favoritarSom idSessao=${sessaoSteve} idSom=
 expectError "Som inválido" favoritarSom idSessao=${sessaoSteve} idSom=""
-expectError "Som inexistente" favoritarSom idSessao=${sessaoSteve} idSom=${som8ID}
+expectError "Som inválido" favoritarSom idSessao=${sessaoSteve} idSom=${som8ID}
 
 expectError "Sessão inválida" getSonsFavoritos idSessao=
 expectError "Sessão inválida" getSonsFavoritos idSessao=""

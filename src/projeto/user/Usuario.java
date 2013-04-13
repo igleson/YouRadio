@@ -345,11 +345,20 @@ public class Usuario implements Serializable{
 	}
 	
 	public int criarLista(String nomeDaLista) throws ListaException {
+		if(nomeDaLista == "")throw new ListaException(" digite um nome");
 		if(listas.containsKey(nomeDaLista)) throw new ListaException("Nome já escolhido");
 		Lista temp = new Lista(this, nomeDaLista);
 		listas.put(nomeDaLista, temp);
 		listasPorId.put(temp.getId(), temp.getNomeDaLista());
 		return temp.getId();
+	}
+	
+	public List<Lista> getListas(){
+		List<Lista> retorno = new ArrayList<Lista>();
+		for (Lista lista : listas.values()) {
+			retorno.add(lista);
+		}
+		return 	retorno;
 	}
 	
 	
@@ -371,6 +380,11 @@ public class Usuario implements Serializable{
 		String nome2 = usuario.getNome();
 
 		return this.nome.compareTo(nome2);
+	}
+
+	public Lista getListaEspecifica(String nomeDaLista) {
+		return listas.get(nomeDaLista);
+		
 	}
 
 }

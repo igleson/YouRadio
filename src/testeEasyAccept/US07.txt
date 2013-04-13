@@ -5,7 +5,7 @@
 # favoritados em comum + quantidade de fontes
 # de som em comum.
 #    As fontes recomendadas nao devem estar
-# entre as fontes j√° existentes.
+# entre as fontes j· existentes.
 #    Caso o primeiro criterio resulte em empate
 # se coloca na frente a fonte que seja mais favoritado
 # pelo usuario. 
@@ -20,7 +20,7 @@
 # limpar os dados do sistema
 zerarSistema
 
-# entradas v√°lidas
+# entradas v·lidas
 
 criarUsuario login="mark" senha="m@rk" nome="Mark Zuckerberg" email="mark@facebook.com"
 criarUsuario login="steve" senha="5t3v3" nome="Steven Paul Jobs" email="jobs@apple.com"
@@ -29,7 +29,7 @@ criarUsuario login="larry" senha="p4G6" nome="Larry Page" email="larry@gmail.com
 criarUsuario login="sergey" senha="3R1n" nome="Sergey Brin" email="brin@gmail.com"
 criarUsuario login="filo" senha="f11o" nome"David Filo" email="filo@yahoo.com"
 
-# o m√©todo 'abrirSessao' retorna o ID da sess√£o
+# o mÈtodo 'abrirSessao' retorna o ID da sess„o
 sessaoMark=abrirSessao login="mark" senha="m@rk"
 sessaoSteve=abrirSessao login="steve" senha="5t3v3"
 sessaoBill=abrirSessao login="bill" senha="severino"
@@ -76,7 +76,6 @@ expect {${som2ID},${som1ID}} getPerfilMusical idSessao=${sessaoMark}
 expect {${som8ID},${som5ID},${som4ID},${som3ID}} getPerfilMusical idSessao=${sessaoSteve} 
 expect {${som6ID}} getPerfilMusical idSessao=${sessaoLarry}
 expect {${som7ID}} getPerfilMusical idSessao=${sessaoSergey}
-expect {} getPerfilMusical idSessao=${sessaoFilo}
 
 # sons favoritos
 expect {} getSonsFavoritos idSessao=${sessaoSteve}
@@ -135,7 +134,6 @@ seguirUsuario idSessao=${sessaoSteve} login="mark"
 
 # Bill resolve seguir Mark
 seguirUsuario idSessao=${sessaoBill} login="mark"
-
 
 #----------------------------------------------------------------------------------------------------------------------------------
 
@@ -231,7 +229,7 @@ encerrarSessao login="sergey"
 
 #----------------------------------------------------------------------------------------------------------------------------------
 
-# entradas inv√°lidas
+# entradas inv·lidas
 
 expectError "Sess„o inv·lida" getNumFavoritosEmComum idSessao= idUsuario=
 expectError "Sess„o inv·lida" getNumFavoritosEmComum idSessao="" idUsuario=
@@ -239,7 +237,7 @@ expectError "Sess„o inexistente" getNumFavoritosEmComum idSessao=${sessaoBill} i
 
 expectError "Usu·rio inv·lido" getNumFavoritosEmComum idSessao=${sessaoSteve} idUsuario=
 expectError "Usu·rio inv·lido" getNumFavoritosEmComum idSessao=${sessaoSteve} idUsuario=""
-expectError "Usu·rio inexistente" getNumFavoritosEmComum idSessao=${sessaoSteve} idUsuario=${IDYang}
+expectError "Usu·rio inv·lido" getNumFavoritosEmComum idSessao=${sessaoSteve} idUsuario=${IDYang}
 
 expectError "Sess„o inv·lida" getNumFontesEmComum idSessao= idUsuario=
 expectError "Sess„o inv·lida" getNumFontesEmComum idSessao="" idUsuario=
@@ -247,11 +245,11 @@ expectError "Sess„o inexistente" getNumFontesEmComum idSessao=${sessaoBill} idUs
 
 expectError "Usu·rio inv·lido" getNumFontesEmComum idSessao=${sessaoSteve} idUsuario=
 expectError "Usu·rio inv·lido" getNumFontesEmComum idSessao=${sessaoSteve} idUsuario=""
-expectError "Usu·rio inexistente" getNumFontesEmComum idSessao=${sessaoSteve} idUsuario=${IDYang}
+expectError "Usu·rio inv·lido" getNumFontesEmComum idSessao=${sessaoSteve} idUsuario=${IDYang}
 
 expectError "Sess„o inv·lida" getFontesDeSonsRecomendadas idSessao=
 expectError "Sess„o inv·lida" getFontesDeSonsRecomendadas idSessao=""
-expectError "Sess„o inexistente" getFontesDeSonsRecomendadas idSessao=${sessaoYang}
+expectError "Sess„o inv·lida" getFontesDeSonsRecomendadas idSessao=${sessaoYang}
 
 #Encerrar a sessao de Mark
 encerrarSessao login="mark"
@@ -267,4 +265,3 @@ encerrarSessao login="filo"
 
 encerrarSistema
 quit
-

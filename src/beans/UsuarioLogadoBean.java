@@ -2,28 +2,69 @@ package beans;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
+import excessoes.ListaException;
 import excessoes.SessaoException;
 import excessoes.SomException;
 import excessoes.sistemaEncerradoException;
-import gerenciadorDeDados.DadosDoSistema;
 import projeto.perfil.Som;
 import projeto.sistem.adapterWUISistema;
+import projeto.user.Lista;
 import projeto.user.Usuario;
-import util.Colecaoes;
 
 public class UsuarioLogadoBean implements Serializable {
 
 	private static final long serialVersionUID = 5600369132889054255L;
 
 	private String nome;
-	private List<SeguindoBean> seguindo;
 	private List<Som> feed;
 	private adapterWUISistema sistema;
 	private int idSessao;
+	private String nomeDaLista;
+	private String listaSelecionada;
+	private String usuarioAdicionado;
+
+
+
+	public String getUsuarioAdicionado() {
+		return usuarioAdicionado;
+	}
+
+
+
+	public void setUsuarioAdicionado(String usuarioAdicionado) {
+		this.usuarioAdicionado = usuarioAdicionado;
+	}
+
+
+
+	public String getListaSelecionada() {
+		return listaSelecionada;
+	}
+
+
+
+	public void setListaSelecionada(String listaSelecionada) {
+		this.listaSelecionada = listaSelecionada;
+	}
+
+
+
+	public String getNomeDaLista() {
+		return nomeDaLista;
+	}
+
+
+
+	public void setNomeDaLista(String nomeDaLista) {
+		this.nomeDaLista = nomeDaLista;
+	}
 
 
 
@@ -33,24 +74,12 @@ public class UsuarioLogadoBean implements Serializable {
 		this.setIdSessao(idSessao);
 		sistema = new adapterWUISistema();
 		setFeedPrincipal(sistema.getMainFeed(idSessao));
-		setSeguindo(usuariosSenguidos());
+
 		setFeed(perfilMusical());
 		
 	}
 
-	private List<SeguindoBean> usuariosSenguidos() throws SessaoException {
-		List<SeguindoBean> retorno = new ArrayList<SeguindoBean>();
-		Collection<String> seguindo = sistema.getListaDeSeguindo(getIdSessao());
-		for (String nome : seguindo) {
-			if (nome.length()>10){
-			retorno.add(new SeguindoBean(nome.substring(0, 10)));
-			}
-			else{
-				retorno.add(new SeguindoBean(nome));
-			}
-		}
-		return retorno;
-	}
+	
 
 	private List<Som> perfilMusical(){
 
@@ -81,15 +110,11 @@ public class UsuarioLogadoBean implements Serializable {
 		this.nome = nome;
 	}
 
-	public List<SeguindoBean> getSeguindo() throws SessaoException {
-		this.seguindo = usuariosSenguidos();
-		return seguindo;
+	public Collection<String> getSeguindo() throws SessaoException {
+
+		return sistema.getListaDeSeguindo(getIdSessao());
 	}
 	
-	public void setSeguindo(List<SeguindoBean> seguindo) {
-		this.seguindo = seguindo;
-	}
-
 	public List<Som> getFeed() throws SessaoException,
 			sistemaEncerradoException {
 		this.feed = perfilMusical();
@@ -138,12 +163,30 @@ public class UsuarioLogadoBean implements Serializable {
 	
 	
 	public List<String> recomendacoesDoSistema() throws SomException{
-		
 		return sistema.recomendacaoDoSistema(getIdSessao());
-		
 	}
 	
-
+	public int criarLista(){
+		try {
+			return sistema.criarLista(nomeDaLista,idSessao);
+		} catch (ListaException e) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null,
+					new FacesMessage("Falhou", e.getLocalizedMessage()));
+		}
+		return 0;
+	}
+	
+	
+	
+	public void adicionarUsuario(){
+		sistema.adicionarUsuario(idSessao, listaSelecionada, usuarioAdicionado);
+	}
+	
+	public List<Lista> listas(){
+		return sistema.getListas(idSessao);
+	}
+	
 
 
 }

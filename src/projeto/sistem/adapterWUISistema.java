@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
 import projeto.perfil.Som;
+import projeto.user.Lista;
 import projeto.user.Usuario;
 import excessoes.CadastroException;
+import excessoes.ListaException;
 import excessoes.LoginException;
 import excessoes.SessaoException;
 import excessoes.SomException;
@@ -192,4 +197,27 @@ public class adapterWUISistema {
 		
 		return retorno;
 	}
+
+	public int criarLista(String nomeDaLista, int idSessao) throws ListaException {
+		return sistema.usuario(idSessao).criarLista(nomeDaLista);
+	}
+
+	public List<Lista> getListas(int idSessao) {
+		return sistema.usuario(idSessao).getListas();
+	}
+	
+	public void adicionarUsuario(int idSessao, String nomeDaLista, String usuarioAdicionado){
+		Lista lista = sistema.usuario(idSessao).getListaEspecifica(nomeDaLista);
+		DadosDoSistema dados = DadosDoSistema.getInstance();
+		try {
+			sistema.adicionarUsuario(idSessao, lista.hashCode(), dados.usuario(usuarioAdicionado).hashCode());
+		} catch (ListaException e) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null,
+					new FacesMessage("Falhou", e.getLocalizedMessage()));
+		}
+	}
+	
+	
+	
 }

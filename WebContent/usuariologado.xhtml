@@ -7,18 +7,30 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core">
 
-<h:head>
+<h:head align="center">
 	<title><ui:insert name="title">You Radio</ui:insert></title>
 
-</h:head>
 
 <h:body>
-	<h:form>
+	 <style>
+	 #forms {
+        position: absolute;
+        
+         left: 50%;
+       
+         margin-left:-400px;
+         
+       
+	 }
+	 </style>
+	
+	<h:form id= "forms" >
+	
 		<p:growl id="messages" showDetail="true" sticky="true" />
-
-		<p:dataGrid var="usuarioLogado" value="#{youRadioBean.usuarioLogado}">
+	 
+		<p:dataGrid var="usuarioLogado" value="#{youRadioBean.usuarioLogado}"  align="center">
 			<p:panel header="You Radio - #{usuarioLogado.nome}"
-				footer="Fagner Gomes, Igleson Freire, Leonardo Avelino e Raiff Ramalho">
+				footer="Fagner Gomes, Igleson Freire, Leonardo Avelino e Raiff Ramalho" align="center">
 				<h:panelGrid>
 
 					<p:layout style="min-width:400px;height:240px;" id="layout">
@@ -42,6 +54,7 @@
 						</p:layoutUnit>
 					</p:layout>
 
+					<p:row>
 					<p:panel>
 						<p:row>
 							<p:inputTextarea rows="3" cols="57" minQueryLength="4"
@@ -60,7 +73,7 @@
 							<a href="#{feed.link}" target="_blank"> #{feed.link} </a>
 						</p:dataList>
 					</p:panel>
-					
+					</p:row>
 					<p:row>
 						<p:commandButton value="Recentes"
 							actionListener="#{youRadioBean.ordenarRecentes()}" ajax="false"/>
@@ -93,9 +106,9 @@
 
 					<p:panel header="Quem estou seguindo">
 						<p:scrollPanel style="width:672px;height:200px">
-							<p:dataGrid var="seguindo" value="#{usuarioLogado.seguindo}"
+							<p:dataGrid var="seguindo" value="#{usuarioLogado.getSeguindo()}"
 								columns="5">
-								<p:panel header="#{seguindo.nome}" style="height:100px">
+								<p:panel header="#{seguindo}" style="height:100px">
 									<p:graphicImage width="40" height="40"
 										value="/images/profile.jpg" />
 								</p:panel>
@@ -109,6 +122,31 @@
 						</p:dataList>
 					</p:panel>
 					
+					<p:panel header="Listas de usuários">
+						<p:row>
+
+								<p:inputText value="#{usuarioLogado.nomeDaLista}" required="false" />
+								
+								<p:commandButton value="Criar uma grupo" action="#{usuarioLogado.criarLista()}" ajax="false"></p:commandButton>
+						</p:row>
+						<h:panelGrid columns="5" style="margin-bottom:10px" cellpadding="5">  
+ 							<p:row>
+							<p:dataTable  var="lista" value="#{usuarioLogado.listas()}" 
+                	 selection="#{usuarioLogado.listaSelecionada}" rowKey="#{lista.hashCode()}">  
+      					 		<p:column selectionMode="single" style="width:2%" />  
+  
+       							<p:column headerText="Grupos" style="width:25%">  
+           							#{lista.getNomeDaLista()}
+       							</p:column>  
+  				 			</p:dataTable>
+  				 			<p:inputText value="#{usuarioLogado.usuarioAdicionado}" required="false" />
+								
+								<p:commandButton value="Adicione um usuário ao grupo selecionado" action="#{usuarioLogado.adicionarUsuario()}" ajax="false"></p:commandButton>
+  				 			
+							</p:row>
+						</h:panelGrid>		
+					</p:panel>
+					
 				</h:panelGrid>
 
 			</p:panel>
@@ -116,5 +154,8 @@
 		</p:dataGrid>
 
 	</h:form>
+
 </h:body>
+
+</h:head>
 </html>
