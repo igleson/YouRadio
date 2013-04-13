@@ -16,7 +16,7 @@ import excessoes.sistemaEncerradoException;
 import projeto.perfil.Som;
 import projeto.sistem.adapterWUISistema;
 import projeto.user.Lista;
-import projeto.user.Usuario;
+
 
 public class UsuarioLogadoBean implements Serializable {
 
@@ -27,7 +27,7 @@ public class UsuarioLogadoBean implements Serializable {
 	private adapterWUISistema sistema;
 	private int idSessao;
 	private String nomeDaLista;
-	private String listaSelecionada;
+	private Lista listaSelecionada;
 	private String usuarioAdicionado;
 
 
@@ -44,13 +44,13 @@ public class UsuarioLogadoBean implements Serializable {
 
 
 
-	public String getListaSelecionada() {
+	public Lista getListaSelecionada() {
 		return listaSelecionada;
 	}
 
 
 
-	public void setListaSelecionada(String listaSelecionada) {
+	public void setListaSelecionada(Lista listaSelecionada) {
 		this.listaSelecionada = listaSelecionada;
 	}
 
@@ -179,8 +179,31 @@ public class UsuarioLogadoBean implements Serializable {
 	
 	
 	
-	public void adicionarUsuario(){
-		sistema.adicionarUsuario(idSessao, listaSelecionada, usuarioAdicionado);
+	public void adicionarUsuario() throws SessaoException{
+		System.out.println("entrei");
+		System.out.println(listaSelecionada==null);
+		System.out.println(usuarioAdicionado);
+		if(listaSelecionada==null) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null,
+					new FacesMessage("Falhou", "Selecione uma lista"));
+		}
+		else if(usuarioAdicionado == null||usuarioAdicionado.equals("")) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null,
+					new FacesMessage("Falhou", "Nome invalido"));
+		}else if (!sistema.usuario(idSessao).getListaDeSeguindo().contains(sistema.usuario(usuarioAdicionado))){
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null,
+					new FacesMessage("Falhou", "Usuário não é seu amigo"));
+		}
+		
+		
+		else{
+		sistema.adicionarUsuario(idSessao, listaSelecionada.getId(), usuarioAdicionado);
+		listaSelecionada = null;
+		usuarioAdicionado = null;
+		}
 	}
 	
 	public List<Lista> listas(){

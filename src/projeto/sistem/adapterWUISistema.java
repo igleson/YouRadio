@@ -206,12 +206,19 @@ public class adapterWUISistema {
 		return sistema.usuario(idSessao).getListas();
 	}
 	
-	public void adicionarUsuario(int idSessao, String nomeDaLista, String usuarioAdicionado){
-		Lista lista = sistema.usuario(idSessao).getListaEspecifica(nomeDaLista);
-		DadosDoSistema dados = DadosDoSistema.getInstance();
+	public void adicionarUsuario(int idSessao, Integer idDaLista, String usuarioAdicionado){
+	
+		
 		try {
-			sistema.adicionarUsuario(idSessao, lista.hashCode(), dados.usuario(usuarioAdicionado).hashCode());
+			sistema.adicionarUsuario(idSessao, idDaLista, sistema.usuario(usuarioAdicionado).hashCode());
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null,
+					new FacesMessage("sucesso", null));
 		} catch (ListaException e) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null,
+					new FacesMessage("Falhou", e.getLocalizedMessage()));
+		} catch (SessaoException e) {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null,
 					new FacesMessage("Falhou", e.getLocalizedMessage()));

@@ -1,18 +1,5 @@
 package projeto.sistem;
 
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import excessoes.CadastroException;
 import excessoes.ListaException;
 import excessoes.LoginException;
@@ -22,12 +9,21 @@ import excessoes.UsuarioException;
 import excessoes.sistemaEncerradoException;
 import gerenciadorDeDados.DadosDoSistema;
 
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Set;
+
 import projeto.comparator.ComparaFontes;
 import projeto.perfil.Som;
 import projeto.user.Usuario;
 import sessao.Sessao;
 import sessao.SessaoNormal;
-import util.Colecaoes;
 
 public class YouRadio implements Serializable {
 
