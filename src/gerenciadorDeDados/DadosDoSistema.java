@@ -1,18 +1,14 @@
 package gerenciadorDeDados;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import excessoes.SomException;
-import excessoes.UsuarioException;
 
 import projeto.perfil.Som;
 import projeto.user.Usuario;
 import sessao.Sessao;
+import excessoes.SomException;
+import excessoes.UsuarioException;
 
 public class DadosDoSistema {
 

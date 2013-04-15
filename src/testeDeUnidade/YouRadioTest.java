@@ -1,20 +1,20 @@
 package testeDeUnidade;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import projeto.sistem.YouRadio;
 import excessoes.CadastroException;
 import excessoes.LoginException;
 import excessoes.SessaoException;
 import excessoes.SomException;
 import excessoes.UsuarioException;
 import excessoes.sistemaEncerradoException;
-import gerenciadorDeDados.DadosDoSistema;
-
-import projeto.perfil.Som;
-import projeto.sistem.YouRadio;
 
 public class YouRadioTest {
 
@@ -568,7 +568,6 @@ public class YouRadioTest {
 		int idSessao = sistema.abrirSessao("mark", "MaRk");
 		int som1 = sistema.postarSom(idSessao, "musica1");
 		int som2 = sistema.postarSom(idSessao, "musica2");
-		int som3 = sistema.postarSom(idSessao, "musica3");
 		
 		int idSessao2 = sistema.abrirSessao("steve", "StEvE");
 		int som4 = sistema.postarSom(idSessao2, "musica4");
@@ -648,7 +647,6 @@ public class YouRadioTest {
 		String musica1 = "musica1";
 		String musica2 = "musica2";
 		String musica3 = "musica3";
-		String musica4 = "musica4";
 		String musica5 = "musica5";
 		String musica6 = "musica6";
 		
@@ -659,11 +657,8 @@ public class YouRadioTest {
 		int idSom1 = sistema.postarSom(idSessao, musica1);
 		int idSom2 = sistema.postarSom(idSessao, musica2);
 		int idSom3 = sistema.postarSom(idSessao2, musica3);
-		int idSom4 = sistema.postarSom(idSessao2, musica4);
 		int idSom5 = sistema.postarSom(idSessao2, musica5);
 		int idSom6 = sistema.postarSom(idSessao4, musica6);
-		
-		
 		
 		
 		

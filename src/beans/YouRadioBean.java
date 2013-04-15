@@ -34,11 +34,6 @@ public class YouRadioBean {
 		this.login = login;
 	}
 	
-	public void adicionarUsuario(){
-		usuarioLogado.adicionarUsuario();
-	}
-	
-	
 	public String getSenha() {
 		return senha;
 	}

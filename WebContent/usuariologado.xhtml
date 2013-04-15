@@ -131,21 +131,33 @@
 						</p:row>
 						<h:panelGrid columns="5" style="margin-bottom:10px" cellpadding="5">  
  							<p:row>
-							<p:dataTable  var="lista" value="#{usuarioLogado.listas()}" 
-                	 selection="#{usuarioLogado.listaSelecionada}" rowKey="#{lista.hashCode()}">  
-      					 		<p:column selectionMode="single" style="width:2%" />  
+								<p:dataTable  var="lista" value="#{usuarioLogado.listas()}" 
+                		 selection="#{usuarioLogado.listaSelecionada}" rowKey="#{lista.hashCode()}">  
+      					 			<p:column selectionMode="single" style="width:2%" />  
   
-       							<p:column headerText="Grupos" style="width:25%">  
-           							#{lista.getNomeDaLista()}
-       							</p:column>  
-  				 			</p:dataTable>
-  				 			<p:inputText value="#{usuarioLogado.usuarioAdicionado}" required="false" />
+       								<p:column headerText="Grupos" style="width:25%">  
+           								#{lista.getNomeDaLista()}
+       								</p:column>  
+  				 				</p:dataTable>
+  				 				<p:inputText value="#{usuarioLogado.usuarioAdicionado}" required="false" />
 								
-							<p:commandButton value="Adicione um usuário ao grupo selecionado" action="#{usuarioLogado.adicionarUsuario()}" ajax="false"></p:commandButton>
-  				 
-							<p:commandButton value="Ver sons em lista" action="#{usuarioLogado.verSons()}" ajax="false"></p:commandButton>
+								<p:commandButton value="Adicione um usuário ao grupo selecionado" action="#{usuarioLogado.adicionarUsuario()}" ajax="false"></p:commandButton>
+  				 				<p:commandButton value="Ver sons do grupo selecionado" action="#{usuarioLogado.verSonsEmGrupo()}" ajax="false"></p:commandButton>
 							</p:row>
-						</h:panelGrid>		
+							
+						</h:panelGrid>
+						<h:panelGrid columns="5" style="margin-bottom:10px" cellpadding="5"> 
+								<f:facet name="header">  
+        							Sons do Grupo Selecionado                                         
+    							</f:facet>  
+								<p:dataList var="som" value="#{usuarioLogado.getSonsDoGrupo()}">
+									<h:outputText value="#{som}" />
+								</p:dataList>
+						</h:panelGrid>
+						
+						
+						
+						
 					</p:panel>
 					
 				</h:panelGrid>

@@ -2,10 +2,8 @@ package projeto.sistem;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
-import projeto.comparator.ComparaFontes;
 import projeto.perfil.Som;
 import util.Colecaoes;
 import util.Strings;

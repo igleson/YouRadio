@@ -21,6 +21,7 @@ import java.util.Set;
 
 import projeto.comparator.ComparaFontes;
 import projeto.perfil.Som;
+import projeto.user.Lista;
 import projeto.user.Usuario;
 import sessao.Sessao;
 import sessao.SessaoNormal;
@@ -452,6 +453,11 @@ public class YouRadio implements Serializable {
 			}
 		}
 		return retorno;
+	}
+
+	public List<Integer> verSonsEmGrupo(Lista lista) {
+		if(lista!=null)	return lista.getSonsEmLista();
+		return null;
 	}
 	
 }

@@ -29,6 +29,19 @@ public class UsuarioLogadoBean implements Serializable {
 	private String nomeDaLista;
 	private Lista listaSelecionada;
 	private String usuarioAdicionado;
+	private List<String> sonsDoGrupo;
+
+
+
+	public List<String> getSonsDoGrupo() {
+		return sonsDoGrupo;
+	}
+
+
+
+	public void setSonsDoGrupo(List<String> sonsDoGrupo) {
+		this.sonsDoGrupo = sonsDoGrupo;
+	}
 
 
 
@@ -180,9 +193,7 @@ public class UsuarioLogadoBean implements Serializable {
 	
 	
 	public void adicionarUsuario() throws SessaoException{
-		System.out.println("entrei");
-		System.out.println(listaSelecionada==null);
-		System.out.println(usuarioAdicionado);
+		
 		if(listaSelecionada==null) {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null,
@@ -192,17 +203,15 @@ public class UsuarioLogadoBean implements Serializable {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null,
 					new FacesMessage("Falhou", "Nome invalido"));
-		}else if (!sistema.usuario(idSessao).getListaDeSeguindo().contains(sistema.usuario(usuarioAdicionado))){
+		}else if (sistema.usuario(idSessao).getListaDeSeguindo().contains(sistema.usuario(usuarioAdicionado))){
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null,
 					new FacesMessage("Falhou", "Usuário não é seu amigo"));
 		}
-		
-		
 		else{
-		sistema.adicionarUsuario(idSessao, listaSelecionada.getId(), usuarioAdicionado);
-		listaSelecionada = null;
-		usuarioAdicionado = null;
+			sistema.adicionarUsuario(idSessao, listaSelecionada.getId(), usuarioAdicionado);
+			listaSelecionada = null;
+			usuarioAdicionado = null;
 		}
 	}
 	
@@ -210,6 +219,21 @@ public class UsuarioLogadoBean implements Serializable {
 		return sistema.getListas(idSessao);
 	}
 	
-
+	public void verSonsEmGrupo(){
+		if(listaSelecionada==null) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null,
+					new FacesMessage("Falhou", "Selecione uma lista"));
+		}else{
+			try {
+				sonsDoGrupo = sistema.verSonsEmGrupo(listaSelecionada);
+			} catch (SomException e) {
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null,
+						new FacesMessage("Falhou", e.getLocalizedMessage()));
+			}
+		}
+	}
+	
 
 }

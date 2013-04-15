@@ -208,12 +208,11 @@ public class adapterWUISistema {
 	
 	public void adicionarUsuario(int idSessao, Integer idDaLista, String usuarioAdicionado){
 	
-		
 		try {
 			sistema.adicionarUsuario(idSessao, idDaLista, sistema.usuario(usuarioAdicionado).hashCode());
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null,
-					new FacesMessage("sucesso", null));
+					new FacesMessage("sucesso", "UsuarioAdicionado ao Grupo"));
 		} catch (ListaException e) {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null,
@@ -223,6 +222,16 @@ public class adapterWUISistema {
 			context.addMessage(null,
 					new FacesMessage("Falhou", e.getLocalizedMessage()));
 		}
+	}
+
+	public List<String> verSonsEmGrupo(Lista lista) throws SomException {
+		DadosDoSistema dados = DadosDoSistema.getInstance();
+		List<String> retorno = new ArrayList<String>();
+		List<Integer> temp = sistema.verSonsEmGrupo(lista);
+		for (Integer idSom : temp) {
+			retorno.add(dados.Som(idSom).getLink());
+		}
+		return retorno;
 	}
 	
 	
