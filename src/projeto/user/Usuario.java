@@ -179,11 +179,11 @@ public class Usuario implements Serializable{
 		return retorno;
 
 	}
+	
 	//testar
 	public List<Integer> getListaDeSeguidores() {
 		return seguidores;
 	}
-	
 	
 	//testar
 	public void addSeguidores(Usuario usuario){
@@ -198,6 +198,7 @@ public class Usuario implements Serializable{
 			usuario.addSeguidores(this);				
 		}
 	}
+	
 	//testar
 	public List<Som> getVisaoDosSons() throws SomException{
 		List<Som> retorno = new ArrayList<Som>();
@@ -218,8 +219,6 @@ public class Usuario implements Serializable{
 		return this.seguidores.size();
 	}
 	
-	
-	
 	//testar
 	public void favoritarSom(int idSom) throws SomException{
 		sonsFavoritos.add(idSom);
@@ -229,8 +228,6 @@ public class Usuario implements Serializable{
 			dados.usuarioPorId(idUsuario).adicionaAoFeedExtra(idSom);
 		}
 	}
-	
-		
 
 	//testar
 	public List<Integer> getSonsFavoritos(){
@@ -305,12 +302,12 @@ public class Usuario implements Serializable{
 		return new ArrayList<Integer>();
 	}
 
-	
+	//testar
 	public Collection<Integer> getListaDeSeguindo() {
 		return this.seguindo;
 	}
 	
-	
+	//testar
 	public int getNumFavoritosEmComum(Integer idUsuario){
 		int resultado = 0;
 		DadosDoSistema dados = DadosDoSistema.getInstance();
@@ -322,6 +319,7 @@ public class Usuario implements Serializable{
 		return resultado;
 	}
 	
+	//testar
 	public Integer getNumFontesEmComum(Integer idUsuario){
 		int resultado = 0;
 		DadosDoSistema dados = DadosDoSistema.getInstance();
@@ -331,19 +329,19 @@ public class Usuario implements Serializable{
 		}
 		return resultado;
 	}
-	
-	
 
-	
+	//testar
 	public void adicionarUsuario(int idLista, Usuario usuario) throws ListaException {
 		if(this.hashCode()==usuario.hashCode()) throw new ListaException("Usuário não pode adicionar-se a própria lista");
 		listas.get(listasPorId.get(idLista)).adicionarUsuario(usuario);
 	}
+	//testar
 	
 	public List<Integer> getSonsEmLista(String nomeDaLista) {
 		return listas.get(nomeDaLista).getSonsEmLista();
 	}
 	
+	//testar
 	public int criarLista(String nomeDaLista) throws ListaException {
 		if(nomeDaLista == "")throw new ListaException(" digite um nome");
 		if(listas.containsKey(nomeDaLista)) throw new ListaException("Nome já escolhido");
@@ -353,6 +351,7 @@ public class Usuario implements Serializable{
 		return temp.getId();
 	}
 	
+	//testar
 	public List<Lista> getListas(){
 		List<Lista> retorno = new ArrayList<Lista>();
 		for (Lista lista : listas.values()) {
@@ -361,8 +360,7 @@ public class Usuario implements Serializable{
 		return 	retorno;
 	}
 	
-	
-	
+	//testar
 	public int qntsSonsFavoritei(Integer idUsuario) throws SomException{
 		int retorno = 0;
 		DadosDoSistema dados = DadosDoSistema.getInstance();
@@ -373,7 +371,7 @@ public class Usuario implements Serializable{
 		return retorno;
 	}
 	
-	
+	//testar
 	public int compareTo(Integer idUsuario){
 		DadosDoSistema dados = DadosDoSistema.getInstance();
 		Usuario usuario = dados.usuarioPorId(idUsuario);
@@ -382,6 +380,7 @@ public class Usuario implements Serializable{
 		return this.nome.compareTo(nome2);
 	}
 
+	//testar
 	public Lista getListaEspecifica(String nomeDaLista) {
 		return listas.get(nomeDaLista);
 		

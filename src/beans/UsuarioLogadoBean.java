@@ -96,7 +96,6 @@ public class UsuarioLogadoBean implements Serializable {
 
 	private List<Som> perfilMusical(){
 
-		
 				try {
 					List<Som> temp = sistema.getPerfilMusical(getIdSessao());
 					Collections.reverse(temp);

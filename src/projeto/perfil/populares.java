@@ -19,6 +19,6 @@ public class populares implements Comparator<Integer>{
 		}
 		if(som1.getQtdeFavoritados() > som2.getQtdeFavoritados()) return -1;
 		else if(som1.getQtdeFavoritados() < som2.getQtdeFavoritados())	return 1;
-		return -1*som1.compareTo(som2);
+		return som1.compareTo(som2);
 	}
 }
