@@ -61,7 +61,6 @@ public class YouRadioBean {
 	}
 
 	public boolean favoritou(projeto.perfil.Som som) {
-		System.out.println(som.usuarioFavoritou(sistema.usuario(idSessao)));
 		return som.usuarioFavoritou(sistema.usuario(idSessao));
 
 	}

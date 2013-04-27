@@ -288,7 +288,6 @@ public class YouRadioFacade {
 	}
 	
 	public String criarLista(String idSessao, String nomeDaLista) throws SessaoException, ListaException {
-		System.out.println(idSessao);
 		if (idSessao == null || idSessao.equals(""))
 			throw new SessaoException("Sessão inválida");
 		if (!Strings.ehUmNumero(idSessao))

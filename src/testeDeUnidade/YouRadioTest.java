@@ -670,13 +670,6 @@ public class YouRadioTest {
 		
 		
 		
-		System.out.println(sistema.getFontesDeSonsRecomendadas(idSessao3));
-		
-		
-		
-		
-		
-		
 	}
 	
 	
