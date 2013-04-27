@@ -297,7 +297,6 @@ public class YouRadioFacade {
 		return retorno + sistema.criarLista(nomeDaLista, Integer.parseInt(idSessao));
 	}
 	
-	
 	public String getFontesDeSonsRecomendadas(String idSessao) throws Exception{
 		
 		if (idSessao == null || idSessao.equals(""))
@@ -313,4 +312,24 @@ public class YouRadioFacade {
 		 
 	}
 
+	public String criarTag(String idSessao, String tag){
+		return null;
+	}
+	
+	public void adicionarTagASom(String idSessao, String tag, String som){
+		
+	}
+	
+	public String getListaTagsEmSom(String idSessao, String som){
+		return null;
+	}
+	
+	public String getNomeTag(String idSessao, String tag){
+		return null;
+	}
+
+	public String getTagsDisponiveis(String sessaoSteve){
+		return null;
+	}
+	
 }
