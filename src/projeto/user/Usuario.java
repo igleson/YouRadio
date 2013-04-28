@@ -233,11 +233,7 @@ public class Usuario implements Serializable {
 	// testar
 	public void favoritarSom(Som som) throws SomException {
 		sonsFavoritos.add(som.getId());
-		DadosDoSistema dados = DadosDoSistema.getInstance();
 		som.meFavoritou(this);
-		for (int idUsuario : this.seguidores) {
-			dados.usuarioPorId(idUsuario).adicionaAoFeedExtra(som.getId());
-		}
 	}
 
 	// testar
@@ -246,8 +242,8 @@ public class Usuario implements Serializable {
 	}
 
 	// testar
-	public void adicionaAoFeedExtra(int somId) {
-		this.feedExtra.add(somId);
+	public void adicionaAoFeedExtra(Som som) {
+		this.feedExtra.add(som.getId());
 	}
 
 	// testar
@@ -322,23 +318,19 @@ public class Usuario implements Serializable {
 	}
 
 	// testar
-	public int getNumFavoritosEmComum(Integer idUsuario) {
+	public int getNumFavoritosEmComum(Usuario usuario) {
 		int resultado = 0;
-		DadosDoSistema dados = DadosDoSistema.getInstance();
-		Usuario usuario = dados.usuarioPorId(idUsuario);
 		for (Integer idSom : usuario.getSonsFavoritos()) {
 			if (sonsFavoritos.contains(idSom))
 				resultado++;
 		}
-
 		return resultado;
 	}
 
 	// testar
-	public Integer getNumFontesEmComum(Integer idUsuario) {
+	public Integer getNumFontesEmComum(Usuario usuario) {
 		int resultado = 0;
-		DadosDoSistema dados = DadosDoSistema.getInstance();
-		Usuario usuario = dados.usuarioPorId(idUsuario);
+		
 		for (Integer idSom : seguindo) {
 			if (usuario.getFontesDeSons().contains(idSom))
 				resultado++;
