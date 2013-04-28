@@ -33,6 +33,10 @@ public class YouRadioFacade {
 	public void zerarSistema() {
 		sistema.zerarSistema();
 	}
+	
+	public void reiniciarSistema() {
+		sistema.reiniciarSistema();
+	}
 
 	public void criarUsuario(String login, String senha, String nome,
 			String email) throws UsuarioException, CadastroException,

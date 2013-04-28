@@ -1,13 +1,15 @@
 package projeto.user;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import excessoes.ListaException;
 
-public class Lista {
+public class Lista implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private Usuario dono;
 	private Integer id;
 	private String nomeDaLista;

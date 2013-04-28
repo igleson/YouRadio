@@ -4,7 +4,8 @@ import excessoes.LoginException;
 import gerenciadorDeDados.DadosDoSistema;
 
 public class SessaoNormal implements Sessao{
-
+	
+	private static final long serialVersionUID = 1L;
 	private DadosDoSistema dados;
 	private String login;
 

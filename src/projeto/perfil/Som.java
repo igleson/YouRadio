@@ -1,5 +1,6 @@
 package projeto.perfil;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -14,8 +15,9 @@ import excessoes.SomException;
 import util.Date;
 
 
-public class Som implements Comparable<Som>{
+public class Som implements Comparable<Som>, Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private int idDono;
 	private String link;
 	private GregorianCalendar dataCriacao;

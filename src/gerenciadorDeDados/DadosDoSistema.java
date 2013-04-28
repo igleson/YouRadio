@@ -1,5 +1,13 @@
 package gerenciadorDeDados;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -10,7 +18,9 @@ import sessao.Sessao;
 import excessoes.SomException;
 import excessoes.UsuarioException;
 
-public class DadosDoSistema {
+public class DadosDoSistema implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private static DadosDoSistema dados;
 
@@ -29,10 +39,15 @@ public class DadosDoSistema {
 		todosOsSons = new HashMap<Integer, Som>();
 		sonsComMaisFavoritos = new HashMap<Integer, Integer>();
 	}
+	
 
 	public static DadosDoSistema getInstance() {
 		if (dados == null) {
-			dados = new DadosDoSistema();
+			try {
+				dados = lerArquivo();
+			} catch (IOException e) {
+				dados = new DadosDoSistema();
+			}
 		}
 		return dados;
 	}
@@ -136,6 +151,33 @@ public class DadosDoSistema {
 		
 	}
 	
+	public static void escreveArquivo() throws IOException{
+		ObjectOutputStream out = null;
+		String nome = "tudo.dat";
+		try{
+			out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(nome)));
+			out.writeObject(dados);
+		}catch(IOException e){
+			System.err.println(e.getMessage());
+		}finally{
+			out.close();
+		}
+	}
 	
+	public static DadosDoSistema lerArquivo() throws IOException{
+		ObjectInputStream in = null;
+		String nome = "tudo.dat";
+		try{
+			in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(nome)));
+			return (DadosDoSistema) in.readObject();
+		}catch(ClassNotFoundException e){
+			System.err.println(e.getMessage());
+		}catch(IOException e){
+			System.err.println(e.getMessage());
+		}finally{
+			in.close();
+		}
+		return null;
+	}
 
 }

@@ -1,8 +1,10 @@
 package sessao;
 
+import java.io.Serializable;
+
 import excessoes.LoginException;
 
-public interface Sessao {
+public interface Sessao extends Serializable {
 
 	int abrirSessao(String login, String senha) throws LoginException;
 

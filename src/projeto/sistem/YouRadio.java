@@ -10,6 +10,7 @@ import excessoes.UsuarioException;
 import excessoes.sistemaEncerradoException;
 import gerenciadorDeDados.DadosDoSistema;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -55,6 +56,11 @@ public class YouRadio implements Serializable {
 		dados = DadosDoSistema.getInstance();
 		dados.zeraSistema();
 		sistemaEstaAberto = true;
+	}
+	
+	public void reiniciarSistema() {
+		sistemaEstaAberto = true;
+		dados = DadosDoSistema.getInstance();
 	}
 
 	/**
@@ -253,6 +259,12 @@ public class YouRadio implements Serializable {
 	 * @return void
 	 **/
 	public void encerrarSistema() {
+		try {
+			DadosDoSistema.escreveArquivo();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		sistemaEstaAberto = false;
 		this.dados = null;
 	}
@@ -481,5 +493,6 @@ public class YouRadio implements Serializable {
 	public Set<Integer> getTagsDisponiveis(Integer idSessao) {		
 		return dados.usuario(idSessao).getTagsDisponiveis();
 	}
+
 	
 }
