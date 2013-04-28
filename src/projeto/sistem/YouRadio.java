@@ -260,12 +260,13 @@ public class YouRadio implements Serializable {
 	 **/
 	public void encerrarSistema() {
 		try {
-			DadosDoSistema.escreveArquivo();
+			DadosDoSistema.persistirDados();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		sistemaEstaAberto = false;
+		this.dados.encerrarSistema();
 		this.dados = null;
 	}
 

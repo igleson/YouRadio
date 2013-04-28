@@ -20,6 +20,7 @@ import excessoes.UsuarioException;
 
 public class DadosDoSistema implements Serializable {
 
+	private static final String NOME_DO_ARQUIVO = "dados.dat";
 	private static final long serialVersionUID = 1L;
 
 	private static DadosDoSistema dados;
@@ -28,6 +29,7 @@ public class DadosDoSistema implements Serializable {
 	private Map<Integer, Sessao> todasAsSessoes;
 	private Map<Integer, Som> todosOsSons;
 	private Map<Integer, Integer> sonsComMaisFavoritos;
+	
 
 	private DadosDoSistema() {
 		this.zeraSistema();
@@ -44,7 +46,7 @@ public class DadosDoSistema implements Serializable {
 	public static DadosDoSistema getInstance() {
 		if (dados == null) {
 			try {
-				dados = lerArquivo();
+				dados = recuperarDados();
 			} catch (IOException e) {
 				dados = new DadosDoSistema();
 			}
@@ -68,7 +70,11 @@ public class DadosDoSistema implements Serializable {
 	public boolean contemLogin(String login) {
 		return this.todosOsUsuarios.get(login) != null;
 	}
-
+	
+	public void encerrarSistema() {
+		dados = null;
+	}
+	
 	public boolean senhaValida(String login, String senha) {
 		return this.todosOsUsuarios.get(login).testaSenha(senha);
 	}
@@ -151,31 +157,31 @@ public class DadosDoSistema implements Serializable {
 		
 	}
 	
-	public static void escreveArquivo() throws IOException{
+	public static void persistirDados() throws IOException{
 		ObjectOutputStream out = null;
-		String nome = "tudo.dat";
 		try{
-			out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(nome)));
+			out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(NOME_DO_ARQUIVO)));
 			out.writeObject(dados);
 		}catch(IOException e){
 			System.err.println(e.getMessage());
 		}finally{
-			out.close();
+			if (out!=null){
+				out.close();
+			}
 		}
 	}
 	
-	public static DadosDoSistema lerArquivo() throws IOException{
+	public static DadosDoSistema recuperarDados() throws IOException{
 		ObjectInputStream in = null;
-		String nome = "tudo.dat";
 		try{
-			in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(nome)));
+			in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(NOME_DO_ARQUIVO)));
 			return (DadosDoSistema) in.readObject();
 		}catch(ClassNotFoundException e){
 			System.err.println(e.getMessage());
-		}catch(IOException e){
-			System.err.println(e.getMessage());
 		}finally{
-			in.close();
+			if (in!=null){
+				in.close();
+			}
 		}
 		return null;
 	}
