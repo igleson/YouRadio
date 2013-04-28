@@ -1,6 +1,7 @@
 package beans;
 
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -11,6 +12,7 @@ import excessoes.SomException;
 import excessoes.sistemaEncerradoException;
 import projeto.sistem.OrdenacoesFeedPrincipal;
 import projeto.sistem.adapterWUISistema;
+import threads.ThreadQueSalva;
 
 @ManagedBean
 @SessionScoped
@@ -25,6 +27,13 @@ public class YouRadioBean {
 	private String seguir;
 	private String ordenador;
 
+	
+	@PostConstruct
+	public void init(){
+		Thread thread = new ThreadQueSalva();
+		thread.start();
+	}
+	
 	public String getLogin() {
 		return login;
 	}

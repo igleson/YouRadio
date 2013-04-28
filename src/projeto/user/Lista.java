@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
 
 import excessoes.ListaException;
+import gerenciadorDeDados.DadosDoSistema;
 
 public class Lista implements Serializable {
 	
@@ -14,12 +16,14 @@ public class Lista implements Serializable {
 	private Integer id;
 	private String nomeDaLista;
 	private List<Usuario> usuariosNaLista;
+	private Lock lock;
 	
 	public Lista(Usuario dono, String nomeDaLista) {
 		usuariosNaLista = new ArrayList<Usuario>();
 		this.dono = dono;
 		this.nomeDaLista = nomeDaLista;
 		id = this.hashCode();
+		this.lock = DadosDoSistema.getLock();
 	}
 	
 	public Usuario getDono() {
@@ -35,8 +39,14 @@ public class Lista implements Serializable {
 	}
 	
 	public void adicionarUsuario(Usuario usuario) throws ListaException {
-		if(usuariosNaLista.contains(usuario)) throw new ListaException("Usuário já existe nesta lista");
-		usuariosNaLista.add(usuario);
+		lock.lock();
+		try {
+			if(usuariosNaLista.contains(usuario)) throw new ListaException("Usuário já existe nesta lista");
+			usuariosNaLista.add(usuario);
+		}
+		finally {
+			lock.unlock();
+		}
 
 	}
 

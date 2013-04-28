@@ -21,7 +21,8 @@ import excessoes.SomException;
 import excessoes.UsuarioException;
 
 public class DadosDoSistema implements Serializable {
-
+	
+	//dados.dat sendo salvo no diretório padrão do JBOSS
 	private static final String NOME_DO_ARQUIVO = "dados.dat";
 	private static final long serialVersionUID = 1L;
 

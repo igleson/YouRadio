@@ -9,6 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+
 import projeto.perfil.populares;
 import projeto.perfil.Som;
 import projeto.sistem.OrdenacoesFeedPrincipal;
@@ -39,6 +41,7 @@ public class Usuario implements Serializable {
 	private HashMap<Integer, String> listasPorId;
 	private LinkedHashMap<String, Tag> tagsDisponiveis;
 	private LinkedHashMap<Integer, String> tagsPorId;
+	private Lock lock;
 
 	/**
 	 * @param login
@@ -68,6 +71,7 @@ public class Usuario implements Serializable {
 		this.listasPorId = new HashMap<Integer, String>();
 		this.tagsDisponiveis = new LinkedHashMap<String, Tag>();
 		this.tagsPorId = new LinkedHashMap<Integer, String>();
+		this.lock = DadosDoSistema.getLock();
 	}
 
 	public HashMap<Integer, String> getTagsPorId() {
@@ -94,7 +98,13 @@ public class Usuario implements Serializable {
 	public void setLogin(String login) throws UsuarioException {
 		if (login == null || login.equals(""))
 			throw new UsuarioException("Login inválido");
-		this.login = login;
+		lock.lock();
+		try {
+			this.login = login;
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 
 	/**
@@ -107,7 +117,13 @@ public class Usuario implements Serializable {
 	public void setSenha(String senha) throws UsuarioException {
 		if (senha == null || senha.equals(""))
 			throw new UsuarioException("Senha inválida");
-		this.senha = senha;
+		lock.lock();
+		try {
+			this.senha = senha;
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 
 	/**
@@ -127,7 +143,13 @@ public class Usuario implements Serializable {
 	public void setNome(String nome) throws UsuarioException {
 		if (nome == null || nome.equals(""))
 			throw new UsuarioException("Nome inválido");
-		this.nome = nome;
+		lock.lock();
+		try {
+			this.nome = nome;
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 
 	/**
@@ -159,7 +181,13 @@ public class Usuario implements Serializable {
 	public void setEmail(String email) throws UsuarioException {
 		if (email == null || email.equals(""))
 			throw new UsuarioException("Email inválido");
-		this.email = email;
+		lock.lock();
+		try {
+			this.email = email;
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 
 	/**
@@ -171,7 +199,13 @@ public class Usuario implements Serializable {
 	public void postarSom(int somId) {
 		if (perfilMusical == null)
 			perfilMusical = new ArrayList<Integer>();
-		perfilMusical.add(somId);
+		lock.lock();
+		try {
+			perfilMusical.add(somId);
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 
 	/**
@@ -198,15 +232,27 @@ public class Usuario implements Serializable {
 
 	// testar
 	public void addSeguidores(Usuario usuario) {
-		if (!this.seguidores.contains(usuario.hashCode()))
-			this.seguidores.add(usuario.hashCode());
+		lock.lock();
+		try {
+			if (!this.seguidores.contains(usuario.hashCode()))
+				this.seguidores.add(usuario.hashCode());
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 
 	// testar
 	public void seguirUsuario(Usuario usuario) {
-		if (!this.seguindo.contains(usuario.hashCode())) {
-			this.seguindo.add(usuario.hashCode());
-			usuario.addSeguidores(this);
+		lock.lock();
+		try {
+			if (!this.seguindo.contains(usuario.hashCode())) {
+				this.seguindo.add(usuario.hashCode());
+				usuario.addSeguidores(this);
+			}
+		}
+		finally {
+			lock.unlock();
 		}
 	}
 
@@ -232,8 +278,14 @@ public class Usuario implements Serializable {
 
 	// testar
 	public void favoritarSom(Som som) throws SomException {
-		sonsFavoritos.add(som.getId());
-		som.meFavoritou(this);
+		lock.lock();
+		try {
+			sonsFavoritos.add(som.getId());
+			som.meFavoritou(this);
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 
 	// testar
@@ -243,7 +295,13 @@ public class Usuario implements Serializable {
 
 	// testar
 	public void adicionaAoFeedExtra(Som som) {
-		this.feedExtra.add(som.getId());
+		lock.lock();
+		try {
+			this.feedExtra.add(som.getId());
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 
 	// testar
@@ -253,7 +311,13 @@ public class Usuario implements Serializable {
 
 	// testar
 	public void setMainFeedRule(OrdenacoesFeedPrincipal ordem) {
-		this.ordem = ordem;
+		lock.lock();
+		try {
+			this.ordem = ordem;
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 
 	private List<Integer> mainFeed() {
@@ -343,7 +407,13 @@ public class Usuario implements Serializable {
 		if (this.hashCode() == usuario.hashCode())
 			throw new ListaException(
 					"Usuário não pode adicionar-se a própria lista");
-		listas.get(listasPorId.get(idLista)).adicionarUsuario(usuario);
+		lock.lock();
+		try {
+			listas.get(listasPorId.get(idLista)).adicionarUsuario(usuario);
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 
 	// testar
@@ -359,8 +429,14 @@ public class Usuario implements Serializable {
 		if (listas.containsKey(nomeDaLista))
 			throw new ListaException("Nome já escolhido");
 		Lista temp = new Lista(this, nomeDaLista);
-		listas.put(nomeDaLista, temp);
-		listasPorId.put(temp.getId(), temp.getNomeDaLista());
+		lock.lock();
+		try {
+			listas.put(nomeDaLista, temp);
+			listasPorId.put(temp.getId(), temp.getNomeDaLista());
+		}
+		finally {
+			lock.unlock();
+		}
 		return temp.getId();
 	}
 
@@ -389,8 +465,14 @@ public class Usuario implements Serializable {
 		Tag novaTag = new Tag(this, tag);
 		if (tagsPorId.containsValue(tag))
 			throw new TagException("Tag inválida");
-		tagsDisponiveis.put(tag, novaTag);
-		tagsPorId.put(novaTag.getId(), novaTag.getNomeDaTag());
+		lock.lock();
+		try {
+			tagsDisponiveis.put(tag, novaTag);
+			tagsPorId.put(novaTag.getId(), novaTag.getNomeDaTag());
+		}
+		finally {
+			lock.unlock();
+		}
 		return novaTag.getId();
 	}
 
@@ -398,7 +480,13 @@ public class Usuario implements Serializable {
 			throws SomException, TagException {
 		if (!tagsPorId.containsValue(tag))
 			throw new TagException("Tag inexistente");
-		som.adicionaTag(tagsDisponiveis.get(tag));
+		lock.lock();
+		try {
+			som.adicionaTag(tagsDisponiveis.get(tag));
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 
 	public Set<Tag> getListaTagsEmSom(Som som) throws SomException {
