@@ -333,7 +333,13 @@ public class YouRadio implements Serializable {
 			SomException {
 		if (!this.dados.contemSessao(sessaoId))
 			throw new SessaoException("Sessão inexistente");
-		this.dados.usuario(sessaoId).favoritarSom(idSom);
+		Usuario usuario = dados.usuario(sessaoId);
+		Som som = dados.Som(idSom);
+		usuario.favoritarSom(som);
+		
+		for (int idUsuario : usuario.getListaDeSeguidores()) {
+			dados.usuarioPorId(idUsuario).adicionaAoFeedExtra(som);
+		}
 	}
 
 	public List<Integer> getSonsFavoritos(int sessaoId) throws SessaoException,
@@ -379,7 +385,8 @@ public class YouRadio implements Serializable {
 		if (!dados.contemSessao(idSessao))
 			throw new SessaoException("Sessão inexistente");
 		Usuario usuario1 = dados.usuario(idSessao);
-		return usuario1.getNumFavoritosEmComum(idUsuario);
+		Usuario usuario2 = dados.usuarioPorId(idUsuario);
+		return usuario1.getNumFavoritosEmComum(usuario2);
 	}
 
 	public int getNumFontesEmComum(int idSessao, int idUsuario)
@@ -387,7 +394,8 @@ public class YouRadio implements Serializable {
 		if (!dados.contemSessao(idSessao))
 			throw new SessaoException("Sessão inexistente");
 		Usuario usuario1 = dados.usuario(idSessao);
-		return usuario1.getNumFontesEmComum(idUsuario);
+		Usuario usuario2 = dados.usuarioPorId(idUsuario);
+		return usuario1.getNumFontesEmComum(usuario2);
 	}
 
 	public boolean contemUsuario(int idUsuario) {
@@ -479,11 +487,12 @@ public class YouRadio implements Serializable {
 	}
 
 	public void adicionarTagASom(Integer idSessao, String tag, Integer idSom) throws SomException, TagException {
-		dados.usuario(idSessao).adicionarTagASom(idSom, tag);
+		
+		dados.usuario(idSessao).adicionarTagASom(dados.Som(idSom), tag);
 	}
 
 	public Set<Tag> getListaTagsEmSom(Integer idSessao, Integer idSom) throws SomException {
-		return dados.usuario(idSessao).getListaTagsEmSom(idSom);
+		return dados.usuario(idSessao).getListaTagsEmSom(dados.Som(idSom));
 	}
 
 	public String getNomeTag(Integer idSessao, Integer idTag) throws TagException {

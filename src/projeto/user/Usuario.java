@@ -231,13 +231,9 @@ public class Usuario implements Serializable {
 	}
 
 	// testar
-	public void favoritarSom(int idSom) throws SomException {
-		sonsFavoritos.add(idSom);
-		DadosDoSistema dados = DadosDoSistema.getInstance();
-		dados.Som(idSom).meFavoritou(this);
-		for (int idUsuario : this.seguidores) {
-			dados.usuarioPorId(idUsuario).adicionaAoFeedExtra(idSom);
-		}
+	public void favoritarSom(Som som) throws SomException {
+		sonsFavoritos.add(som.getId());
+		som.meFavoritou(this);
 	}
 
 	// testar
@@ -246,8 +242,8 @@ public class Usuario implements Serializable {
 	}
 
 	// testar
-	public void adicionaAoFeedExtra(int somId) {
-		this.feedExtra.add(somId);
+	public void adicionaAoFeedExtra(Som som) {
+		this.feedExtra.add(som.getId());
 	}
 
 	// testar
@@ -322,23 +318,18 @@ public class Usuario implements Serializable {
 	}
 
 	// testar
-	public int getNumFavoritosEmComum(Integer idUsuario) {
+	public int getNumFavoritosEmComum(Usuario usuario) {
 		int resultado = 0;
-		DadosDoSistema dados = DadosDoSistema.getInstance();
-		Usuario usuario = dados.usuarioPorId(idUsuario);
 		for (Integer idSom : usuario.getSonsFavoritos()) {
 			if (sonsFavoritos.contains(idSom))
 				resultado++;
 		}
-
 		return resultado;
 	}
 
 	// testar
-	public Integer getNumFontesEmComum(Integer idUsuario) {
+	public Integer getNumFontesEmComum(Usuario usuario) {
 		int resultado = 0;
-		DadosDoSistema dados = DadosDoSistema.getInstance();
-		Usuario usuario = dados.usuarioPorId(idUsuario);
 		for (Integer idSom : seguindo) {
 			if (usuario.getFontesDeSons().contains(idSom))
 				resultado++;
@@ -383,23 +374,8 @@ public class Usuario implements Serializable {
 	}
 
 	// testar
-	public int qntsSonsFavoritei(Integer idUsuario) throws SomException {
-		int retorno = 0;
-		DadosDoSistema dados = DadosDoSistema.getInstance();
-		for (Integer idSom : sonsFavoritos) {
-			Som som = dados.Som(idSom);
-			if (som.getIdDono() == idUsuario)
-				retorno++;
-		}
-		return retorno;
-	}
-
-	// testar
-	public int compareTo(Integer idUsuario) {
-		DadosDoSistema dados = DadosDoSistema.getInstance();
-		Usuario usuario = dados.usuarioPorId(idUsuario);
+	public int compareTo(Usuario usuario) {
 		String nome2 = usuario.getNome();
-
 		return this.nome.compareTo(nome2);
 	}
 
@@ -418,17 +394,15 @@ public class Usuario implements Serializable {
 		return novaTag.getId();
 	}
 
-	public void adicionarTagASom(Integer idSom, String tag)
+	public void adicionarTagASom(Som som, String tag)
 			throws SomException, TagException {
-		DadosDoSistema dados = DadosDoSistema.getInstance();
 		if (!tagsPorId.containsValue(tag))
 			throw new TagException("Tag inexistente");
-		dados.Som(idSom).adicionaTag(tagsDisponiveis.get(tag));
+		som.adicionaTag(tagsDisponiveis.get(tag));
 	}
 
-	public Set<Tag> getListaTagsEmSom(Integer idSom) throws SomException {
-		DadosDoSistema dados = DadosDoSistema.getInstance();
-		return dados.Som(idSom).getTags();
+	public Set<Tag> getListaTagsEmSom(Som som) throws SomException {
+		return som.getTags();
 	}
 
 	public String getNomeTag(Integer idTag) throws TagException {
