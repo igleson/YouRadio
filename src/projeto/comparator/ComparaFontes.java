@@ -26,7 +26,7 @@ public class ComparaFontes implements Comparator<Integer> {
 			retorno = usuario.getNumFavoritosEmComum( usuario1) - usuario.getNumFavoritosEmComum( usuario2);
 		}
 		if (retorno == 0){
-			retorno = -1 * usuario1.compareTo(o2);
+			retorno = -1 * usuario1.compareTo(usuario2);
 		}
 		return -1*retorno;
 	}

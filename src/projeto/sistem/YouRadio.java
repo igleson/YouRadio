@@ -475,11 +475,12 @@ public class YouRadio implements Serializable {
 	}
 
 	public void adicionarTagASom(Integer idSessao, String tag, Integer idSom) throws SomException, TagException {
-		dados.usuario(idSessao).adicionarTagASom(idSom, tag);
+		
+		dados.usuario(idSessao).adicionarTagASom(dados.Som(idSom), tag);
 	}
 
 	public Set<Tag> getListaTagsEmSom(Integer idSessao, Integer idSom) throws SomException {
-		return dados.usuario(idSessao).getListaTagsEmSom(idSom);
+		return dados.usuario(idSessao).getListaTagsEmSom(dados.Som(idSom));
 	}
 
 	public String getNomeTag(Integer idSessao, Integer idTag) throws TagException {
