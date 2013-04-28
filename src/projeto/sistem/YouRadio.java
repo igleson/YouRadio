@@ -266,6 +266,7 @@ public class YouRadio implements Serializable {
 			e.printStackTrace();
 		}
 		sistemaEstaAberto = false;
+		this.dados.encerrarSistema();
 		this.dados = null;
 	}
 

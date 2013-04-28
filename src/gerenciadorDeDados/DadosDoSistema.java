@@ -68,7 +68,11 @@ public class DadosDoSistema implements Serializable {
 	public boolean contemLogin(String login) {
 		return this.todosOsUsuarios.get(login) != null;
 	}
-
+	
+	public void encerrarSistema() {
+		dados = null;
+	}
+	
 	public boolean senhaValida(String login, String senha) {
 		return this.todosOsUsuarios.get(login).testaSenha(senha);
 	}
@@ -160,7 +164,9 @@ public class DadosDoSistema implements Serializable {
 		}catch(IOException e){
 			System.err.println(e.getMessage());
 		}finally{
-			out.close();
+			if (out!=null){
+				out.close();
+			}
 		}
 	}
 	
@@ -172,10 +178,10 @@ public class DadosDoSistema implements Serializable {
 			return (DadosDoSistema) in.readObject();
 		}catch(ClassNotFoundException e){
 			System.err.println(e.getMessage());
-		}catch(IOException e){
-			System.err.println(e.getMessage());
 		}finally{
-			in.close();
+			if (in!=null){
+				in.close();
+			}
 		}
 		return null;
 	}
