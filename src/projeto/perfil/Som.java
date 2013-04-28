@@ -6,11 +6,13 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
 
 import projeto.user.Tag;
 import projeto.user.Usuario;
 
 import excessoes.SomException;
+import gerenciadorDeDados.DadosDoSistema;
 
 import util.Date;
 
@@ -23,6 +25,7 @@ public class Som implements Comparable<Som>, Serializable {
 	private GregorianCalendar dataCriacao;
 	private Set<Integer> quemFavoritou;
 	private Set<Tag> tags;
+	private Lock lock;
 
 
 	/**
@@ -44,6 +47,7 @@ public class Som implements Comparable<Som>, Serializable {
 		
 		this.idDono = idDono;
 		this.tags = new LinkedHashSet<Tag>();
+		this.lock = DadosDoSistema.getLock();
 	}
 	
 	public Set<Tag> getTags() {
@@ -59,8 +63,14 @@ public class Som implements Comparable<Som>, Serializable {
 	}
 	
 	public void meFavoritou(Usuario usuario){
-		if(!this.usuarioFavoritou(usuario)){
-			this.quemFavoritou.add(usuario.hashCode());	
+		lock.lock();
+		try {
+			if(!this.usuarioFavoritou(usuario)){
+				this.quemFavoritou.add(usuario.hashCode());	
+			}
+		}
+		finally {
+			lock.unlock();
 		}
 	}
 	public Collection<Integer> getQuemFavoritou(){
@@ -97,7 +107,13 @@ public class Som implements Comparable<Som>, Serializable {
 	 * @return void
 	 **/
 	public void setLink(String link) {
-		this.link = link;
+		lock.lock();
+		try {
+			this.link = link;
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 	
 	/**
@@ -115,8 +131,13 @@ public class Som implements Comparable<Som>, Serializable {
 		int dia = Integer.parseInt(dataCriacao.substring(0, 2));
 		int mes = Integer.parseInt(dataCriacao.substring(3, 5)) - 1;
 		int ano = Integer.parseInt(dataCriacao.substring(6, 10));
-		
-		this.dataCriacao = new GregorianCalendar(ano, mes, dia);
+		lock.lock();
+		try {
+			this.dataCriacao = new GregorianCalendar(ano, mes, dia);
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 
 	@Override
@@ -129,7 +150,13 @@ public class Som implements Comparable<Som>, Serializable {
 	}
 
 	public void adicionaTag(Tag tag) {
-		tags.add(tag);
+		lock.lock();
+		try {
+			tags.add(tag);
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 
 

@@ -11,6 +11,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import projeto.perfil.Som;
 import projeto.user.Usuario;
@@ -29,9 +31,11 @@ public class DadosDoSistema implements Serializable {
 	private Map<Integer, Sessao> todasAsSessoes;
 	private Map<Integer, Som> todosOsSons;
 	private Map<Integer, Integer> sonsComMaisFavoritos;
+	private static Lock lock;
 	
 
 	private DadosDoSistema() {
+
 		this.zeraSistema();
 	}
 
@@ -44,6 +48,7 @@ public class DadosDoSistema implements Serializable {
 	
 
 	public static DadosDoSistema getInstance() {
+		if (lock == null) DadosDoSistema.lock = new ReentrantLock();
 		if (dados == null) {
 			try {
 				dados = recuperarDados();
@@ -53,11 +58,15 @@ public class DadosDoSistema implements Serializable {
 		}
 		return dados;
 	}
-
+	
+	public static Lock getLock() {
+		return lock;
+	}
+	
 	public int qtdeDeUsuarios() {
 		return todosOsUsuarios.size();
 	}
-
+	
 
 	public boolean contemEmail(String email) {
 		for (Usuario usuario : todosOsUsuarios.values()) {
@@ -72,7 +81,13 @@ public class DadosDoSistema implements Serializable {
 	}
 	
 	public void encerrarSistema() {
-		dados = null;
+		lock.lock();
+		try {
+			dados = null;
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 	
 	public boolean senhaValida(String login, String senha) {
@@ -81,7 +96,13 @@ public class DadosDoSistema implements Serializable {
 
 	public void adicionaUsuario(String login, String senha, String nome,
 			String email) throws UsuarioException {
-		this.todosOsUsuarios.put(login, new Usuario(login, senha, nome, email));
+		lock.lock();
+		try {
+			this.todosOsUsuarios.put(login, new Usuario(login, senha, nome, email));
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 
 	public Usuario usuario(String login) {
@@ -103,7 +124,13 @@ public class DadosDoSistema implements Serializable {
 	// gerenciando sons
 
 	public void adicionaSom(Som som) {
-		todosOsSons.put(som.hashCode(), som);
+		lock.lock();
+		try {
+			todosOsSons.put(som.hashCode(), som);
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 
 	public Som Som(int idSom) throws SomException {
@@ -115,11 +142,23 @@ public class DadosDoSistema implements Serializable {
 	// gerenciando sessoes
 
 	public void adicionaSessao(Sessao sessao) {
-		this.todasAsSessoes.put(sessao.hashCode(), sessao);
+		lock.lock();
+		try {
+			this.todasAsSessoes.put(sessao.hashCode(), sessao);
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 
 	public void removeSessao(String login) {
-		this.todasAsSessoes.remove(login.hashCode());
+		lock.lock();
+		try {
+			this.todasAsSessoes.remove(login.hashCode());
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 
 	public boolean contemSessao(int sessaoId) {
@@ -135,7 +174,13 @@ public class DadosDoSistema implements Serializable {
 	}
 
 	public void adicionaQtdeDeFavoritos(Integer idSom, Integer numero) {
-		sonsComMaisFavoritos.put(idSom, +numero);
+		lock.lock();
+		try {
+			sonsComMaisFavoritos.put(idSom, +numero);
+		}
+		finally {
+			lock.unlock();
+		}
 
 	}
 
@@ -157,7 +202,7 @@ public class DadosDoSistema implements Serializable {
 		
 	}
 	
-	public static void persistirDados() throws IOException{
+	private static void persisteDados() throws IOException{
 		ObjectOutputStream out = null;
 		try{
 			out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(NOME_DO_ARQUIVO)));
@@ -168,6 +213,16 @@ public class DadosDoSistema implements Serializable {
 			if (out!=null){
 				out.close();
 			}
+		}
+	}
+	
+	public static void persistirDados() throws IOException {
+		lock.lock();
+		try {
+			persisteDados();
+		}
+		finally{
+			lock.unlock();
 		}
 	}
 	
