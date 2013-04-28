@@ -231,12 +231,12 @@ public class Usuario implements Serializable {
 	}
 
 	// testar
-	public void favoritarSom(int idSom) throws SomException {
-		sonsFavoritos.add(idSom);
+	public void favoritarSom(Som som) throws SomException {
+		sonsFavoritos.add(som.getId());
 		DadosDoSistema dados = DadosDoSistema.getInstance();
-		dados.Som(idSom).meFavoritou(this);
+		som.meFavoritou(this);
 		for (int idUsuario : this.seguidores) {
-			dados.usuarioPorId(idUsuario).adicionaAoFeedExtra(idSom);
+			dados.usuarioPorId(idUsuario).adicionaAoFeedExtra(som.getId());
 		}
 	}
 

@@ -321,7 +321,7 @@ public class YouRadio implements Serializable {
 			SomException {
 		if (!this.dados.contemSessao(sessaoId))
 			throw new SessaoException("Sessão inexistente");
-		this.dados.usuario(sessaoId).favoritarSom(idSom);
+		this.dados.usuario(sessaoId).favoritarSom(dados.Som(idSom));
 	}
 
 	public List<Integer> getSonsFavoritos(int sessaoId) throws SessaoException,
