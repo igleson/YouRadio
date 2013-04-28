@@ -5,6 +5,7 @@ import excessoes.ListaException;
 import excessoes.LoginException;
 import excessoes.SessaoException;
 import excessoes.SomException;
+import excessoes.TagException;
 import excessoes.UsuarioException;
 import excessoes.sistemaEncerradoException;
 import gerenciadorDeDados.DadosDoSistema;
@@ -22,6 +23,7 @@ import java.util.Set;
 import projeto.comparator.ComparaFontes;
 import projeto.perfil.Som;
 import projeto.user.Lista;
+import projeto.user.Tag;
 import projeto.user.Usuario;
 import sessao.Sessao;
 import sessao.SessaoNormal;
@@ -458,6 +460,26 @@ public class YouRadio implements Serializable {
 	public List<Integer> verSonsEmGrupo(Lista lista) {
 		if(lista!=null)	return lista.getSonsEmLista();
 		return null;
+	}
+
+	public int criarTag(Integer idSessao, String tag) throws TagException {
+		return dados.usuario(idSessao).criarTag(tag);
+	}
+
+	public void adicionarTagASom(Integer idSessao, String tag, Integer idSom) throws SomException, TagException {
+		dados.usuario(idSessao).adicionarTagASom(idSom, tag);
+	}
+
+	public Set<Tag> getListaTagsEmSom(Integer idSessao, Integer idSom) throws SomException {
+		return dados.usuario(idSessao).getListaTagsEmSom(idSom);
+	}
+
+	public String getNomeTag(Integer idSessao, Integer idTag) throws TagException {
+		return dados.usuario(idSessao).getNomeTag(idTag);
+	}
+
+	public Set<Integer> getTagsDisponiveis(Integer idSessao) {		
+		return dados.usuario(idSessao).getTagsDisponiveis();
 	}
 	
 }

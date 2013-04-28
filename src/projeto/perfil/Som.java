@@ -3,8 +3,10 @@ package projeto.perfil;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
+import projeto.user.Tag;
 import projeto.user.Usuario;
 
 import excessoes.SomException;
@@ -18,6 +20,7 @@ public class Som implements Comparable<Som>{
 	private String link;
 	private GregorianCalendar dataCriacao;
 	private Set<Integer> quemFavoritou;
+	private Set<Tag> tags;
 
 
 	/**
@@ -38,6 +41,11 @@ public class Som implements Comparable<Som>{
 		quemFavoritou = new HashSet<Integer>();
 		
 		this.idDono = idDono;
+		this.tags = new LinkedHashSet<Tag>();
+	}
+	
+	public Set<Tag> getTags() {
+		return tags;
 	}
 	
 	public int getIdDono(){
@@ -116,6 +124,10 @@ public class Som implements Comparable<Som>{
 
 	public int getId() {
 		return this.hashCode();
+	}
+
+	public void adicionaTag(Tag tag) {
+		tags.add(tag);
 	}
 
 

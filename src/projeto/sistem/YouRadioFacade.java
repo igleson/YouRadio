@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import projeto.perfil.Som;
+import projeto.user.Tag;
 import util.Colecaoes;
 import util.Strings;
 import excessoes.AtributoException;
@@ -13,6 +14,7 @@ import excessoes.ListaException;
 import excessoes.LoginException;
 import excessoes.SessaoException;
 import excessoes.SomException;
+import excessoes.TagException;
 import excessoes.UsuarioException;
 import excessoes.sistemaEncerradoException;
 
@@ -312,24 +314,60 @@ public class YouRadioFacade {
 		 
 	}
 
-	public String criarTag(String idSessao, String tag){
-		return null;
-	}
-	
-	public void adicionarTagASom(String idSessao, String tag, String som){
+	public String criarTag(String idSessao, String tag) throws SessaoException, TagException {
+		if (idSessao == null || idSessao.equals(""))
+			throw new SessaoException("Sessão inválida");
+		if (!Strings.ehUmNumero(idSessao))
+			throw new SessaoException("Sessão inexistente");
+		if (!sistema.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		if (tag == null || tag.equals("")) throw new TagException("Tag inválida");
 		
+		return Integer.toString(sistema.criarTag(Integer.parseInt(idSessao), tag));
 	}
 	
-	public String getListaTagsEmSom(String idSessao, String som){
-		return null;
+	public void adicionarTagASom(String idSessao, String tag, String idSom) throws TagException, SessaoException, SomException {
+		if (idSom == null || idSom.equals("")) throw new SomException("Som inválido");
+		if (idSessao == null || idSessao.equals(""))
+			throw new SessaoException("Sessão inválida");
+		if (!Strings.ehUmNumero(idSessao))
+			throw new SessaoException("Sessão inexistente");
+		if (!sistema.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		if (tag == null || tag.equals("")) throw new TagException("Tag inválida");
+		sistema.adicionarTagASom(Integer.parseInt(idSessao), tag, Integer.parseInt(idSom));
 	}
 	
-	public String getNomeTag(String idSessao, String tag){
-		return null;
+	public String getListaTagsEmSom(String idSessao, String idSom) throws SomException, SessaoException{
+		if (idSom == null || idSom.equals("")) throw new SomException("Som inválido");
+		if (idSessao == null || idSessao.equals(""))
+			throw new SessaoException("Sessão inválida");
+		if (!Strings.ehUmNumero(idSessao))
+			throw new SessaoException("Sessão inexistente");
+		if (!sistema.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		List<Integer> retorno = new ArrayList<Integer>();
+		for (Tag tag : sistema.getListaTagsEmSom(Integer.parseInt(idSessao), Integer.parseInt(idSom))) {
+			retorno.add(tag.hashCode());
+		}
+		return Colecaoes.ColecaoParaString(retorno);
+	}
+	
+	public String getNomeTag(String idSessao, String idTag) throws SessaoException, TagException{
+		if (idSessao == null || idSessao.equals(""))
+			throw new SessaoException("Sessão inválida");
+		if (!Strings.ehUmNumero(idSessao))
+			throw new SessaoException("Sessão inexistente");
+		if (!sistema.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");
+		if (idTag == null || idTag.equals("")) throw new TagException("Tag inválida");
+		
+		return sistema.getNomeTag(Integer.parseInt(idSessao), Integer.parseInt(idTag));
 	}
 
-	public String getTagsDisponiveis(String sessaoSteve){
-		return null;
+	public String getTagsDisponiveis(String idSessao) throws SessaoException{
+		if (idSessao == null || idSessao.equals(""))
+			throw new SessaoException("Sessão inválida");
+		if (!Strings.ehUmNumero(idSessao))
+			throw new SessaoException("Sessão inexistente");
+		if (!sistema.contemSessao(idSessao)) throw new SessaoException("Sessão inexistente");		
+		return Colecaoes.ColecaoParaString(sistema.getTagsDisponiveis(Integer.parseInt(idSessao)));
 	}
 	
 }

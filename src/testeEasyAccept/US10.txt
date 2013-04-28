@@ -162,7 +162,7 @@ expectError "Tag inválida" criarTag idSessao=${sessaoSteve} tag="aaa"
 
 expectError "Sessão inválida" adicionarTagASom idSessao= tag="aaa" som=${som3ID}
 expectError "Sessão inválida" adicionarTagASom idSessao="" tag="aaa" som=${som3ID}
-expectError "Sessão inválida" adicionarTagASom idSessao=${sessaoBill} tag="aaa" som=${som3ID}
+expectError "Sessão inexistente" adicionarTagASom idSessao=${sessaoBill} tag="aaa" som=${som3ID}
 
 expectError "Tag inválida" adicionarTagASom idSessao=${sessaoSteve} tag= som=${som3ID}
 expectError "Tag inválida" adicionarTagASom idSessao=${sessaoSteve} tag="" som=${som3ID}
@@ -175,7 +175,7 @@ expectError "Som inválido" adicionarTagASom idSessao=${sessaoSteve} tag="aaa" so
 
 expectError "Sessão inválida" getListaTagsEmSom idSessao= som=${som3ID}
 expectError "Sessão inválida" getListaTagsEmSom idSessao="" som=${som3ID}
-expectError "Sessão inválida" getListaTagsEmSom idSessao=${sessaoBill} som=${som3ID}
+expectError "Sessão inexistente" getListaTagsEmSom idSessao=${sessaoBill} som=${som3ID}
 
 expectError "Som inválido" getListaTagsEmSom idSessao=${sessaoSteve} som=
 expectError "Som inválido" getListaTagsEmSom idSessao=${sessaoSteve} som=""
@@ -183,7 +183,7 @@ expectError "Som inválido" getListaTagsEmSom idSessao=${sessaoSteve} som=""
 
 expectError "Sessão inválida" getNomeTag idSessao= tag=
 expectError "Sessão inválida" getNomeTag idSessao="" tag=
-expectError "Sessão inválida" getNomeTag idSessao=${sessaoBill} tag=
+expectError "Sessão inexistente" getNomeTag idSessao=${sessaoBill} tag=
 
 expectError "Tag inválida" getNomeTag idSessao=${sessaoMark} tag=
 expectError "Tag inválida" getNomeTag idSessao=${sessaoMark} tag=""
@@ -191,7 +191,7 @@ expectError "Tag inexistente" getNomeTag idSessao=${sessaoMark} tag=${tag1ID}
 
 expectError "Sessão inválida" getTagsDisponiveis idSessao=
 expectError "Sessão inválida" getTagsDisponiveis idSessao=""
-expectError "Sessão inválida" getTagsDisponiveis idSessao=${sessaoBill}
+expectError "Sessão inexistente" getTagsDisponiveis idSessao=${sessaoBill}
 
 #Encerrar a sessao de Mark
 encerrarSessao login="mark"
@@ -204,3 +204,4 @@ encerrarSessao login="steve"
 #Finaliza o sistema
 encerrarSistema
 quit
+
