@@ -374,18 +374,6 @@ public class Usuario implements Serializable {
 	}
 
 	// testar
-//	public int qntsSonsFavoritei(Integer idUsuario) throws SomException {
-//		int retorno = 0;
-//		DadosDoSistema dados = DadosDoSistema.getInstance();
-//		for (Integer idSom : sonsFavoritos) {
-//			Som som = dados.Som(idSom);
-//			if (som.getIdDono() == idUsuario)
-//				retorno++;
-//		}
-//		return retorno;
-//	}
-
-	// testar
 	public int compareTo(Usuario usuario) {
 		String nome2 = usuario.getNome();
 		return this.nome.compareTo(nome2);
