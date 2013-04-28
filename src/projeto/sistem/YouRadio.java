@@ -266,7 +266,6 @@ public class YouRadio implements Serializable {
 			e.printStackTrace();
 		}
 		sistemaEstaAberto = false;
-		this.dados.encerrarSistema();
 		this.dados = null;
 	}
 
@@ -327,7 +326,22 @@ public class YouRadio implements Serializable {
 			SomException {
 		if (!this.dados.contemSessao(idSessao))
 			throw new SessaoException("Sessão inexistente");
-		return this.dados.usuario(idSessao).getVisaoDosSons();
+		
+		List<Som> retorno = new ArrayList<Som>();
+		DadosDoSistema dados = DadosDoSistema.getInstance();
+		List<Integer> lista = (List<Integer>) dados.usuario(idSessao).getListaDeSeguindo();
+		for (int i = lista.size() - 1; i >= 0; i--) {
+			Usuario u = dados.usuarioPorId(lista.get(i));
+			List<Som> temp = new ArrayList<Som>();
+			for (Integer id : u.getPerfilMusical()) {
+				temp.add(dados.Som(id));
+			}
+			Collections.sort(temp);
+			retorno.addAll(temp);
+		}
+		return retorno;
+		
+		//return this.dados.usuario(idSessao).getVisaoDosSons();
 	}
 
 	public void favoritarSom(int sessaoId, int idSom) throws SessaoException,
@@ -409,7 +423,7 @@ public class YouRadio implements Serializable {
 		Usuario usuario = dados.usuario(idSessao);
 		List<Integer> retorno = getPossiveisAmigosFontesEmComum(usuario);
 		retorno.addAll(getPossiveisAmigosFavoritosEmComum(usuario));
-		Collections.sort(retorno,new ComparaFontes(dados.usuario(idSessao)));
+		Collections.sort(retorno,new ComparaFontes(usuario));
 		if (retorno.isEmpty()){
 			for (Integer idUsuario : quemTeveMaisSonsFavoritados()) {
 				if(!usuario.getListaDeSeguindo().contains(idUsuario))
@@ -503,6 +517,4 @@ public class YouRadio implements Serializable {
 	public Set<Integer> getTagsDisponiveis(Integer idSessao) {		
 		return dados.usuario(idSessao).getTagsDisponiveis();
 	}
-
-	
 }

@@ -210,21 +210,6 @@ public class Usuario implements Serializable {
 		}
 	}
 
-	// testar
-	public List<Som> getVisaoDosSons() throws SomException {
-		List<Som> retorno = new ArrayList<Som>();
-		DadosDoSistema dados = DadosDoSistema.getInstance();
-		for (int i = seguindo.size() - 1; i >= 0; i--) {
-			Usuario u = dados.usuarioPorId(seguindo.get(i));
-			List<Som> temp = new ArrayList<Som>();
-			for (Integer id : u.getPerfilMusical()) {
-				temp.add(dados.Som(id));
-			}
-			Collections.sort(temp);
-			retorno.addAll(temp);
-		}
-		return retorno;
-	}
 
 	public int getNumeroDeSeguidores() {
 		return this.seguidores.size();
