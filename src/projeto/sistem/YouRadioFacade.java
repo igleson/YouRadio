@@ -123,7 +123,7 @@ public class YouRadioFacade {
 			throw new SessaoException("Sessão inexistente");
 		Collection<Integer> listSonsIds = sistema.getListaDeSeguidores(Integer
 				.parseInt(sessaoId));
-		return Colecaoes.ColecaoParaStringReverso(listSonsIds);
+		return Colecaoes.ColecaoParaString(listSonsIds);
 	}
 
 	public void seguirUsuario(String idSessao, String login)

@@ -109,7 +109,7 @@ expect {${IDSteve},${IDMark}} getFontesDeSons idSessao=${sessaoBill}
 # listas de seguidores
 expect {} getListaDeSeguidores idSessao=${sessaoBill}
 expect {${IDBill}} getListaDeSeguidores idSessao=${sessaoSteve}
-expect {${IDBill},${IDSteve}} getListaDeSeguidores idSessao=${sessaoMark}
+expect {${IDSteve},${IDBill}} getListaDeSeguidores idSessao=${sessaoMark}
 
 # numero de seguidores
 expect 0 getNumeroDeSeguidores idSessao=${sessaoBill}
@@ -158,3 +158,4 @@ encerrarSessao login="steve"
 
 encerrarSistema
 quit
+
