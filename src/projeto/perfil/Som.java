@@ -16,7 +16,6 @@ import gerenciadorDeDados.DadosDoSistema;
 
 import util.Date;
 
-
 public class Som implements Comparable<Som>, Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -27,60 +26,62 @@ public class Som implements Comparable<Som>, Serializable {
 	private Set<Tag> tags;
 	private Lock lock;
 
-
 	/**
-	 * @param link , dataCriação - da musica
-	 * @throws  SomException 
+	 * @param link
+	 *            , dataCriação - da musica
+	 * @throws SomException
 	 **/
 	public Som(String link, String dataCriacao, int idDono) throws SomException {
-		if(link == null || link.equals("")) throw new SomException("Som inválido");
-		if(!Date.dataEhValida(dataCriacao)) throw new SomException("Data de Criação inválida");
+		if (link == null || link.equals(""))
+			throw new SomException("Som inválido");
+		if (!Date.dataEhValida(dataCriacao))
+			throw new SomException("Data de Criação inválida");
 		this.link = link;
-		
+
 		int dia = Integer.parseInt(dataCriacao.substring(0, 2));
 		int mes = Integer.parseInt(dataCriacao.substring(3, 5)) - 1;
 		int ano = Integer.parseInt(dataCriacao.substring(6, 10));
-		
+
 		this.dataCriacao = new GregorianCalendar(ano, mes, dia);
-		
+
 		quemFavoritou = new HashSet<Integer>();
-		
+
 		this.idDono = idDono;
 		this.tags = new LinkedHashSet<Tag>();
 		this.lock = DadosDoSistema.getLock();
 	}
-	
+
 	public Set<Tag> getTags() {
 		return tags;
 	}
-	
-	public int getIdDono(){
+
+	public int getIdDono() {
 		return idDono;
 	}
-	
+
 	public int getQtdeFavoritados() {
 		return this.quemFavoritou.size();
 	}
-	
-	public void meFavoritou(Usuario usuario){
+
+	public void meFavoritou(Usuario usuario) {
 		lock.lock();
 		try {
-			if(!this.usuarioFavoritou(usuario)){
-				this.quemFavoritou.add(usuario.hashCode());	
+			if (!this.usuarioFavoritou(usuario)) {
+				this.quemFavoritou.add(usuario.hashCode());
 			}
-		}
-		finally {
+		} finally {
 			lock.unlock();
 		}
 	}
-	public Collection<Integer> getQuemFavoritou(){
+
+	public Collection<Integer> getQuemFavoritou() {
 		return quemFavoritou;
 	}
-	
-	public boolean usuarioFavoritou(Usuario usuario){
+
+	public boolean usuarioFavoritou(Usuario usuario) {
 		return this.quemFavoritou.contains(usuario.hashCode());
 	}
-	
+
 	/**
 	 * @return int hascode do som
 	 **/
@@ -93,38 +94,38 @@ public class Som implements Comparable<Som>, Serializable {
 		result = prime * result + ((link == null) ? 0 : link.hashCode());
 		return Math.abs(result);
 	}
-	
-	
+
 	/**
 	 * @return String link da musica
 	 **/
 	public String getLink() {
 		return link;
 	}
-	
+
 	/**
-	 * @param link - musica a ser atualizada
+	 * @param link
+	 *            - musica a ser atualizada
 	 * @return void
 	 **/
 	public void setLink(String link) {
 		lock.lock();
 		try {
 			this.link = link;
-		}
-		finally {
+		} finally {
 			lock.unlock();
 		}
 	}
-	
+
 	/**
 	 * @return String - data de criação da musica
 	 **/
 	public GregorianCalendar getDataCriacao() {
 		return dataCriacao;
 	}
-	
+
 	/**
-	 * @param datacriação a ser atualizafa
+	 * @param datacriação
+	 *            a ser atualizafa
 	 * @return void
 	 **/
 	public void setDataCriacao(String dataCriacao) {
@@ -134,15 +135,14 @@ public class Som implements Comparable<Som>, Serializable {
 		lock.lock();
 		try {
 			this.dataCriacao = new GregorianCalendar(ano, mes, dia);
-		}
-		finally {
+		} finally {
 			lock.unlock();
 		}
 	}
 
 	@Override
 	public int compareTo(Som som) {
-		return -1*this.dataCriacao.compareTo(som.getDataCriacao());
+		return -1 * this.dataCriacao.compareTo(som.getDataCriacao());
 	}
 
 	public int getId() {
@@ -153,12 +153,18 @@ public class Som implements Comparable<Som>, Serializable {
 		lock.lock();
 		try {
 			tags.add(tag);
-		}
-		finally {
+		} finally {
 			lock.unlock();
 		}
 	}
 
+	public void setTags(Set<Tag> tags) {
+		lock.lock();
+		try {
+			this.tags = tags;
+		} finally {
+			lock.unlock();
+		}
+	}
 
-	
 }

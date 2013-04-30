@@ -26,6 +26,7 @@ public class YouRadioBean {
 	private String postagem;
 	private String seguir;
 	private String ordenador;
+	private String nomeTag;
 
 	
 	@PostConstruct
@@ -109,24 +110,32 @@ public class YouRadioBean {
 		return null;
 	}
 
+	@SuppressWarnings("finally")
 	public String deslogar() {
+		try {
 		sistema.encerrarSessao(subLogin);
-		dispose();
-		return "faces/index.xhtml";
+		dispose();}
+		finally
+		{
+			return "faces/index.xhtml";
+		}
 	}
 
 	private void dispose() {
-		login = "";
-		senha = "";
-		subLogin = "";
-		idSessao = 0;
-		usuarioLogado = null;
-		postagem = "";
-		seguir = "";
-		ordenador = "";
+		this.login = "";
+		this.senha = "";
+		this.subLogin = "";
+		this.idSessao = 0;
+		this.usuarioLogado = null;
+		this.postagem = "";
+		this.seguir = "";
+		this.ordenador = "";
 
 	}
-
+	public void criarTag(){
+		System.out.println("YOURADIO: "+nomeTag);
+		usuarioLogado.criarTag(nomeTag);
+	}
 	public UsuarioLogadoBean getUsuarioLogado() {
 		return usuarioLogado;
 	}
@@ -236,6 +245,14 @@ public class YouRadioBean {
 
 	public void setOrdenador(String ordenador) {
 		this.ordenador = ordenador;
+	}
+
+	public String getNomeTag() {
+		return nomeTag;
+	}
+
+	public void setNomeTag(String nomeTag) {
+		this.nomeTag = nomeTag;
 	}
 	
 

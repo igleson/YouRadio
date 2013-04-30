@@ -41,6 +41,12 @@ public class Usuario implements Serializable {
 	private HashMap<Integer, String> listasPorId;
 	private LinkedHashMap<String, Tag> tagsDisponiveis;
 	private LinkedHashMap<Integer, String> tagsPorId;
+	
+	
+	public Map<String, Tag> mapTags() {
+		return tagsDisponiveis;
+	}
+
 	private Lock lock;
 
 	/**
