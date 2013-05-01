@@ -3,12 +3,9 @@ package projeto.sistem;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-
-import beans.UsuarioLogadoAdapter;
 
 import projeto.perfil.Som;
 import projeto.user.Lista;
@@ -18,7 +15,6 @@ import excessoes.ListaException;
 import excessoes.LoginException;
 import excessoes.SessaoException;
 import excessoes.SomException;
-import excessoes.TagException;
 import excessoes.UsuarioException;
 import excessoes.sistemaEncerradoException;
 import gerenciadorDeDados.DadosDoSistema;
@@ -26,9 +22,9 @@ import gerenciadorDeDados.DadosDoSistema;
 public class adapterWUISistema {
 
 	private YouRadio sistema;
-	private UsuarioLogadoAdapter usuarioLogado;
-	private int idSessao;
-	private String login;
+	
+	//private int idSessao;
+	//private String login;
 	private static adapterWUISistema sistemaAdaptado;
 	
 	public static adapterWUISistema getInstance(){
@@ -252,52 +248,8 @@ public class adapterWUISistema {
 		}
 		return retorno;
 	}
-
-	public UsuarioLogadoAdapter getUsuarioLogado() {
-		return this.usuarioLogado;
-	}
 	
-	public void setUsuarioLogado(UsuarioLogadoAdapter usuarioLogado) {
-		this.usuarioLogado = usuarioLogado;
-	}
-
-	public Integer getSessao() {
-		return this.idSessao;
-	}
 	
-	public void setSessao(int idSessao) {
-		this.idSessao = idSessao;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
-	}
-	
-	public String getLogin() {
-		return this.login;
-	}
-	
-	public int criarTag(Integer idSessao, String tag) throws TagException {
-		return sistema.criarTag(idSessao, tag);
-	}
-
-	public void adicionarTagASom(Integer idSessao, String tag, Integer idSom)
-			throws SomException, TagException {
-		sistema.adicionarTagASom(idSessao, tag, idSom);
-	}
-
-	public Set<Integer> getTagsDisponiveis(Integer idSessao) {
-		return sistema.getTagsDisponiveis(idSessao);
-	}
-
-	public int getIdSessao() {
-		return idSessao;
-	}
-
-	public void setIdSessao(int idSessao) {
-		this.idSessao = idSessao;
-	}
-
 	public static adapterWUISistema getSistemaAdaptado() {
 		return sistemaAdaptado;
 	}

@@ -24,7 +24,7 @@
 					<p:growl id="messages" showDetail="true" sticky="true" life="50"/>
 
 					<p:dataGrid var="usuarioLogado"
-						value="#{logadoBean.getUsuarioLogado()}" align="center">
+						value="#{youRadioBean.getUsuarioLogado()}" align="center">
 						<p:panel header="You Radio - #{usuarioLogado.nome}"
 							footer="Fagner Gomes, Igleson Freire, Leonardo Avelino e Raiff Ramalho"
 							align="center">
@@ -38,13 +38,13 @@
 									<p:layoutUnit position="center">
 										<h:panelGrid>
 											<p:row>
-												<p:commandButton action="#{logadoBean.seguir}"
+												<p:commandButton action="#{youRadioBean.seguir}"
 													ajax="false" value="Seguir"></p:commandButton>
 
-												<p:inputText value="#{logadoBean.seguir}" required="false" />
+												<p:inputText value="#{youRadioBean.seguir}" required="false" />
 												<!--         -->
 												<p:commandButton value="sair"
-													action="#{logadoBean.deslogar}"></p:commandButton>
+													action="#{youRadioBean.deslogar}"></p:commandButton>
 											</p:row>
 											<h:outputText value="#{usuarioLogado.nome}" />
 										</h:panelGrid>
@@ -56,18 +56,20 @@
 									<p:panel>
 										<p:row>
 											<p:inputText rows="1" cols="30" resizable="false"
-												value="#{logadoBean.nomeTag}" />
+												value="#{youRadioBean.nomeTag}" />
 											<p:commandButton value="Criar Tag"
-												action="#{logadoBean.criarTag}" ajax="false"></p:commandButton>
+												action="#{youRadioBean.criarTag}" ajax="false"></p:commandButton>
 										</p:row>
+										<p />
+
 										<p:row>
 											<p:inputText rows="1" cols="55" minQueryLength="4"
-												resizable="false" value="#{logadoBean.postagem}" />
+												resizable="false" value="#{youRadioBean.postagem}" />
 											<!--  -->
 											<p:commandButton value="postar"
-												action="#{logadoBean.postar}" ajax="false"></p:commandButton>
+												action="#{youRadioBean.postar}" ajax="false"></p:commandButton>
 											<p:commandButton value="apagar"
-												action="#{logadoBean.apagar}" ajax="false"></p:commandButton>
+												action="#{youRadioBean.apagar}" ajax="false"></p:commandButton>
 										</p:row>
 
 									</p:panel>
@@ -88,22 +90,22 @@
 								</p:row>
 								<p:row>
 									<p:commandButton value="Recentes"
-										actionListener="#{logadoBean.ordenarRecentes()}"
+										actionListener="#{youRadioBean.ordenarRecentes()}"
 										ajax="false" />
 									<p:commandButton value="Popular"
-										actionListener="#{logadoBean.ordenarPopular()}" ajax="false" />
+										actionListener="#{youRadioBean.ordenarPopular()}" ajax="false" />
 									<p:commandButton value="Favoritos"
-										actionListener="#{logadoBean.ordenarFavoritos()}"
+										actionListener="#{youRadioBean.ordenarFavoritos()}"
 										ajax="false" />
 								</p:row>
 
-								<p:panel header="Feed Principal  - #{logadoBean.ordenador}">
+								<p:panel header="Feed Principal  - #{youRadioBean.ordenador}">
 									<p:dataList var="musica" value="#{usuarioLogado.feedPrincipal}">
 										<h:outputText value="#{musica.link}" />
 										<!--  -->
 										<p:commandButton style="height:30px"
 											value="#{musica.getQtdeFavoritados()} " icon="ui-icon-check"
-											action="#{logadoBean.favoritar(musica)}" ajax="false"></p:commandButton>
+											action="#{youRadioBean.favoritar(musica)}" ajax="false"></p:commandButton>
 										<p />
 									</p:dataList>
 								</p:panel>
@@ -113,7 +115,7 @@
 										<h:outputText value="#{musica.link}" />
 										<p:commandButton style="height:30px"
 											value="#{musica.getQtdeFavoritados()} " icon="ui-icon-check"
-											action="#{logadoBean.favoritar(musica)}" ajax="false"></p:commandButton>
+											action="#{youRadioBean.favoritar(musica)}" ajax="false"></p:commandButton>
 										<p />
 									</p:dataList>
 								</p:panel>

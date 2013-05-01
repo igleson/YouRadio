@@ -227,13 +227,16 @@ public class UsuarioLogadoAdapter implements Serializable {
 
 	public void criarTag(String nomeTag) {
 		try {
-			sistema.criarTag(idSessao, nomeTag);
+			sistema.usuario(idSessao).criarTag(nomeTag);
 		} catch (TagException e) {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null,
 					new FacesMessage("Falhou", e.getLocalizedMessage()));
 		}
 
+	}
+	public String getLogin() {
+		return sistema.usuario(idSessao).getLogin();
 	}
 
 }
