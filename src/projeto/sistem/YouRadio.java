@@ -452,6 +452,7 @@ public class YouRadio implements Serializable {
 	
 	public void adicionarUsuario(Integer idSessao, int idLista, int idUsuario) throws ListaException {
 		if(idSessao == null) throw new ListaException("Nome inválido");
+		if(dados.usuarioPorId(idUsuario) == null) throw new ListaException("Usuário inexistente");
 		dados.usuario(idSessao).adicionarUsuario(idLista, dados.usuarioPorId(idUsuario));
 	}
 	

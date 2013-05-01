@@ -5,13 +5,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+
+import projeto.sistem.adapterWUISistema;
+import threads.ThreadQueSalva;
 import excessoes.LoginException;
 import excessoes.SessaoException;
 import excessoes.SomException;
 import excessoes.sistemaEncerradoException;
-import projeto.sistem.OrdenacoesFeedPrincipal;
-import projeto.sistem.adapterWUISistema;
-import threads.ThreadQueSalva;
 
 @ManagedBean
 @SessionScoped
@@ -22,7 +22,6 @@ public class YouRadioBean {
 	private adapterWUISistema sistema = adapterWUISistema.getInstance();
 	private Integer idSessao;
 	private UsuarioLogadoAdapter usuarioLogado;
-	private String nomeTag;
 
 	@PostConstruct
 	public void init() {
@@ -57,6 +56,7 @@ public class YouRadioBean {
 				sistema.setUsuarioLogado(usuarioLogado);
 				sistema.setSessao(idSessao);
 				sistema.setLogin(subLogin);
+				System.out.println("===========================");
 				dispose();
 			}
 			return "faces/usuariologado.xhtml";
@@ -91,30 +91,10 @@ public class YouRadioBean {
 		senha = null;
 		subLogin = null;
 		idSessao = null;
-		finally
-		{
-			return "faces/index.xhtml";
-		}
-	}
-		login = "";
-		senha = "";
-		subLogin = "";
-		idSessao = 0;
 		this.usuarioLogado = null;
-		this.postagem = "";
-		this.seguir = "";
-		this.ordenador = "";
-	public void criarTag(){
-		usuarioLogado.criarTag(nomeTag);
-		this.nomeTag = "";
+//		finally
+//		{
+//			return "faces/index.xhtml";
+//		}
 	}
-	}
-	}
-
-	public String getNomeTag() {
-		return nomeTag;
-	}
-
-	public void setNomeTag(String nomeTag) {
-		this.nomeTag = nomeTag;
 }

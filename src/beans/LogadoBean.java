@@ -1,5 +1,4 @@
 package beans;
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -21,13 +20,14 @@ public class LogadoBean {
 		private String postagem = "";
 		private String seguir;
 		private String ordenador;
+		private String nomeTag;
 		
-		@PostConstruct()
-		public void LogadoBean(){
+		public LogadoBean(){
 			sistema = adapterWUISistema.getInstance();
 		}
 		
 		public UsuarioLogadoAdapter getUsuarioLogado() {
+			System.out.println(sistema.getUsuarioLogado()== null);
 			return this.sistema.getUsuarioLogado();
 		}
 
@@ -173,4 +173,18 @@ public class LogadoBean {
 //			seguir = "";
 //			ordenador = "";
 		}
+		
+		public void criarTag(){
+			this.sistema.getUsuarioLogado().criarTag(nomeTag);
+			this.nomeTag = "";
+		}
+		
+		public String getNomeTag() {
+			return nomeTag;
+		}
+
+		public void setNomeTag(String nomeTag) {
+			this.nomeTag = nomeTag;
+		}
+
 }

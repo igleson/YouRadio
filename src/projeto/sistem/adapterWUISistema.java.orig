@@ -25,6 +25,7 @@ import gerenciadorDeDados.DadosDoSistema;
 
 public class adapterWUISistema {
 
+<<<<<<< HEAD
 	private YouRadio sistema;
 	private UsuarioLogadoAdapter usuarioLogado;
 	private int idSessao;
@@ -37,6 +38,22 @@ public class adapterWUISistema {
 		}
 		return sistemaAdaptado;
 	}
+=======
+	public int criarTag(Integer idSessao, String tag) throws TagException {
+		return sistema.criarTag(idSessao, tag);
+	}
+
+	public void adicionarTagASom(Integer idSessao, String tag, Integer idSom)
+			throws SomException, TagException {
+		sistema.adicionarTagASom(idSessao, tag, idSom);
+	}
+
+	public Set<Integer> getTagsDisponiveis(Integer idSessao) {
+		return sistema.getTagsDisponiveis(idSessao);
+	}
+
+	YouRadio sistema;
+>>>>>>> 31dcb7d37d722e7fdbf536531dcfcc120e1fd5ce
 	
 	public adapterWUISistema(){
 		sistema = new YouRadio();
@@ -236,10 +253,6 @@ public class adapterWUISistema {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null,
 					new FacesMessage("Falhou", e.getLocalizedMessage()));
-		}catch (NullPointerException e){
-			FacesContext context = FacesContext.getCurrentInstance();
-			context.addMessage(null,
-					new FacesMessage("Falhou", "Usuário inexistente"));
 		}
 	}
 
@@ -275,34 +288,5 @@ public class adapterWUISistema {
 	
 	public String getLogin() {
 		return this.login;
-	}
-	
-	public int criarTag(Integer idSessao, String tag) throws TagException {
-		return sistema.criarTag(idSessao, tag);
-	}
-
-	public void adicionarTagASom(Integer idSessao, String tag, Integer idSom)
-			throws SomException, TagException {
-		sistema.adicionarTagASom(idSessao, tag, idSom);
-	}
-
-	public Set<Integer> getTagsDisponiveis(Integer idSessao) {
-		return sistema.getTagsDisponiveis(idSessao);
-	}
-
-	public int getIdSessao() {
-		return idSessao;
-	}
-
-	public void setIdSessao(int idSessao) {
-		this.idSessao = idSessao;
-	}
-
-	public static adapterWUISistema getSistemaAdaptado() {
-		return sistemaAdaptado;
-	}
-
-	public static void setSistemaAdaptado(adapterWUISistema sistemaAdaptado) {
-		adapterWUISistema.sistemaAdaptado = sistemaAdaptado;
 	}
 }
