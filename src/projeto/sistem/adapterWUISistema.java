@@ -3,6 +3,7 @@ package projeto.sistem;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -17,11 +18,25 @@ import excessoes.ListaException;
 import excessoes.LoginException;
 import excessoes.SessaoException;
 import excessoes.SomException;
+import excessoes.TagException;
 import excessoes.UsuarioException;
 import excessoes.sistemaEncerradoException;
 import gerenciadorDeDados.DadosDoSistema;
 
 public class adapterWUISistema {
+
+	public int criarTag(Integer idSessao, String tag) throws TagException {
+		return sistema.criarTag(idSessao, tag);
+	}
+
+	public void adicionarTagASom(Integer idSessao, String tag, Integer idSom)
+			throws SomException, TagException {
+		sistema.adicionarTagASom(idSessao, tag, idSom);
+	}
+
+	public Set<Integer> getTagsDisponiveis(Integer idSessao) {
+		return sistema.getTagsDisponiveis(idSessao);
+	}
 
 	private YouRadio sistema;
 	private UsuarioLogadoAdapter usuarioLogado;

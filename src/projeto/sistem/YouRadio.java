@@ -490,4 +490,6 @@ public class YouRadio implements Serializable {
 	public Set<Integer> getTagsDisponiveis(Integer idSessao) {		
 		return dados.usuario(idSessao).getTagsDisponiveis();
 	}
+	
+
 }

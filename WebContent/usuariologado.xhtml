@@ -9,163 +9,189 @@
 
 <h:head align="center">
 	<title><ui:insert name="title">You Radio</ui:insert></title>
+	<link rel="shortcut icon" href="img/favicon.ico" />
+	<link href="css/style.css" rel="stylesheet" type="text/css" />
+
+	<h:body class="thrColAbsHdr">
+
+		<img id="bg" src="images/bg.png" />
+		<div id="content">
+			<div id="main">
 
 
-<h:body>
-	 <style>
-	 #forms {
-        position: absolute;
-        
-         left: 50%;
-       
-         margin-left:-400px;
-         
-       
-	 }
-	 </style>
-	
-	<h:form id= "forms" >
-	
-		<p:growl id="messages" showDetail="true" sticky="true" />
-	 
-		<p:dataGrid var="usuarioLogado" value="#{logadoBean.getUsuarioLogado()}"  align="center">
-			<p:panel header="You Radio - #{usuarioLogado.nome}"
-				footer="Fagner Gomes, Igleson Freire, Leonardo Avelino e Raiff Ramalho" align="center">
-				<h:panelGrid>
+				<h:form id="forms">
 
-					<p:layout style="min-width:400px;height:240px;" id="layout">
-						<p:layoutUnit position="west" resizable="false" size="230">
-							<p:graphicImage width="200" height="210" id="tab1Img"
-								value="/images/profile.jpg" />
-						</p:layoutUnit>
-						<p:layoutUnit position="center">
+					<p:growl id="messages" showDetail="true" sticky="true" life="50"/>
+
+					<p:dataGrid var="usuarioLogado"
+						value="#{youRadioBean.usuarioLogado}" align="center">
+						<p:panel header="You Radio - #{usuarioLogado.nome}"
+							footer="Fagner Gomes, Igleson Freire, Leonardo Avelino e Raiff Ramalho"
+							align="center">
 							<h:panelGrid>
-								<p:row>
-									<p:commandButton action="#{logadoBean.seguir}" ajax="false"
-										value="Seguir"></p:commandButton>
 
-									<p:inputText value="#{logadoBean.seguir}" required="false" />
-									<!--         -->
-									<p:commandButton value="sair" action="#{logadoBean.deslogar}"></p:commandButton>
+								<p:layout style="min-width:400px;height:240px;" id="layout">
+									<p:layoutUnit position="west" resizable="false" size="230">
+										<p:graphicImage width="200" height="210" id="tab1Img"
+											value="/images/profile.jpg" />
+									</p:layoutUnit>
+									<p:layoutUnit position="center">
+										<h:panelGrid>
+											<p:row>
+												<p:commandButton action="#{youRadioBean.seguir}"
+													ajax="false" value="Seguir"></p:commandButton>
+
+												<p:inputText value="#{youRadioBean.seguir}" required="false" />
+												<!--         -->
+												<p:commandButton value="sair"
+													action="#{youRadioBean.deslogar}"></p:commandButton>
+											</p:row>
+											<h:outputText value="#{usuarioLogado.nome}" />
+										</h:panelGrid>
+
+									</p:layoutUnit>
+								</p:layout>
+
+								<p:row>
+									<p:panel>
+										<p:row>
+											<p:inputTextarea rows="1" cols="30" resizable="false"
+												value="#{youRadioBean.nomeTag}" />
+											<p:commandButton value="Criar Tag"
+												action="#{youRadioBean.criarTag}" ajax="false"></p:commandButton>
+										</p:row>
+										<p:row>
+											<p:inputTextarea rows="1" cols="55" minQueryLength="4"
+												resizable="false" value="#{youRadioBean.postagem}" />
+											<!--  -->
+											<p:commandButton value="postar"
+												action="#{youRadioBean.postar}" ajax="false"></p:commandButton>
+											<p:commandButton value="apagar"
+												action="#{youRadioBean.apagar}" ajax="false"></p:commandButton>
+										</p:row>
+
+									</p:panel>
+
+									<p:panel header="Meus Sons">
+										<p:dataList var="feed" value="#{usuarioLogado.feed}"
+											itemType="none">
+
+											<a href="#{feed.link}" target="_blank"> #{feed.link} </a>
+
+											<p:selectCheckboxMenu value="#{feed.tags}" label="Tags"
+												panelStyle="width:220px">
+												<f:selectItems value="#{usuarioLogado.tags}" />
+											</p:selectCheckboxMenu>
+											<p:spacer width =  "20" height="20" />
+										</p:dataList>
+									</p:panel>
 								</p:row>
-								<h:outputText value="#{usuarioLogado.nome}" />
+								<p:row>
+									<p:commandButton value="Recentes"
+										actionListener="#{youRadioBean.ordenarRecentes()}"
+										ajax="false" />
+									<p:commandButton value="Popular"
+										actionListener="#{youRadioBean.ordenarPopular()}" ajax="false" />
+									<p:commandButton value="Favoritos"
+										actionListener="#{youRadioBean.ordenarFavoritos()}"
+										ajax="false" />
+								</p:row>
+
+								<p:panel header="Feed Principal  - #{youRadioBean.ordenador}">
+									<p:dataList var="musica" value="#{usuarioLogado.feedPrincipal}">
+										<h:outputText value="#{musica.link}" />
+										<!--  -->
+										<p:commandButton style="height:30px"
+											value="#{musica.getQtdeFavoritados()} " icon="ui-icon-check"
+											action="#{youRadioBean.favoritar(musica)}" ajax="false"></p:commandButton>
+										<p />
+									</p:dataList>
+								</p:panel>
+
+								<p:panel header="Feed Extra">
+									<p:dataList var="musica" value="#{usuarioLogado.feedExtra()}">
+										<h:outputText value="#{musica.link}" />
+										<p:commandButton style="height:30px"
+											value="#{musica.getQtdeFavoritados()} " icon="ui-icon-check"
+											action="#{youRadioBean.favoritar(musica)}" ajax="false"></p:commandButton>
+										<p />
+									</p:dataList>
+								</p:panel>
+
+								<p:panel header="Quem estou seguindo">
+									<p:scrollPanel style="width:672px;height:200px">
+										<p:dataGrid var="seguindo"
+											value="#{usuarioLogado.getSeguindo()}" columns="5">
+											<p:panel header="#{seguindo}" style="height:100px">
+												<p:graphicImage width="40" height="40"
+													value="/images/profile.jpg" />
+											</p:panel>
+										</p:dataGrid>
+									</p:scrollPanel>
+								</p:panel>
+
+								<p:panel header="Recomendações">
+									<p:dataList var="sugestao"
+										value="#{usuarioLogado.recomendacoesDoSistema()}">
+										<h:outputText value="#{sugestao}" />
+									</p:dataList>
+								</p:panel>
+
+								<p:panel header="Grupos de usuários">
+									<p:row>
+
+										<p:inputText value="#{usuarioLogado.nomeDaLista}"
+											required="false" />
+
+										<p:commandButton value="Criar uma Lista"
+											action="#{usuarioLogado.criarLista()}" ajax="false"></p:commandButton>
+									</p:row>
+									<h:panelGrid columns="5" style="margin-bottom:10px"
+										cellpadding="5">
+										<p:row>
+											<p:dataTable var="lista" value="#{usuarioLogado.listas()}"
+												selection="#{usuarioLogado.listaSelecionada}"
+												rowKey="#{lista.hashCode()}">
+												<p:column selectionMode="single" style="width:2%" />
+
+												<p:column headerText="Lista" style="width:25%">  
+           								#{lista.getNomeDaLista()}
+       								</p:column>
+											</p:dataTable>
+											<p:inputText value="#{usuarioLogado.usuarioAdicionado}"
+												required="false" />
+
+											<p:commandButton
+												value="Adicione um usuário ao grupo selecionado"
+												action="#{usuarioLogado.adicionarUsuario()}" ajax="false"></p:commandButton>
+											<p:commandButton value="Ver sons do grupo selecionado"
+												action="#{usuarioLogado.verSonsEmGrupo()}" ajax="false"></p:commandButton>
+										</p:row>
+
+									</h:panelGrid>
+									<h:panelGrid columns="5" style="margin-bottom:10px"
+										cellpadding="5">
+										<f:facet name="header">  
+        							Sons do Grupo Selecionado                                         
+    							</f:facet>
+										<p:dataList var="som"
+											value="#{usuarioLogado.getSonsDoGrupo()}">
+											<h:outputText value="#{som}" />
+										</p:dataList>
+									</h:panelGrid>
+
+								</p:panel>
+
 							</h:panelGrid>
 
-						</p:layoutUnit>
-					</p:layout>
+						</p:panel>
 
-					<p:row>
-					<p:panel>
-						<p:row>
-							<p:inputTextarea rows="3" cols="57" minQueryLength="4"
-								value="#{logadoBean.postagem}" />
-							<!--  -->
-							<p:commandButton value="postar" action="#{logadoBean.postar}"
-								ajax="false"></p:commandButton>
-							<p:commandButton value="apagar" action="#{logadoBean.apagar}"
-								ajax="false"></p:commandButton>
-						</p:row>
-					</p:panel>
+					</p:dataGrid>
 
-					<p:panel header="Meus Sons">
-						  <p:dataList var="feed" value="#{usuarioLogado.feed}"
-							itemType="square">
-							<a href="#{feed.link}" target="_blank"> #{feed.link} </a>
-						</p:dataList>
-					</p:panel>
-					</p:row>
-					<p:row>
-						<p:commandButton value="Recentes"
-							actionListener="#{logadoBean.ordenarRecentes()}" ajax="false"/>
-							<p:commandButton value="Popular"
-								actionListener="#{logadoBean.ordenarPopular()}" ajax="false" />
-							<p:commandButton value="Favoritos"
-								actionListener="#{logadoBean.ordenarFavoritos()}" ajax="false" />
-					</p:row>
-
-					<p:panel header="Feed Principal  - #{logadoBean.ordenador}">
-						<p:dataList var="musica" value="#{usuarioLogado.feedPrincipal}">
-							<h:outputText value="#{musica.link}" />
-							<!--  -->
-							<p:commandButton style="height:30px"
-								value="#{musica.getQtdeFavoritados()} " icon="ui-icon-check"
-								action="#{logadoBean.favoritar(musica)}" ajax="false"></p:commandButton>
-							<p/>
-						</p:dataList>
-					</p:panel>
-					
-					<p:panel header="Feed Extra">
-						<p:dataList var="musica" value="#{usuarioLogado.feedExtra()}">
-							<h:outputText value="#{musica.link}" />
-							<p:commandButton style="height:30px"
-								value="#{musica.getQtdeFavoritados()} " icon="ui-icon-check"
-								action="#{logadoBean.favoritar(musica)}" ajax="false"></p:commandButton>
-							<p/> 
-						</p:dataList>
-					</p:panel>
-
-					<p:panel header="Quem estou seguindo">
-						<p:scrollPanel style="width:672px;height:200px">
-							<p:dataGrid var="seguindo" value="#{usuarioLogado.getSeguindo()}"
-								columns="5">
-								<p:panel header="#{seguindo}" style="height:100px">
-									<p:graphicImage width="40" height="40"
-										value="/images/profile.jpg" />
-								</p:panel>
-							</p:dataGrid>
-						</p:scrollPanel>
-					</p:panel>
-					
-					<p:panel header="Recomendações">
-						<p:dataList var="sugestao" value="#{usuarioLogado.recomendacoesDoSistema()}">
-								<h:outputText value="#{sugestao}" />
-						</p:dataList>
-					</p:panel>
-					
-					<p:panel header="Grupos de usuários">
-						<p:row>
-
-								<p:inputText value="#{usuarioLogado.nomeDaLista}" required="false" />
-								
-								<p:commandButton value="Criar uma lista" action="#{usuarioLogado.criarLista()}" ajax="false"></p:commandButton>
-						</p:row>
-						<h:panelGrid columns="5" style="margin-bottom:10px" cellpadding="5">  
- 							<p:row>
-								<p:dataTable  var="lista" value="#{usuarioLogado.listas()}" 
-                		 selection="#{usuarioLogado.listaSelecionada}" rowKey="#{lista.hashCode()}">  
-      					 			<p:column selectionMode="single" style="width:2%" />  
-  
-       								<p:column headerText="Grupos" style="width:25%">  
-           								#{lista.getNomeDaLista()}
-       								</p:column>  
-  				 				</p:dataTable>
-  				 				<p:inputText value="#{usuarioLogado.usuarioAdicionado}" required="false" />
-								
-								<p:commandButton value="Adicione um usuário ao grupo selecionado" action="#{usuarioLogado.adicionarUsuario()}" ajax="false"></p:commandButton>
-  				 				<p:commandButton value="Ver sons do grupo selecionado" action="#{usuarioLogado.verSonsEmGrupo()}" ajax="false"></p:commandButton>
-							</p:row>
-							
-						</h:panelGrid>
-						<h:panelGrid columns="5" style="margin-bottom:10px" cellpadding="5"> 
-								<f:facet name="header">  
-        							Sons do Grupo Selecionado                                         
-    							</f:facet>  
-								<p:dataList var="som" value="#{usuarioLogado.getSonsDoGrupo()}">
-									<h:outputText value="#{som}" />
-								</p:dataList>
-						</h:panelGrid>
-						
-					</p:panel>
-					
-				</h:panelGrid>
-
-			</p:panel>
-
-		</p:dataGrid>
-
-	</h:form>
-
-</h:body>
+				</h:form>
+			</div>
+		</div>
+	</h:body>
 
 </h:head>
 </html>

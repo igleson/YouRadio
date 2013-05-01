@@ -22,11 +22,13 @@ public class YouRadioBean {
 	private adapterWUISistema sistema = adapterWUISistema.getInstance();
 	private Integer idSessao;
 	private UsuarioLogadoAdapter usuarioLogado;
+	private String nomeTag;
 
 	@PostConstruct
 	public void init() {
 		Thread thread = new ThreadQueSalva();
 		thread.start();
+		
 	}
 
 	public String getLogin() {
@@ -89,6 +91,30 @@ public class YouRadioBean {
 		senha = null;
 		subLogin = null;
 		idSessao = null;
-		usuarioLogado = null;
+		finally
+		{
+			return "faces/index.xhtml";
+		}
 	}
+		login = "";
+		senha = "";
+		subLogin = "";
+		idSessao = 0;
+		this.usuarioLogado = null;
+		this.postagem = "";
+		this.seguir = "";
+		this.ordenador = "";
+	public void criarTag(){
+		usuarioLogado.criarTag(nomeTag);
+		this.nomeTag = "";
+	}
+	}
+	}
+
+	public String getNomeTag() {
+		return nomeTag;
+	}
+
+	public void setNomeTag(String nomeTag) {
+		this.nomeTag = nomeTag;
 }

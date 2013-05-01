@@ -1,21 +1,23 @@
 package beans;
 
 import java.io.Serializable;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-import excessoes.ListaException;
-import excessoes.SessaoException;
-import excessoes.SomException;
-import excessoes.sistemaEncerradoException;
 import projeto.perfil.Som;
 import projeto.sistem.adapterWUISistema;
 import projeto.user.Lista;
+import projeto.user.Tag;
+import excessoes.ListaException;
+import excessoes.SessaoException;
+import excessoes.SomException;
+import excessoes.TagException;
+import excessoes.sistemaEncerradoException;
 
 
 public class UsuarioLogadoAdapter implements Serializable {
@@ -30,7 +32,8 @@ public class UsuarioLogadoAdapter implements Serializable {
 	private Lista listaSelecionada;
 	private String usuarioAdicionado;
 	private List<String> sonsDoGrupo;
-
+	private Map<String, Tag> tags;
+	
 
 
 	public List<String> getSonsDoGrupo() {
@@ -86,9 +89,12 @@ public class UsuarioLogadoAdapter implements Serializable {
 		if (nome.length()> 8) this.nome = nome.substring(0,7); else this.nome = nome;
 		this.setIdSessao(idSessao);
 		sistema = new adapterWUISistema();
+		tags = sistema.usuario(idSessao).mapTags();
 		setFeedPrincipal(sistema.getMainFeed(idSessao));
-
+		setTags(sistema.usuario(idSessao).mapTags());
 		setFeed(perfilMusical());
+		
+		
 		
 	}
 
@@ -233,6 +239,33 @@ public class UsuarioLogadoAdapter implements Serializable {
 			}
 		}
 	}
+
+
+
+	public Map<String, Tag> getTags() {
+		return tags;
+	}
+
+
+
+	public void setTags(Map<String, Tag> tags) {
+		this.tags = tags;
+	}
+
+
+
+	public void criarTag(String nomeTag) {
+		try {
+			sistema.criarTag(idSessao, nomeTag);
+		} catch (TagException e) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null,
+					new FacesMessage("Falhou", e.getLocalizedMessage()));
+		}
+		
+	}
+
+	
 	
 
 }
