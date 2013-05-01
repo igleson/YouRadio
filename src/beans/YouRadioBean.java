@@ -56,7 +56,6 @@ public class YouRadioBean {
 				sistema.setUsuarioLogado(usuarioLogado);
 				sistema.setSessao(idSessao);
 				sistema.setLogin(subLogin);
-				System.out.println("===========================");
 				dispose();
 			}
 			return "faces/usuariologado.xhtml";

@@ -27,7 +27,6 @@ public class LogadoBean {
 		}
 		
 		public UsuarioLogadoAdapter getUsuarioLogado() {
-			System.out.println(sistema.getUsuarioLogado()== null);
 			return this.sistema.getUsuarioLogado();
 		}
 
