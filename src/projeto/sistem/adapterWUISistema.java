@@ -7,6 +7,8 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+import beans.UsuarioLogadoAdapter;
+
 import projeto.perfil.Som;
 import projeto.user.Lista;
 import projeto.user.Usuario;
@@ -21,7 +23,18 @@ import gerenciadorDeDados.DadosDoSistema;
 
 public class adapterWUISistema {
 
-	YouRadio sistema;
+	private YouRadio sistema;
+	private UsuarioLogadoAdapter usuarioLogado;
+	private int idSessao;
+	private String login;
+	private static adapterWUISistema sistemaAdaptado;
+	
+	public static adapterWUISistema getInstance(){
+		if(sistemaAdaptado == null){
+			sistemaAdaptado = new adapterWUISistema();
+		}
+		return sistemaAdaptado;
+	}
 	
 	public adapterWUISistema(){
 		sistema = new YouRadio();
@@ -233,7 +246,28 @@ public class adapterWUISistema {
 		}
 		return retorno;
 	}
+
+	public UsuarioLogadoAdapter getUsuarioLogado() {
+		return this.usuarioLogado;
+	}
 	
+	public void setUsuarioLogado(UsuarioLogadoAdapter usuarioLogado) {
+		this.usuarioLogado = usuarioLogado;
+	}
+
+	public Integer getSessao() {
+		return this.idSessao;
+	}
 	
+	public void setSessao(int idSessao) {
+		this.idSessao = idSessao;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
 	
+	public String getLogin() {
+		return this.login;
+	}
 }

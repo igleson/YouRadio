@@ -18,7 +18,7 @@ import projeto.sistem.adapterWUISistema;
 import projeto.user.Lista;
 
 
-public class UsuarioLogadoBean implements Serializable {
+public class UsuarioLogadoAdapter implements Serializable {
 
 	private static final long serialVersionUID = 5600369132889054255L;
 
@@ -81,7 +81,7 @@ public class UsuarioLogadoBean implements Serializable {
 
 
 
-	public UsuarioLogadoBean(String nome, int idSessao) throws SessaoException,
+	public UsuarioLogadoAdapter(String nome, int idSessao) throws SessaoException,
 			sistemaEncerradoException, SomException {
 		if (nome.length()> 8) this.nome = nome.substring(0,7); else this.nome = nome;
 		this.setIdSessao(idSessao);
