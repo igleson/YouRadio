@@ -33,6 +33,7 @@ public class YouRadioBean {
 	public void init(){
 		Thread thread = new ThreadQueSalva();
 		thread.start();
+		
 	}
 	
 	public String getLogin() {
@@ -133,8 +134,8 @@ public class YouRadioBean {
 
 	}
 	public void criarTag(){
-		System.out.println("YOURADIO: "+nomeTag);
 		usuarioLogado.criarTag(nomeTag);
+		this.nomeTag = "";
 	}
 	public UsuarioLogadoBean getUsuarioLogado() {
 		return usuarioLogado;

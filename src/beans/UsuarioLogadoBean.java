@@ -256,7 +256,6 @@ public class UsuarioLogadoBean implements Serializable {
 
 	public void criarTag(String nomeTag) {
 		try {
-			System.out.println("UsuarioLogado :"+ nomeTag);
 			sistema.criarTag(idSessao, nomeTag);
 		} catch (TagException e) {
 			FacesContext context = FacesContext.getCurrentInstance();
